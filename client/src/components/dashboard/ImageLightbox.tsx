@@ -93,7 +93,7 @@ export default function ImageLightbox({
                     onClick={handleClose}
                     aria-label="Close lightbox"
                 >
-                    ✕
+                    <img src="/cross.png" alt="Close" />
                 </button>
 
                 {/* Image counter */}
@@ -112,7 +112,7 @@ export default function ImageLightbox({
                             onClick={handlePrevious}
                             aria-label="Previous image"
                         >
-                            ‹
+                            <img src="/left-arrow.png" alt="Previous" />
                         </button>
                     )}
 
@@ -131,7 +131,7 @@ export default function ImageLightbox({
                             onClick={handleNext}
                             aria-label="Next image"
                         >
-                            ›
+                            <img src="/right-arrow.png" alt="Next" />
                         </button>
                     )}
                 </div>

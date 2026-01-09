@@ -25,10 +25,7 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {
@@ -93,7 +90,7 @@ button:focus-visible {
   height: 700px;
   position: relative;
   margin: auto;
-  background: #000;
+  background: #c0c0c0;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -103,23 +100,27 @@ button:focus-visible {
   position: absolute;
   top: 20px;
   right: 20px;
-  background: rgba(255, 255, 255, 0.1);
+  background: none;
   border: none;
-  color: white;
-  font-size: 32px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
   cursor: pointer;
   z-index: 10002;
+  padding: 0;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
+  transition: opacity 0.2s;
 }
 
 .lightbox-close:hover {
-  background: rgba(255, 255, 255, 0.2);
+  opacity: 0.7;
+}
+
+.lightbox-close img {
+  width: 24px;
+  height: 24px;
+  display: block;
 }
 
 /* Image counter */
@@ -144,7 +145,7 @@ button:focus-visible {
   justify-content: center;
   position: relative;
   padding: 60px 20px;
-  background: #000;
+  background: #c0c0c0;
   min-width: 0;
 }
 
@@ -164,10 +165,8 @@ button:focus-visible {
   transform: translateY(-50%);
   background: rgba(255, 255, 255, 0.1);
   border: none;
-  color: white;
-  font-size: 60px;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -175,12 +174,17 @@ button:focus-visible {
   justify-content: center;
   transition: background 0.2s;
   z-index: 10001;
-  font-weight: 300;
-  line-height: 1;
+  padding: 0;
 }
 
 .lightbox-nav:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+.lightbox-nav img {
+  width: 24px;
+  height: 24px;
+  display: block;
 }
 
 .lightbox-nav-prev {
