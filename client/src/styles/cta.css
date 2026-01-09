@@ -1,0 +1,105 @@
+/* ================================================
+   CTA SECTION
+   ================================================ */
+
+.cta-section {
+    width: 100%;
+    max-width: 1728px;
+    margin: 120px auto;
+    padding: 100px 76px;
+    background-color: #FFFFFF;
+}
+
+.cta-container {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+}
+
+.cta-headline {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 60px;
+    line-height: 1.1;
+    letter-spacing: -0.05em;
+    color: #18181B;
+    margin: 0;
+}
+
+.cta-text {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    color: #71717A;
+    margin: 0;
+    max-width: 800px;
+}
+
+.cta-button {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 32px;
+    padding: 20px 50px;
+    background: linear-gradient(135deg, #5a0980 0%);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(90, 9, 128, 0.3);
+    margin-top: 16px;
+    text-decoration: none;
+    display: inline-block;
+    letter-spacing: -0.07em;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 12px rgba(158, 3, 254, 0.4);
+    background: linear-gradient(135deg, #7a0ab8 0%, #9e03fe 100%);
+}
+
+.cta-button:active {
+    transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .cta-section {
+        padding: 80px 40px;
+    }
+
+    .cta-headline {
+        font-size: 60px;
+    }
+
+    .cta-text {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .cta-section {
+        padding: 60px 20px;
+        margin: 80px auto;
+    }
+
+    .cta-headline {
+        font-size: 42px;
+    }
+
+    .cta-text {
+        font-size: 18px;
+    }
+
+    .cta-button {
+        font-size: 16px;
+        padding: 14px 32px;
+    }
+}

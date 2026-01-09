@@ -1,0 +1,198 @@
+import { useState } from 'react';
+import type { Post } from '../../types/post';
+import ImageLightbox from './ImageLightbox';
+import '../../styles/dashboard.css';
+
+interface FeedProps {
+    posts: Post[];
+    isLoading: boolean;
+    onRetry: (tempId: string) => Promise<void>;
+}
+
+export default function Feed({ posts, isLoading, onRetry }: FeedProps) {
+    const [expandedPosts, setExpandedPosts] = useState<Set<string>>(new Set());
+    const [lightboxData, setLightboxData] = useState<{
+        images: string[];
+        currentIndex: number;
+        post: Post;
+    } | null>(null);
+
+    const formatTime = (createdAt: string) => {
+        const now = new Date();
+        const postTime = new Date(createdAt);
+        const diffInMs = now.getTime() - postTime.getTime();
+        const diffInMins = Math.floor(diffInMs / 60000);
+
+        if (diffInMins < 1) return 'Just now';
+        if (diffInMins < 60) return `${diffInMins}m`;
+        if (diffInMins < 1440) return `${Math.floor(diffInMins / 60)}h`;
+        return `${Math.floor(diffInMins / 1440)}d`;
+    };
+
+    const toggleExpanded = (postId: string) => {
+        setExpandedPosts(prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(postId)) {
+                newSet.delete(postId);
+            } else {
+                newSet.add(postId);
+            }
+            return newSet;
+        });
+    };
+
+    const openLightbox = (post: Post, index: number) => {
+        if (post.media && post.media.length > 0) {
+            setLightboxData({
+                images: post.media,
+                currentIndex: index,
+                post
+            });
+        }
+    };
+
+    const closeLightbox = () => {
+        setLightboxData(null);
+    };
+
+    const navigateLightbox = (index: number) => {
+        if (lightboxData) {
+            setLightboxData({
+                ...lightboxData,
+                currentIndex: index
+            });
+        }
+    };
+
+    const renderPost = (post: Post) => {
+        const time = formatTime(post.createdAt);
+        const isExpanded = expandedPosts.has(post.id);
+        const shouldShowReadMore = post.content && post.content.length > 150;
+
+        return (
+            <div key={post.tempId || post.id} className="dashboard-card feed-post">
+                <div className="post-header">
+                    <div className="post-author-avatar"></div>
+                    <div className="post-author-info">
+                        <div className="post-author-name">{post.author.name}</div>
+                        <div className="post-time">{post.author.role} • {time}</div>
+                    </div>
+                </div>
+
+                <div className={`post-content ${!isExpanded && shouldShowReadMore ? 'post-content-truncated' : ''}`}>
+                    {post.content}
+                </div>
+
+                {shouldShowReadMore && (
+                    <button
+                        className="read-more-btn"
+                        onClick={() => toggleExpanded(post.id)}
+                    >
+                        {isExpanded ? 'Show less' : 'Read more'}
+                    </button>
+                )}
+
+                {post.media && post.media.length > 0 && (
+                    <div className={`post-images post-images-${Math.min(post.media.length, 4)}`}>
+                        {post.media.length === 1 && (
+                            <div className="post-image-single" onClick={() => openLightbox(post, 0)}>
+                                <img src={post.media[0]} alt="Post content" />
+                            </div>
+                        )}
+
+                        {post.media.length === 2 && (
+                            <>
+                                <div className="post-image-half" onClick={() => openLightbox(post, 0)}>
+                                    <img src={post.media[0]} alt="Post content 1" />
+                                </div>
+                                <div className="post-image-half" onClick={() => openLightbox(post, 1)}>
+                                    <img src={post.media[1]} alt="Post content 2" />
+                                </div>
+                            </>
+                        )}
+
+                        {post.media.length === 3 && (
+                            <>
+                                <div className="post-image-large" onClick={() => openLightbox(post, 0)}>
+                                    <img src={post.media[0]} alt="Post content 1" />
+                                </div>
+                                <div className="post-image-small" onClick={() => openLightbox(post, 1)}>
+                                    <img src={post.media[1]} alt="Post content 2" />
+                                </div>
+                                <div className="post-image-small" onClick={() => openLightbox(post, 2)}>
+                                    <img src={post.media[2]} alt="Post content 3" />
+                                </div>
+                            </>
+                        )}
+
+                        {post.media.length >= 4 && (
+                            <>
+                                <div className="post-image-large" onClick={() => openLightbox(post, 0)}>
+                                    <img src={post.media[0]} alt="Post content 1" />
+                                </div>
+                                <div className="post-image-small" onClick={() => openLightbox(post, 1)}>
+                                    <img src={post.media[1]} alt="Post content 2" />
+                                </div>
+                                <div className="post-image-small post-image-overlay" onClick={() => openLightbox(post, 2)}>
+                                    <img src={post.media[2]} alt="Post content 3" />
+                                    {post.media.length > 3 && (
+                                        <div className="image-count-overlay">
+                                            +{post.media.length - 3}
+                                        </div>
+                                    )}
+                                </div>
+                            </>
+                        )}
+                    </div>
+                )}
+
+                {post.status === 'pending' && (
+                    <div className="post-status pending">
+                        Posting...
+                    </div>
+                )}
+
+                {post.status === 'error' && (
+                    <div className="post-status error">
+                        <span>Failed to post. </span>
+                        <button
+                            className="retry-btn"
+                            onClick={() => post.tempId && onRetry(post.tempId)}
+                        >
+                            Retry
+                        </button>
+                    </div>
+                )}
+            </div>
+        );
+    };
+
+    return (
+        <div className="feed-container">
+            {lightboxData && (
+                <ImageLightbox
+                    images={lightboxData.images}
+                    currentIndex={lightboxData.currentIndex}
+                    onClose={closeLightbox}
+                    onNavigate={navigateLightbox}
+                    postContent={lightboxData.post.content || undefined}
+                    author={lightboxData.post.author}
+                />
+            )}
+
+            {isLoading && posts.length === 0 && (
+                <div className="dashboard-card">Loading...</div>
+            )}
+
+            {posts.map(renderPost)}
+
+            {!isLoading && posts.length === 0 && (
+                <div className="dashboard-card feed-post" style={{ textAlign: 'center', padding: '40px' }}>
+                    <p style={{ fontSize: '16px', color: '#666', margin: 0 }}>
+                        No posts yet. Be the first to share something!
+                    </p>
+                </div>
+            )}
+        </div>
+    );
+}

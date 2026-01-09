@@ -1,0 +1,254 @@
+/* ================================================
+   PURPOSE SECTION
+   ================================================ */
+
+.purpose-section {
+    width: 100%;
+    max-width: 1728px;
+    position: relative;
+    margin: 100px auto;
+    padding: 0 76px;
+}
+
+/* Dark Container with Gradient Transition */
+.purpose-dark-container {
+    background: linear-gradient(135deg, #040008 0%, #270f4a 30%, #260c52 60%, #000000 100%);
+    border-radius: 48px;
+    padding: 80px;
+    position: relative;
+    min-height: 500px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.purpose-content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.purpose-headline {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 60px;
+    line-height: 1.2;
+    letter-spacing: -0.05em;
+    color: #FFFFFF;
+    margin: 0 0 40px 0;
+}
+
+.purpose-description {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.purpose-description p {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.6;
+    letter-spacing: -0.02em;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 20px 0;
+}
+
+.purpose-description p:last-child {
+    margin-bottom: 0;
+}
+
+.purpose-image-container {
+    margin-top: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.purpose-image {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 16px;
+}
+
+/* Gradient Fade - Hidden */
+.gradient-fade-bottom {
+    display: none;
+}
+
+/* Events Section - Dark Background */
+.events-section {
+    background: transparent;
+    padding: 60px 0;
+    margin-top: 0;
+    position: relative;
+}
+
+.events-title {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 48px;
+    line-height: 1.2;
+    letter-spacing: -0.05em;
+    color: #FFFFFF;
+    margin: 0 0 40px 0;
+    text-align: center;
+}
+
+/* Events Grid */
+.events-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+
+.event-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.event-number {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: #b8a3d6;
+    margin-bottom: 16px;
+}
+
+.event-title {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    color: #FFFFFF;
+    margin: 0 0 12px 0;
+}
+
+.event-description {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .purpose-dark-container {
+        padding: 80px 40px 180px 40px;
+    }
+
+    .purpose-headline {
+        font-size: 48px;
+    }
+
+    .purpose-description p {
+        font-size: 18px;
+    }
+
+    .events-section {
+        padding: 100px 40px 80px 40px;
+    }
+
+    .events-title {
+        font-size: 40px;
+        margin-bottom: 50px;
+    }
+
+    .events-grid {
+        gap: 30px;
+    }
+
+    .event-card {
+        padding: 32px;
+    }
+
+    .event-number {
+        font-size: 32px;
+    }
+
+    .event-title {
+        font-size: 24px;
+    }
+
+    .event-description {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .purpose-dark-container {
+        padding: 60px 20px 150px 20px;
+    }
+
+    .purpose-headline {
+        font-size: 36px;
+        margin-bottom: 30px;
+    }
+
+    .purpose-description p {
+        font-size: 16px;
+        margin-bottom: 16px;
+    }
+
+    .events-section {
+        padding: 80px 20px 60px 20px;
+        margin-top: -80px;
+    }
+
+    .events-title {
+        font-size: 32px;
+        margin-bottom: 40px;
+    }
+
+    /* Stack cards vertically on mobile */
+    .events-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .event-card {
+        padding: 28px;
+    }
+
+    .purpose-image-container {
+        margin-top: 30px;
+    }
+
+    .purpose-image {
+        max-width: 100%;
+        border-radius: 16px;
+    }
+
+    .event-number {
+        font-size: 28px;
+    }
+
+    .event-title {
+        font-size: 22px;
+    }
+
+    .event-description {
+        font-size: 15px;
+    }
+
+    .gradient-fade-bottom {
+        height: 100px;
+    }
+}

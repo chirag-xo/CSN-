@@ -1,0 +1,66 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Work Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Animations */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes subtleBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-subtle-bounce {
+    animation: subtleBounce 3s ease-in-out infinite;
+}
+
+/* Apply floating animation to main image */
+.main-image-container {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Custom Text Shadow for Glow Effect */
+.text-glow-orange {
+    text-shadow:
+        0 0 10px rgba(255, 106, 0, 0.3),
+        0 0 20px rgba(255, 106, 0, 0.2),
+        0 0 30px rgba(255, 106, 0, 0.1);
+}

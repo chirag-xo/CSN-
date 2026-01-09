@@ -1,0 +1,277 @@
+/* Signup Page - Scoped Styles */
+
+/* Cancel Button */
+#signup-page .cancel-button {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    z-index: 100;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+#signup-page .cancel-button img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+#signup-page .cancel-button:hover {
+    transform: scale(1.1);
+}
+
+/* Main Signup Container */
+#signup-page .signup-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background-color: #000000;
+    overflow: hidden;
+}
+
+/* Left Column: Image Section */
+#signup-page .signup-image-section {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+#signup-page .earth-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Right Column: Signup Form Section */
+#signup-page .signup-form-section {
+    flex: 1;
+    background-color: #000000;
+    padding: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#signup-page .signup-form-content {
+    width: 100%;
+    max-width: 450px;
+}
+
+/* Header */
+#signup-page .signup-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 80px;
+    font-weight: 500;
+    color: #FFFFFF;
+    text-align: center;
+    margin-bottom: 10px;
+    line-height: 1.2;
+    letter-spacing: -0.07em;
+}
+
+#signup-page .signup-subtitle {
+    font-size: 20px;
+    font-family: 'DM Sans', sans-serif;
+    color: #fdfdfd;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 40px;
+    opacity: 0.9;
+    letter-spacing: 0.0em;
+}
+
+/* Google Signup Button */
+#signup-page .google-signup-btn {
+    width: 100%;
+    padding: 16px 24px;
+    background-color: transparent;
+    border: 2px solid #b8a3d6;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 30px;
+}
+
+#signup-page .google-signup-btn span {
+    color: #FFFFFF;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+#signup-page .google-signup-btn:hover {
+    background-color: rgba(184, 163, 214, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Divider */
+#signup-page .divider {
+    text-align: center;
+    margin: 30px 0;
+}
+
+#signup-page .divider span {
+    color: #FFFFFF;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 20px;
+    opacity: 0.6;
+}
+
+/* Signup Form */
+#signup-page .signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Input Groups */
+#signup-page .input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#signup-page .input-icon {
+    position: absolute;
+    left: 20px;
+    width: 20px;
+    height: 20px;
+    opacity: 0.7;
+}
+
+#signup-page .signup-input {
+    width: 100%;
+    padding: 16px 20px 16px 55px;
+    background-color: transparent;
+    border: 2px solid #FFFFFF;
+    border-radius: 50px;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-family: 'Work Sans', sans-serif;
+    transition: all 0.3s ease;
+}
+
+#signup-page .signup-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#signup-page .signup-input:focus {
+    outline: none;
+    border-color: #b8a3d6;
+    box-shadow: 0 0 0 3px rgba(184, 163, 214, 0.1);
+}
+
+/* Submit Button */
+#signup-page .signup-submit-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #040008 0%, #270f4a 30%, #260c52 60%, #000000 100%);
+    border: 2px solid #b8a3d6;
+    border-radius: 50px;
+    color: #FFFFFF;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+#signup-page .signup-submit-btn:hover {
+    background: linear-gradient(135deg, #260c52 0%, #270f4a 50%, #040008 100%);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(38, 12, 82, 0.4);
+}
+
+/* Footer */
+#signup-page .signup-footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-family: 'DM Sans', sans-serif;
+}
+
+#signup-page .login-link {
+    color: #b8a3d6;
+    text-decoration: none;
+    font-weight: 600;
+    transition: opacity 0.3s ease;
+}
+
+#signup-page .login-link:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    #signup-page .signup-form-section {
+        padding: 40px;
+    }
+
+    #signup-page .signup-title {
+        font-size: 64px;
+    }
+}
+
+@media (max-width: 768px) {
+    #signup-page .signup-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    #signup-page .signup-image-section {
+        display: none;
+    }
+
+    #signup-page .signup-form-section {
+        padding: 40px 20px;
+        min-height: 100vh;
+    }
+
+    #signup-page .signup-form-content {
+        max-width: 100%;
+    }
+
+    #signup-page .signup-title {
+        font-size: 52px;
+    }
+
+    #signup-page .google-signup-btn {
+        padding: 14px 20px;
+    }
+
+    #signup-page .signup-input {
+        padding: 14px 20px 14px 50px;
+    }
+
+    #signup-page .signup-submit-btn {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    #signup-page .signup-title {
+        font-size: 44px;
+    }
+
+    #signup-page .signup-subtitle {
+        font-size: 16px;
+    }
+
+    #signup-page .google-signup-btn span {
+        font-size: 16px;
+    }
+
+    #signup-page .divider span {
+        font-size: 16px;
+    }
+}
