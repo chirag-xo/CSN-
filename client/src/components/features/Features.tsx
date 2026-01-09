@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import featureHighFive from '../../assets/images/features/feature-people-highfive.png';
-import featurePuzzle from '../../assets/images/features/feature-puzzle-collaboration.png';
 import featureLightbulb from '../../assets/images/features/feature-lightbulb-ideas.png';
 
 const features = [

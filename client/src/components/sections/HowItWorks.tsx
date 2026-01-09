@@ -87,10 +87,10 @@ export default function HowItWorks() {
                                         loop={true}
                                         style={{ width: '100%', height: '100%', maxWidth: 500 }}
                                     />
-                                ) : step.icon || step.fallbackIcon ? (
-                                    <div className="step-icon-large">{step.icon || step.fallbackIcon}</div>
                                 ) : (
-                                    <div className="step-icon-large">✨</div>
+                                    <div className="step-icon-large">
+                                        {'fallbackIcon' in step ? step.fallbackIcon : '✨'}
+                                    </div>
                                 )}
                             </div>
 
