@@ -30,10 +30,10 @@ body {
 /* Logo - exact Figma positioning */
 .logo {
     position: absolute;
-    left: 64px;
-    top: 116px;
-    width: 292px;
-    height: 90px;
+    left: 30px;
+    top: 135px;
+    width: 240px;
+    height: 74px;
     z-index: 10;
     display: flex;
     align-items: center;
@@ -154,11 +154,11 @@ body {
 /* Hero Animation Container - Right Side */
 .hero-animation-container {
     position: absolute;
-    right: 40px;
-    top: 230px;
-    width: 55%;
-    max-width: 1000px;
-    height: 780px;
+    right: 120px;
+    top: 300px;
+    width: 65%;
+    max-width: 730px;
+    height: 750px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -166,7 +166,7 @@ body {
     overflow: visible;
 }
 
-/* Adjust heading since we removed CNS from it */
+/* Adjust heading since we removed CSN from it */
 .main-heading {
     margin-top: 0;
     padding-top: 0;
@@ -179,10 +179,10 @@ body {
     max-width: 100%;
     /* Prevent overlap with main image */
     min-height: 280px;
-    /* Reduced since we removed CNS line */
+    /* Reduced since we removed CSN line */
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
-    font-size: 64px;
+    font-size: 60px;
     line-height: 1.25em;
     letter-spacing: -0.07em;
     /* -74 from Figma = -0.074em in CSS */
@@ -197,7 +197,7 @@ body {
     /* optional fallback */
 
     margin-top: 160px;
-    /* Small spacing from orange CNS */
+    /* Small spacing from orange CSN */
 }
 
 /* Subheading - exact Figma specs */
@@ -391,7 +391,7 @@ body {
     animation: float 3s ease-in-out infinite;
 }
 
-/* Orange Stylized CNS Container */
+/* Orange Stylized CSN Container */
 .orange-cns-container {
     position: absolute;
     left: 72.7px;
@@ -407,14 +407,14 @@ body {
 .orange-cns-text {
     font-family: 'DM Sans', sans-serif;
     font-weight: 700;
-    font-size: 80px;
+    font-size: 60px;
     color: #b769db;
     line-height: 1.2;
     letter-spacing: -0.074em;
     white-space: nowrap;
 }
 
-/* SVG Vectors - Decorative lines above CNS */
+/* SVG Vectors - Decorative lines above CSN */
 .svg-vectors {
     position: relative;
     width: 125px;
@@ -473,7 +473,7 @@ body {
     }
 
     .main-heading {
-        font-size: 48px;
+        font-size: 44px;
         width: 100%;
         max-width: 885px;
     }
@@ -510,19 +510,44 @@ body {
     .logo {
         position: static;
         margin-bottom: 20px;
+        width: 180px;
+        height: 56px;
+    }
+
+    /* Hide Features and About navigation links on mobile */
+    .nav-link {
+        display: none;
     }
 
     .navigation {
         position: static;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0;
         margin-bottom: 40px;
+    }
+
+    .login-button-container {
+        position: static;
+        width: auto;
+        height: auto;
+    }
+
+    .login-button {
+        position: static;
+        left: auto;
+        top: auto;
+        width: 120px;
+        height: 50px;
+        font-size: 18px;
     }
 
     .main-content {
         position: static;
         margin-bottom: 40px;
+        width: 100%;
+        max-width: 100%;
     }
 
     .main-heading {
@@ -579,7 +604,7 @@ body {
 }
 
 /* ================================================
-   WHY CNS SECTION
+   WHY CSN SECTION
    ================================================ */
 
 .why-cns-section {
@@ -619,7 +644,7 @@ body {
 .why-cns-headline {
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
-    font-size: 60px;
+    font-size: 56px;
     line-height: 1.2;
     letter-spacing: -0.05em;
     color: #FFFFFF;
@@ -662,7 +687,7 @@ body {
     }
 
     .why-cns-headline {
-        font-size: 48px;
+        font-size: 44px;
         margin-bottom: 30px;
     }
 
@@ -738,7 +763,7 @@ body {
 .platform-headline {
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
-    font-size: 60px;
+    font-size: 56px;
     line-height: 1.2;
     letter-spacing: -0.05em;
     color: #FFFFFF;
@@ -786,7 +811,7 @@ body {
     }
 
     .platform-headline {
-        font-size: 48px;
+        font-size: 44px;
         margin-bottom: 30px;
     }
 
@@ -840,7 +865,7 @@ body {
 .features-title {
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
-    font-size: 80px;
+    font-size: 76px;
     line-height: 1.5;
     text-align: center;
     color: #000000;
@@ -1015,7 +1040,7 @@ body {
 .about-title {
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
-    font-size: 80px;
+    font-size: 76px;
     line-height: 1.3;
     letter-spacing: -0.07em;
     color: #000000;
@@ -1073,7 +1098,7 @@ body {
 .mission-subtitle {
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
-    font-size: 80px;
+    font-size: 76px;
     line-height: 1.5;
     letter-spacing: -0.07em;
     color: #000000;

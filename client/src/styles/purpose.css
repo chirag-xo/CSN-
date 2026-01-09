@@ -86,7 +86,7 @@
 .events-title {
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
-    font-size: 48px;
+    font-size: 53px;
     line-height: 1.2;
     letter-spacing: -0.05em;
     color: #FFFFFF;
@@ -131,10 +131,10 @@
 .event-title {
     font-family: 'DM Sans', sans-serif;
     font-weight: 600;
-    font-size: 28px;
+    font-size: 38px;
     line-height: 1.2;
     letter-spacing: -0.03em;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     margin: 0 0 12px 0;
 }
 

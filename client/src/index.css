@@ -11,8 +11,6 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 10px;
-  /* Further reduced for compact layout */
 }
 
 a {
@@ -28,6 +26,16 @@ a:hover {
 body {
   margin: 0;
   min-width: 320px;
+  zoom: 0.8;
+  /* Apply 80% zoom globally */
+}
+
+/* Reset zoom for auth pages only */
+.auth-container,
+.login-container,
+.signup-container {
+  zoom: 1.25;
+  /* 1 / 0.8 = 1.25 to counteract the body zoom */
 }
 
 h1 {

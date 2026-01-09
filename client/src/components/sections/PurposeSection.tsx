@@ -23,7 +23,7 @@ export default function PurposeSection() {
     ];
 
     return (
-        <section className="purpose-section">
+        <section id="purpose-section" className="purpose-section">
             {/* Dark Container with Gradient */}
             <div className="purpose-dark-container">
                 <div className="purpose-content-wrapper">
@@ -35,10 +35,10 @@ export default function PurposeSection() {
                     {/* Supporting Text */}
                     <div className="purpose-description">
                         <p>
-                            CNS brings people together beyond screens through thoughtfully curated events and meetups. From casual social gatherings to meaningful discussions and learning sessions, our events are designed to help professionals relax, connect and grow together.
+                            CSN brings people together beyond screens through thoughtfully curated events and meetups. From casual social gatherings to meaningful discussions and learning sessions, our events are designed to help professionals relax, connect and grow together.
                         </p>
                         <p>
-                            Whether you want to unwind after work, share experiences, learn something new or simply meet like minded people nearby, CNS events create space for real conversations and genuine human connection.
+                            Whether you want to unwind after work, share experiences, learn something new or simply meet like minded people nearby, CSN events create space for real conversations and genuine human connection.
                         </p>
                     </div>
 

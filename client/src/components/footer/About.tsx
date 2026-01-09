@@ -13,11 +13,11 @@ export default function About() {
             {/* Main Content */}
             <div className="about-content">
                 <p className="about-description">
-                    CNS (Corporate Network System) is a people-centric connecting platform built for professionals navigating the realities of modern corporate life.
+                    CSN (Corporate Social Network) is a people-centric connecting platform built for professionals navigating the realities of modern corporate life.
 
-                    Behind deadlines, targets, and roles, every professional carries pressure, stress, and ideas that often go unshared. Traditional networks focus on jobs and titles—but real growth and well-being come from genuine human connections. CNS exists to bridge that gap.
+                    Behind deadlines, targets, and roles, every professional carries pressure, stress, and ideas that often go unshared. Traditional networks focus on jobs and titles—but real growth and well-being come from genuine human connections. CSN exists to bridge that gap.
 
-                    We bring professionals together based on shared interests, life stages, and experiences—creating opportunities to talk openly, collaborate meaningfully, and step away from routine. Through real-world meetups, social events, and knowledge-driven sessions, CNS encourages people to connect beyond screens and reconnect with themselves.
+                    We bring professionals together based on shared interests, life stages, and experiences—creating opportunities to talk openly, collaborate meaningfully, and step away from routine. Through real-world meetups, social events, and knowledge-driven sessions, CSN encourages people to connect beyond screens and reconnect with themselves.
 
                     CNS is not just about networking—it’s about building trust, finding support, and creating communities that help professionals relax, grow, and enjoy quality time while progressing in every aspect of life.
                 </p>

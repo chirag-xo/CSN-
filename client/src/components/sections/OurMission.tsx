@@ -22,7 +22,7 @@ export default function OurMission() {
                             We believe that growth is stronger through relationships, that well-being matters as much as success, and that meaningful connections can transform careers, communities, and everyday life.
                         </p>
                         <p>
-                            CNS exists to help professionals relax, learn, connect, and thrive at every stage of life.
+                            CSN exists to help professionals relax, learn, connect, and thrive at every stage of life.
                         </p>
                     </div>
                 </div>

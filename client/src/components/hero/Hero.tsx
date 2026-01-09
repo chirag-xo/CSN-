@@ -17,9 +17,9 @@ export default function Hero() {
         <div className="landing-page">
             {/* Removed the background image grid */}
 
-            {/* Orange CNS */}
+            {/* Orange CSN */}
             <div className="orange-cns-container">
-                <div className="orange-cns-text">CNS</div>
+                <div className="orange-cns-text">CSN</div>
             </div>
 
             {/* Main Content - Left Side */}
@@ -41,7 +41,7 @@ export default function Hero() {
                     <Lottie
                         animationData={heroAnimation}
                         loop={true}
-                        style={{ width: '100%', height: '100%', maxWidth: 1000 }}
+                        style={{ width: '100%', height: '100%', maxWidth: 900 }}
                     />
                 )}
             </div>

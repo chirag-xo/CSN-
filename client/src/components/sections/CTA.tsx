@@ -9,7 +9,7 @@ export default function CTA() {
                     Join a growing community of professionals who believe in real conversations,
                     shared experiences and meaningful connections beyond jobs and titles.
                 </p>
-                <Link to="/signup" className="cta-button">Join CNS</Link>
+                <Link to="/signup" className="cta-button">Join CSN</Link>
             </div>
         </section>
     );

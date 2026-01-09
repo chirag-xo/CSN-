@@ -18,10 +18,10 @@ export default function PlatformSection() {
                     <div className="platform-content">
 
                         <p>
-                            We create a space where individuals can connect through shared interests, experiences and life stages not just roles or titles. Whether it's talking openly about everyday challenges, meeting like minded people, or stepping out to unwind at nearby events, CNS encourages connections that feel real and human.
+                            We create a space where individuals can connect through shared interests, experiences and life stages not just roles or titles. Whether it's talking openly about everyday challenges, meeting like minded people, or stepping out to unwind at nearby events, CSN encourages connections that feel real and human.
                         </p>
                         <p>
-                            By bringing professionals together both online and in real life, CNS helps people relax, share, learn and grow personally, socially and professionally.
+                            By bringing professionals together both online and in real life, CSN helps people relax, share, learn and grow personally, socially and professionally.
                         </p>
                     </div>
                 </div>

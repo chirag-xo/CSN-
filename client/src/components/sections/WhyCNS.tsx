@@ -21,7 +21,7 @@ export default function WhyCNS() {
                             Real connection is missing where it's needed the most.
                         </p>
                         <p style={{ marginTop: '20px', fontSize: '24px' }}>
-                            CNS exists to change that.
+                            CSN exists to change that.
                         </p>
 
                     </div>
@@ -29,7 +29,7 @@ export default function WhyCNS() {
 
                 {/* Right side - Image */}
                 <div className="why-cns-right">
-                    <img src="/why.jpg" alt="Why CNS" className="why-cns-image" />
+                    <img src="/why.jpg" alt="Why CSN" className="why-cns-image" />
                 </div>
             </div>
         </section>

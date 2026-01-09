@@ -7,14 +7,14 @@ const features = [
     {
         id: 1,
         title: "Relax & Unwind",
-        text: "Corporate life can be overwhelming. CNS enables social events and casual meetups across cities where professionals can step away from routine, socialize and recharge with like minded people.",
+        text: "Corporate life can be overwhelming. CSN enables social events and casual meetups across cities where professionals can step away from routine, socialize and recharge with like minded people.",
         image: "/card-1.png",
         gradient: 'linear-gradient(135deg,#040008 0%, #2B1156 35%, #3A1A6E 60%, #000000 100%)',
     },
     {
         id: 2,
         title: "Connect in Real Life",
-        text: "Move beyond screens. CNS helps professionals share experiences, feelings and ideas and turn online interactions into meaningful real world connections.",
+        text: "Move beyond screens. CSN helps professionals share experiences, feelings and ideas and turn online interactions into meaningful real world connections.",
         image: "/card3.png",
         gradient: 'linear-gradient(135deg, #050002 0%, #3A0F1F 35%, #5C1C2F 60%, #000000 100%)',
     },
@@ -28,14 +28,14 @@ const features = [
     {
         id: 4,
         title: "Grow Through Connections",
-        text: "Knowledge sparks growth, but relationships make it real. CNS brings you closer to people across industries and lives—where professional and personal growth truly begins.",
+        text: "Knowledge sparks growth, but relationships make it real. CSN brings you closer to people across industries and lives—where professional and personal growth truly begins.",
         image: featureHighFive,
         gradient: 'linear-gradient(135deg, #040008 0%, #3A0F3F 35%, #6E1F5C 60%, #000000 100%)',
     },
     {
         id: 5,
         title: "Learn Together",
-        text: "Through curated events, training sessions and discussions. CNS enables shared learning with like minded professionals making education practical, social and continuous.",
+        text: "Through curated events, training sessions and discussions. CSN enables shared learning with like minded professionals making education practical, social and continuous.",
         image: "/card5.png",
         gradient: 'linear-gradient(135deg, #020808 0%, #0F3F45 35%, #1C6E73 60%, #000000 100%)',
     },
@@ -114,7 +114,7 @@ export default function Features() {
 
             {/* Main Headline */}
             <h3 className="features-headline">
-                CNS is designed to support professionals beyond work by creating spaces to relax, connect meaningfully, learn continuously and grow through trusted relationships.
+                CSN is designed to support professionals beyond work by creating spaces to relax, connect meaningfully, learn continuously and grow through trusted relationships.
             </h3>
 
             {/* 3D Card Stack */}
