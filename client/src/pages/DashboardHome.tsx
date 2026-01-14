@@ -75,7 +75,7 @@ export default function DashboardHome() {
                     </div>
 
                     {/* KPI Cards */}
-                    <KPICards stats={dashboardData.stats} />
+                    <KPICards stats={{ ...dashboardData.stats, connections: 0 }} />
 
                     {/* Two Column Layout */}
                     <div className="content-grid">
