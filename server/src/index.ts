@@ -1,63 +1,86 @@
-import express, { Application, Request, Response, NextFunction } from 'express';
+import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import dotenv from 'dotenv';
+import authRoutes from './auth/auth.routes';
+import dashboardRoutes from './dashboard/dashboard.routes';
+import referralRoutes from './referrals/referral.routes';
+import userRoutes from './users/user.routes';
+import profileRoutes from './profile/profile.routes';
+import interestRoutes from './interests/interest.routes';
+import privacyRoutes from './privacy/privacy.routes';
+import uploadRoutes from './profile/upload.routes';
+import connectionRoutes from './connections/connection.routes';
+import eventRoutes from './events/event.routes';
+import galleryRoutes from './gallery/gallery.routes';
+import { errorHandler } from './shared/errorHandler';
 import path from 'path';
-import authRoutes from './routes/auth.routes';
-import userRoutes from './routes/user.routes';
-import postRoutes from './routes/post.routes';
-import { errorHandler } from './middleware/errorHandler';
 
 // Load environment variables
 dotenv.config();
 
-const app: Application = express();
+const app = express();
 const PORT = process.env.PORT || 3001;
+const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:5173';
 
-// Middleware
-const clientUrl = (process.env.CLIENT_URL || 'http://localhost:5173').replace(/\/$/, '');
-app.use(cors({
-    origin: [clientUrl, 'http://localhost:5173', 'https://csn-green.vercel.app'],
-    credentials: true
+// Security middleware
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
 }));
+app.use(cors({
+    origin: CORS_ORIGIN,
+    credentials: true,
+}));
+
+// Body parsing middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from uploads directory
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+// Serve static files from uploads directory with CORS enabled
+app.use('/uploads', (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', CORS_ORIGIN);
+    res.header('Access-Control-Allow-Methods', 'GET');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+}, express.static(path.join(__dirname, '../uploads')));
 
-// Health check endpoint
-app.get('/', (req, res) => {
-    res.json({
-        status: 'ok',
-        message: 'CSN Backend API is running',
-        timestamp: new Date().toISOString(),
-        environment: process.env.NODE_ENV || 'development'
+// Health check
+app.get('/health', (req, res) => {
+    res.json({ success: true, message: 'Server is running' });
+});
+
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/referrals', referralRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/profile', uploadRoutes);
+app.use('/api/interests', interestRoutes);
+app.use('/api/privacy', privacyRoutes);
+app.use('/api/connections', connectionRoutes);
+app.use('/api/events', eventRoutes);
+app.use('/api/gallery', galleryRoutes);
+
+// 404 handler
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        error: {
+            code: 'NOT_FOUND',
+            message: `Route ${req.method} ${req.path} not found`,
+        },
     });
 });
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api', postRoutes); // Handles /api/posts and /api/feed
-
-// Health check
-app.get('/health', (req: Request, res: Response) => {
-    res.status(200).json({ status: 'ok', message: 'Server is running' });
-});
-
-// 404 handler
-app.use((req: Request, res: Response) => {
-    res.status(404).json({ success: false, message: 'Route not found' });
-});
-
-// Error handler
+// Global error handler (must be last)
 app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`📁 Uploads directory: ${path.join(__dirname, '../uploads')}`);
+    console.log(`🔒 CORS enabled for: ${CORS_ORIGIN}`);
 });
 
 export default app;

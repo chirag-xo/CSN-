@@ -2,54 +2,36 @@ import multer from 'multer';
 import path from 'path';
 import { Request } from 'express';
 
-// Allowed file types
-const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
-const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/mov', 'video/quicktime'];
-const ALLOWED_TYPES = [...ALLOWED_IMAGE_TYPES, ...ALLOWED_VIDEO_TYPES];
-
-// Max file size: 10MB
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
-
-// Max number of files
-const MAX_FILES = 5;
-
-// Configure storage
+// Storage configuration
 const storage = multer.diskStorage({
-    destination: (_req, _file, cb) => {
-        cb(null, 'uploads/');
+    destination: (req: Request, file: Express.Multer.File, cb) => {
+        cb(null, 'uploads/gallery/');
     },
-    filename: (req: Request & { user?: any }, file, cb) => {
-        const userId = req.user?.id || 'unknown';
+    filename: (req: Request, file: Express.Multer.File, cb) => {
+        const userId = (req as any).user?.userId || 'unknown';
         const timestamp = Date.now();
-        const random = Math.random().toString(36).substring(7);
         const ext = path.extname(file.originalname);
-        const filename = `${userId}-${timestamp}-${random}${ext}`;
-        cb(null, filename);
-    }
+        const sanitizedName = file.originalname.replace(ext, '').replace(/[^a-z0-9]/gi, '_');
+        cb(null, `${userId}-${timestamp}-${sanitizedName}${ext}`);
+    },
 });
 
-// File filter
-const fileFilter = (_req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
-    if (ALLOWED_TYPES.includes(file.mimetype)) {
+// File filter (images only)
+const fileFilter = (req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+
+    if (allowedTypes.includes(file.mimetype)) {
         cb(null, true);
     } else {
-        cb(new Error(`Unsupported file type: ${file.mimetype}. Allowed types: ${ALLOWED_TYPES.join(', ')}`));
+        cb(new Error('Invalid file type. Only images are allowed (JPEG, PNG, GIF, WebP).'));
     }
 };
 
-// Create multer instance
-export const upload = multer({
+// Upload middleware
+export const uploadGalleryPhoto = multer({
     storage,
     fileFilter,
     limits: {
-        fileSize: MAX_FILE_SIZE,
-        files: MAX_FILES
-    }
-});
-
-// Helper to determine media type
-export function getMediaType(mimetype: string): 'IMAGE' | 'VIDEO' {
-    if (ALLOWED_IMAGE_TYPES.includes(mimetype)) return 'IMAGE';
-    if (ALLOWED_VIDEO_TYPES.includes(mimetype)) return 'VIDEO';
-    throw new Error(`Unsupported media type: ${mimetype}`);
-}
+        fileSize: 5 * 1024 * 1024, // 5MB max
+    },
+}).single('photo'); // Field name must be 'photo'

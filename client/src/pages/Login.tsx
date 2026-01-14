@@ -18,7 +18,7 @@ export default function Login() {
 
         try {
             await login(email, password);
-            navigate('/'); // Redirect to home on success
+            navigate('/dashboard/home'); // Redirect to dashboard home on success
         } catch (err: any) {
             setError(err.response?.data?.message || 'Failed to login. Please check your credentials.');
         } finally {
