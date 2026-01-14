@@ -9,7 +9,7 @@ interface InterestsTabProps {
 }
 
 export default function InterestsTab({ profile, onUpdate }: InterestsTabProps) {
-    const [userInterests, setUserInterests] = useState<UserInterest[]>(profile.interests);
+    const [userInterests, setUserInterests] = useState<UserInterest[]>(profile.interests as any);
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
