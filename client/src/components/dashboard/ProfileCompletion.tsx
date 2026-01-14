@@ -129,12 +129,12 @@ export default function ProfileCompletion({ completion: legacyCompletion }: Prof
     };
 
     return (
-        <div className="profile-completion">
-            <h3 className="section-subtitle">Profile Optimization</h3>
+        <div className="w-full">
+            <h3 className="text-base font-semibold text-gray-900 mb-4">Profile Optimization</h3>
 
-            <div className="completion-card">
+            <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
                 {/* Progress Circle */}
-                <div className="progress-circle">
+                <div className="relative w-[120px] h-[120px] mx-auto mb-6">
                     <svg width="120" height="120">
                         <circle
                             cx="60"
@@ -157,39 +157,39 @@ export default function ProfileCompletion({ completion: legacyCompletion }: Prof
                             strokeLinecap="round"
                         />
                     </svg>
-                    <div className="progress-text">
-                        <span className="progress-value">{percentage}%</span>
-                        <span className="progress-label">Complete</span>
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+                        <span className="block text-3xl font-bold text-purple-600">{percentage}%</span>
+                        <span className="text-xs text-gray-600">Complete</span>
                     </div>
                 </div>
 
                 {/* Benefits Section */}
-                <div className="missing-fields">
+                <div className="mb-5">
                     {percentage === 100 ? (
-                        <div className="completion-celebration">
-                            <h4 className="celebration-title">🎉 Profile Complete!</h4>
-                            <p className="celebration-text">Your profile looks amazing</p>
+                        <div className="text-center py-5">
+                            <h4 className="text-lg font-semibold text-green-600 mb-2">🎉 Profile Complete!</h4>
+                            <p className="text-sm text-gray-600">Your profile looks amazing</p>
                         </div>
                     ) : (
                         <>
-                            <h4 className="missing-title">Complete your profile to:</h4>
-                            <ul className="missing-list">
-                                <li>🔍 Appear in more searches</li>
-                                <li>🤝 Get better referrals</li>
-                                <li>⭐ Build trust faster</li>
+                            <h4 className="text-sm font-semibold text-gray-900 mb-3">Complete your profile to:</h4>
+                            <ul className="space-y-2 mb-4">
+                                <li className="text-sm text-gray-700">🔍 Appear in more searches</li>
+                                <li className="text-sm text-gray-700">🤝 Get better referrals</li>
+                                <li className="text-sm text-gray-700">⭐ Build trust faster</li>
                             </ul>
 
                             {/* Top Missing Items with Fix Now buttons */}
                             {topMissing.length > 0 && (
-                                <div className="missing-items-list">
-                                    <p className="missing-label">Missing:</p>
+                                <div className="space-y-2 mb-4">
+                                    <p className="text-sm font-medium text-gray-600 mb-2">Missing:</p>
                                     {topMissing.map((item) => (
-                                        <div key={item.key} className="missing-item-row">
-                                            <span className="missing-badge">
+                                        <div key={item.key} className="flex items-center justify-between gap-2">
+                                            <span className="flex-1 px-3 py-2 bg-gray-100 rounded-lg text-xs text-gray-700">
                                                 {item.label} ({item.points} pts)
                                             </span>
                                             <button
-                                                className="fix-now-btn"
+                                                className="px-3 py-2 border border-purple-600 text-purple-600 rounded-lg text-xs font-medium hover:bg-purple-600 hover:text-white transition-colors whitespace-nowrap"
                                                 onClick={() => handleFixNow(item.route)}
                                             >
                                                 Fix Now →
@@ -201,9 +201,9 @@ export default function ProfileCompletion({ completion: legacyCompletion }: Prof
 
                             {/* Suggestions */}
                             {suggestions.length > 0 && (
-                                <div className="suggestions">
+                                <div className="pt-4 border-t border-gray-200 space-y-2">
                                     {suggestions.slice(0, 2).map((suggestion, idx) => (
-                                        <p key={idx} className="suggestion-text">
+                                        <p key={idx} className="text-xs text-gray-600 leading-relaxed">
                                             💡 {suggestion}
                                         </p>
                                     ))}
@@ -214,7 +214,10 @@ export default function ProfileCompletion({ completion: legacyCompletion }: Prof
                 </div>
 
                 {/* CTA Button */}
-                <button className="complete-profile-btn" onClick={handleCTA}>
+                <button
+                    className="w-full py-3 bg-purple-600 text-white rounded-lg text-sm font-semibold hover:bg-purple-700 transition-colors"
+                    onClick={handleCTA}
+                >
                     {percentage === 100 ? 'View Profile →' : 'Complete Profile →'}
                 </button>
             </div>

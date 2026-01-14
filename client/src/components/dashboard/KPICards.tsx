@@ -20,7 +20,8 @@ export default function KPICards({ stats }: KPICardsProps) {
             icon: '📤',
             action: 'Submit New',
             actionLink: '/dashboard/home/referrals',
-            color: '#6D28D9'
+            color: '#6D28D9',
+            borderColor: 'border-l-purple-600'
         },
         {
             id: 'referrals-received',
@@ -29,7 +30,8 @@ export default function KPICards({ stats }: KPICardsProps) {
             icon: '📥',
             action: 'View All',
             actionLink: '/dashboard/home/referrals',
-            color: '#0891B2'
+            color: '#0891B2',
+            borderColor: 'border-l-cyan-600'
         },
         {
             id: 'meetings-attended',
@@ -38,7 +40,8 @@ export default function KPICards({ stats }: KPICardsProps) {
             icon: '🎯',
             action: 'View History',
             actionLink: '/dashboard/home/events',
-            color: '#DC2626'
+            color: '#DC2626',
+            borderColor: 'border-l-red-600'
         },
         {
             id: 'connections',
@@ -47,23 +50,27 @@ export default function KPICards({ stats }: KPICardsProps) {
             icon: '🤝',
             action: 'View Network',
             actionLink: '/dashboard/home/connections',
-            color: '#059669'
+            color: '#059669',
+            borderColor: 'border-l-green-600'
         }
     ];
 
     return (
-        <div className="kpi-section">
-            <h2 className="section-title">Your Business Metrics</h2>
-            <div className="kpi-grid">
+        <div className="mb-6">
+            <h2 className="text-base font-semibold text-gray-900 mb-4">Your Business Metrics</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {kpis.map(kpi => (
-                    <div key={kpi.id} className="kpi-card" style={{ borderLeftColor: kpi.color }}>
-                        <div className="kpi-header">
-                            <span className="kpi-icon">{kpi.icon}</span>
-                            <h3 className="kpi-title">{kpi.title}</h3>
+                    <div
+                        key={kpi.id}
+                        className={`bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 flex flex-col justify-between min-h-[160px] border-l-4 ${kpi.borderColor}`}
+                    >
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="text-3xl">{kpi.icon}</span>
+                            <h3 className="text-sm font-medium text-gray-600">{kpi.title}</h3>
                         </div>
-                        <div className="kpi-value">{kpi.value}</div>
+                        <div className="text-4xl font-bold text-gray-900 mb-4">{kpi.value}</div>
                         <button
-                            className="kpi-action"
+                            className="text-sm font-semibold transition-opacity hover:opacity-75"
                             style={{ color: kpi.color }}
                             onClick={() => navigate(kpi.actionLink)}
                         >

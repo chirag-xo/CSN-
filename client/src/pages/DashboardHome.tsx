@@ -55,22 +55,26 @@ export default function DashboardHome() {
     }
 
     return (
-        <div className="dashboard-home">
+        <div className="min-h-screen bg-gray-50">
             <TopBar />
 
-            <div className="dashboard-layout">
+            <div className="flex">
                 <Sidebar
                     collapsed={sidebarCollapsed}
                     onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
                 />
 
-                <main className="dashboard-main">
+                <main className="flex-1 p-6 max-w-7xl mx-auto w-full">
                     {/* Greeting Section */}
-                    <div className="greeting-section">
-                        <h1>Hello, {dashboardData.user.name}</h1>
-                        <div className="context-info">
-                            <span className="chapter-badge">{dashboardData.user.chapter}</span>
-                            <span className="city-badge">{dashboardData.user.city}</span>
+                    <div className="mb-6">
+                        <h1 className="text-3xl font-bold text-gray-900 mb-2">Hello, {dashboardData.user.name}</h1>
+                        <div className="flex gap-3">
+                            <span className="px-4 py-1.5 bg-purple-100 text-purple-700 text-sm font-medium rounded-lg">
+                                {dashboardData.user.chapter}
+                            </span>
+                            <span className="px-4 py-1.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg">
+                                {dashboardData.user.city}
+                            </span>
                         </div>
                     </div>
 
@@ -78,13 +82,13 @@ export default function DashboardHome() {
                     <KPICards stats={{ ...dashboardData.stats, connections: 0 }} />
 
                     {/* Two Column Layout */}
-                    <div className="content-grid">
-                        <div className="left-column">
+                    <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 mt-6">
+                        <div className="space-y-6">
                             <QuickActions />
                             <ProfileCompletion completion={dashboardData.profileCompletion} />
                         </div>
 
-                        <div className="right-column">
+                        <div>
                             <UpcomingEvents events={dashboardData.upcomingEvents} />
                         </div>
                     </div>
