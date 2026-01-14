@@ -26,16 +26,6 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
     return (
         <aside className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
-            <div className="sidebar-header">
-                <div className="sidebar-logo">
-                    <img src="/logo1.png" alt="CSN" className="logo-img" />
-                    {!collapsed && <span className="logo-text">CSN</span>}
-                </div>
-                <button onClick={onToggle} className="toggle-btn">
-                    {collapsed ? '→' : '←'}
-                </button>
-            </div>
-
             <nav className="sidebar-nav">
                 {menuItems.map((item) => (
                     <div key={item.path}>

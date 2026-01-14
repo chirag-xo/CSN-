@@ -101,6 +101,12 @@ export default function TopBar() {
     return (
         <div className="top-bar">
             <div className="top-bar-content">
+                {/* Logo Section */}
+                <div className="top-bar-logo">
+                    <img src="/logo1.png" alt="CSN" className="top-bar-logo-img" />
+                    <span className="top-bar-logo-text">CSN</span>
+                </div>
+
                 {/* Search */}
                 <div className="search-box" ref={searchRef}>
                     <div className="search-wrapper">
