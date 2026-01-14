@@ -50,7 +50,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from uploads directory with CORS enabled
 app.use('/uploads', (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', CORS_ORIGIN);
+    res.header('Access-Control-Allow-Origin', CORS_ORIGINS);
     res.header('Access-Control-Allow-Methods', 'GET');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
@@ -92,7 +92,7 @@ app.use(errorHandler);
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`🔒 CORS enabled for: ${CORS_ORIGIN}`);
+    console.log(`🔒 CORS enabled for: ${CORS_ORIGINS}`);
 });
 
 export default app;
