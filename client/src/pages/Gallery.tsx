@@ -103,19 +103,19 @@ export default function Gallery() {
             </div>
 
             {/* Stats Widget */}
-            {stats.totalPhotos > 0 && (
+            {/* {stats.totalPhotos > 0 && (
                 <GalleryStatsWidget stats={stats} onUploadClick={() => setShowUpload(true)} />
-            )}
+            )} */}
 
             {/* Stats Cards */}
-            {stats.totalPhotos > 0 && (
+            {/* {stats.totalPhotos > 0 && (
                 <StatsCards
                     totalPhotos={stats.totalPhotos}
                     photosWithCaptions={stats.photosWithCaptions}
                     featuredPhotos={stats.featuredPhotos}
                     completionScore={stats.completionScore}
                 />
-            )}
+            )} */}
 
             {/* Error State */}
             {error && (
