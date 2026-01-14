@@ -60,6 +60,8 @@ export default function ProfileCompletion({ completion: legacyCompletion }: Prof
                     "Failed to load profile completion";
 
                 setError(errorMsg);
+
+                setError(errorMsg);
             } finally {
                 setLoading(false);
             }
