@@ -21,14 +21,26 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:5173';
+const CORS_ORIGINS = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://csn-skm2.vercel.app',
+    process.env.CORS_ORIGIN
+].filter(Boolean);
 
 // Security middleware
 app.use(helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" },
 }));
 app.use(cors({
-    origin: CORS_ORIGIN,
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (CORS_ORIGINS.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
 }));
 
