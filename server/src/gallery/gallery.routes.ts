@@ -65,6 +65,26 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 /**
+ * @route   GET /api/gallery/stats
+ * @desc    Get gallery statistics
+ * @access  Private
+ */
+router.get('/stats', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const stats = await galleryService.getStats(req.user!.userId);
+
+        const response: SuccessResponse<typeof stats> = {
+            success: true,
+            data: stats,
+        };
+
+        res.json(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
  * @route   GET /api/gallery/:id
  * @desc    Get single photo details
  * @access  Private
@@ -96,26 +116,6 @@ router.delete('/:id', async (req: Request, res: Response, next: NextFunction) =>
         const response: SuccessResponse<typeof result> = {
             success: true,
             data: result,
-        };
-
-        res.json(response);
-    } catch (error) {
-        next(error);
-    }
-});
-
-/**
- * @route   GET /api/gallery/stats
- * @desc    Get gallery statistics
- * @access  Private
- */
-router.get('/stats', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const stats = await galleryService.getStats(req.user!.userId);
-
-        const response: SuccessResponse<typeof stats> = {
-            success: true,
-            data: stats,
         };
 
         res.json(response);

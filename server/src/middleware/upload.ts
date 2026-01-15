@@ -1,6 +1,13 @@
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 import { Request } from 'express';
+
+// Ensure upload directory exists
+const uploadDir = 'uploads/gallery/';
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 // Storage configuration
 const storage = multer.diskStorage({
