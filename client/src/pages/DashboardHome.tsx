@@ -6,7 +6,6 @@ import KPICards from '../components/dashboard/KPICards';
 import QuickActions from '../components/dashboard/QuickActions';
 import UpcomingEvents from '../components/dashboard/UpcomingEvents';
 import ProfileCompletion from '../components/dashboard/ProfileCompletion';
-import ContactUsModal from '../components/dashboard/ContactUsModal';
 import dashboardService from '../services/dashboardService';
 import type { DashboardSummary } from '../services/dashboardService';
 
@@ -15,7 +14,6 @@ export default function DashboardHome() {
     const [dashboardData, setDashboardData] = useState<DashboardSummary | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [showContactModal, setShowContactModal] = useState(false);
 
     useEffect(() => {
         const fetchDashboardData = async () => {
@@ -64,7 +62,6 @@ export default function DashboardHome() {
                 <Sidebar
                     collapsed={sidebarCollapsed}
                     onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
-                    onContactClick={() => setShowContactModal(true)}
                 />
 
                 <main className="flex-1 p-6 max-w-7xl mx-auto w-full">
@@ -98,10 +95,6 @@ export default function DashboardHome() {
                 </main>
             </div>
 
-            <ContactUsModal
-                isOpen={showContactModal}
-                onClose={() => setShowContactModal(false)}
-            />
         </div>
     );
 }

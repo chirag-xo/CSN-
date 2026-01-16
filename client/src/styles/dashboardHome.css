@@ -1127,3 +1127,68 @@
     background: #fff;
     border: 1px solid rgba(0, 0, 0, 0.06);
 }
+/* Contact Us Page */
+.contact-card {
+  max-width: 620px;
+}
+
+.contact-form {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-700);
+}
+
+.contact-input,
+.contact-textarea {
+  width: 100%;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.contact-textarea {
+  min-height: 120px;
+  resize: none;
+}
+
+.contact-input:focus,
+.contact-textarea:focus {
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 4px rgba(109, 40, 217, 0.12);
+}
+
+.contact-success {
+  background: rgba(5, 150, 105, 0.1);
+  color: #059669;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.contact-error {
+  background: rgba(220, 38, 38, 0.1);
+  color: #DC2626;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}

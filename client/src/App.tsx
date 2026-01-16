@@ -11,6 +11,7 @@ import Events from './pages/Events';
 import EventDetails from './pages/EventDetails';
 import Referrals from './pages/Referrals';
 import Gallery from './pages/Gallery';
+import ContactUs from './pages/ContactUs';
 import Messaging from './pages/Messaging';
 import Notifications from './pages/Notifications';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -33,6 +34,14 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<Navigate to="/dashboard/home" replace />} />
+          <Route
+            path="/dashboard/contact"
+            element={
+              <ProtectedRoute>
+                <ContactUs />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/dashboard/home"
             element={

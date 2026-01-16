@@ -23,7 +23,7 @@ export default function Sidebar({ collapsed, onToggle, onContactClick }: Sidebar
         { path: '/dashboard/home/referrals', icon: '/repeat (1).png', label: 'Referrals' },
         { path: '/dashboard/home/events', icon: '/calendar.png', label: 'Events' },
         { path: '/dashboard/home/gallery', icon: '/picture.png', label: 'Picture Gallery' },
-        { path: '#contact', icon: '📞', label: 'Contact Us' }
+        { path: '/dashboard/contact', icon: '📩', label: 'Contact Us' }
     ];
 
     return (
@@ -34,12 +34,6 @@ export default function Sidebar({ collapsed, onToggle, onContactClick }: Sidebar
                         <Link
                             to={item.path}
                             className={`nav-item ${location.pathname === item.path ? 'active' : ''}`}
-                            onClick={(e) => {
-                                if (item.path === '#contact') {
-                                    e.preventDefault();
-                                    onContactClick?.();
-                                }
-                            }}
                         >
                             <span className="nav-icon">
                                 {item.icon.endsWith('.svg') ? (
