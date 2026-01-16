@@ -123,7 +123,7 @@ export default function ContactUs() {
                                 )}
 
                                 <button
-                                    className="w-full py-3 px-6 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition-all shadow-sm hover:shadow active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center mt-4"
+                                    className="w-full py-3 px-6 bg-[#6D28D9] hover:bg-[#5b21b6] text-white font-semibold rounded-xl transition-all shadow-sm hover:shadow active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center mt-4"
                                     type="submit"
                                     disabled={loading}
                                 >
