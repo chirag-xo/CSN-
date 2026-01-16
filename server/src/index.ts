@@ -69,6 +69,71 @@ app.use('/api/connections', connectionRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/gallery', galleryRoutes);
 
+// TEMPORARY: Admin route to seed interests (Run once then delete)
+import prisma from './shared/database';
+app.get('/api/admin/seed-interests', async (req, res) => {
+    try {
+        console.log('🌱 Starting manual seed via API...');
+
+        // 1. Create Interest Categories & Interests
+        const interestData = [
+            {
+                type: 'PROFESSIONAL',
+                interests: ['Technology', 'Marketing', 'Finance', 'Startups', 'Consulting']
+            },
+            {
+                type: 'LIFESTYLE',
+                interests: ['Fitness', 'Travel', 'Music', 'Food', 'Photography']
+            },
+            {
+                type: 'LEARNING',
+                interests: ['Reading', 'Podcasts', 'Workshops', 'Mentoring']
+            },
+            {
+                type: 'SOCIAL',
+                interests: ['Gaming', 'Sports', 'Arts', 'Volunteering']
+            }
+        ];
+
+        let results = [];
+
+        for (const categoryData of interestData) {
+            const category = await prisma.interestCategory.upsert({
+                where: { name: categoryData.type },
+                update: {},
+                create: {
+                    name: categoryData.type,
+                    type: categoryData.type,
+                },
+            });
+
+            for (const interestName of categoryData.interests) {
+                await prisma.interest.upsert({
+                    where: { name: interestName },
+                    update: {},
+                    create: {
+                        name: interestName,
+                        categoryId: category.id,
+                    },
+                });
+            }
+            results.push(`Seeded ${categoryData.type} with ${categoryData.interests.length} interests`);
+        }
+
+        res.json({
+            success: true,
+            message: 'Database seeded successfully',
+            details: results
+        });
+    } catch (error: any) {
+        console.error('Seed error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
 // 404 handler
 app.use((req, res) => {
     res.status(404).json({
