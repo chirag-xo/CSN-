@@ -13,6 +13,7 @@ import uploadRoutes from './profile/upload.routes';
 import connectionRoutes from './connections/connection.routes';
 import eventRoutes from './events/event.routes';
 import galleryRoutes from './gallery/gallery.routes';
+import contactRoutes from './contact/contact.routes';
 import { errorHandler } from './shared/errorHandler';
 import path from 'path';
 
@@ -68,71 +69,7 @@ app.use('/api/privacy', privacyRoutes);
 app.use('/api/connections', connectionRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/gallery', galleryRoutes);
-
-// TEMPORARY: Admin route to seed interests (Run once then delete)
-import prisma from './shared/database';
-app.get('/api/admin/seed-interests', async (req, res) => {
-    try {
-        console.log('🌱 Starting manual seed via API...');
-
-        // 1. Create Interest Categories & Interests
-        const interestData = [
-            {
-                type: 'PROFESSIONAL',
-                interests: ['Technology', 'Marketing', 'Finance', 'Startups', 'Consulting']
-            },
-            {
-                type: 'LIFESTYLE',
-                interests: ['Fitness', 'Travel', 'Music', 'Food', 'Photography']
-            },
-            {
-                type: 'LEARNING',
-                interests: ['Reading', 'Podcasts', 'Workshops', 'Mentoring']
-            },
-            {
-                type: 'SOCIAL',
-                interests: ['Gaming', 'Sports', 'Arts', 'Volunteering']
-            }
-        ];
-
-        let results = [];
-
-        for (const categoryData of interestData) {
-            const category = await prisma.interestCategory.upsert({
-                where: { name: categoryData.type },
-                update: {},
-                create: {
-                    name: categoryData.type,
-                    type: categoryData.type,
-                },
-            });
-
-            for (const interestName of categoryData.interests) {
-                await prisma.interest.upsert({
-                    where: { name: interestName },
-                    update: {},
-                    create: {
-                        name: interestName,
-                        categoryId: category.id,
-                    },
-                });
-            }
-            results.push(`Seeded ${categoryData.type} with ${categoryData.interests.length} interests`);
-        }
-
-        res.json({
-            success: true,
-            message: 'Database seeded successfully',
-            details: results
-        });
-    } catch (error: any) {
-        console.error('Seed error:', error);
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
-    }
-});
+app.use('/api/contact', contactRoutes);
 
 // 404 handler
 app.use((req, res) => {

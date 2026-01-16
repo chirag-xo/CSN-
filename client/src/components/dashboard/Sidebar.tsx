@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 interface SidebarProps {
     collapsed: boolean;
     onToggle: () => void;
+    onContactClick?: () => void;
 }
 
 interface MenuItem {
@@ -12,7 +13,7 @@ interface MenuItem {
     subItems?: Array<{ path: string; label: string }>;
 }
 
-export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
+export default function Sidebar({ collapsed, onToggle, onContactClick }: SidebarProps) {
     const location = useLocation();
 
     const menuItems: MenuItem[] = [
@@ -21,7 +22,8 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
         { path: '/dashboard/home/connections', icon: '/customer.png', label: 'Connections' },
         { path: '/dashboard/home/referrals', icon: '/repeat (1).png', label: 'Referrals' },
         { path: '/dashboard/home/events', icon: '/calendar.png', label: 'Events' },
-        { path: '/dashboard/home/gallery', icon: '/picture.png', label: 'Picture Gallery' }
+        { path: '/dashboard/home/gallery', icon: '/picture.png', label: 'Picture Gallery' },
+        { path: '#contact', icon: '📞', label: 'Contact Us' }
     ];
 
     return (
@@ -32,6 +34,12 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
                         <Link
                             to={item.path}
                             className={`nav-item ${location.pathname === item.path ? 'active' : ''}`}
+                            onClick={(e) => {
+                                if (item.path === '#contact') {
+                                    e.preventDefault();
+                                    onContactClick?.();
+                                }
+                            }}
                         >
                             <span className="nav-icon">
                                 {item.icon.endsWith('.svg') ? (

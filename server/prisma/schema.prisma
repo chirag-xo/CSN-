@@ -283,6 +283,22 @@ model UserVerification {
 }
 
 // ============================================================================
+// CONTACT SYSTEM
+// ============================================================================
+
+model ContactRequest {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  reason    String
+  status    String   @default("PENDING") // PENDING, RESOLVED
+  createdAt DateTime @default(now())
+
+  @@index([status])
+  @@index([email])
+}
+
+// ============================================================================
 // CONNECTION SYSTEM
 // ============================================================================
 
