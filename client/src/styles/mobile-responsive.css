@@ -1,0 +1,593 @@
+/* ================================================
+   MOBILE-RESPONSIVE FIXES FOR CSN LANDING PAGE
+   ================================================ */
+
+/* ================================================
+   PHASE 1: Global Overflow Fixes
+   ================================================ */
+html,
+body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+* {
+    max-width: 100%;
+}
+
+/* Images must never overflow */
+img,
+svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ================================================
+   PHASE 2: Fix Landing Page Container (Main Issue)
+   ONLY FOR MOBILE/TABLET - NOT DESKTOP
+   ================================================ */
+@media (max-width: 1024px) {
+    .landing-page {
+        width: 100% !important;
+        max-width: 100vw !important;
+        height: auto !important;
+        min-height: auto !important;
+        margin: 0 auto !important;
+        padding: 0 16px !important;
+        transform: none !important;
+        overflow: hidden !important;
+    }
+}
+
+/* ================================================
+   MOBILE/TABLET NAVBAR ALIGNMENT (below 769px)
+   ================================================ */
+@media (max-width: 768px) {
+
+    /* Logo positioning */
+    .logo {
+        position: absolute !important;
+        left: 16px !important;
+        top: 16px !important;
+        width: 80px !important;
+        height: auto !important;
+        z-index: 100 !important;
+    }
+
+    .logo-image {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Navigation container */
+    .navigation {
+        position: absolute !important;
+        top: 16px !important;
+        right: 8px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 0 !important;
+        z-index: 100 !important;
+        justify-content: flex-end !important;
+    }
+
+    /* Hide nav links on mobile */
+    .nav-link {
+        display: none !important;
+    }
+
+    /* Login button positioning */
+    .login-button-container {
+        position: static !important;
+        width: auto !important;
+        height: auto !important;
+        margin: 0 !important;
+    }
+
+    .login-button {
+        position: static !important;
+        left: auto !important;
+        top: auto !important;
+        width: auto !important;
+        padding: 10px 24px !important;
+        font-size: 16px !important;
+        height: auto !important;
+        margin: 0 !important;
+    }
+}
+
+/* ================================================
+   DESKTOP NAVBAR ALIGNMENT FIX
+   ================================================ */
+@media (min-width: 769px) {
+
+    /* Create navbar wrapper */
+    .landing-page {
+        position: relative;
+    }
+
+    /* Logo positioning */
+    .logo {
+        position: absolute !important;
+        left: 30px !important;
+        top: 50px !important;
+        z-index: 100 !important;
+    }
+
+    /* Navigation container */
+    .navigation {
+        position: absolute !important;
+        top: 50px !important;
+        right: 30px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 40px !important;
+        z-index: 100 !important;
+    }
+
+    /* Hide Features and About links */
+    .nav-link {
+        display: none !important;
+    }
+
+    /* Login button positioning */
+    .login-button-container {
+        position: static !important;
+        width: auto !important;
+        height: auto !important;
+    }
+
+    .login-button {
+        position: static !important;
+        left: auto !important;
+        top: auto !important;
+    }
+}
+
+/* ================================================
+   PHASE 3: Mobile-First Features Carousel Fix
+   ================================================ */
+
+/* Features 3D Section - Mobile First */
+.features-3d-section {
+    width: 100%;
+    max-width: 100vw;
+    padding: 40px 16px;
+    overflow: hidden;
+    margin: 60px auto;
+}
+
+.features-title {
+    font-size: 28px !important;
+    line-height: 1.2 !important;
+    padding: 0 !important;
+    margin: 0 0 16px 0 !important;
+    text-align: center;
+}
+
+.features-headline {
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+    margin: 0 0 40px 0 !important;
+    text-align: center;
+    padding: 0 !important;
+    max-width: 100% !important;
+}
+
+/* Card Stack Container - Mobile Optimized */
+.card-stack-container {
+    width: 100%;
+    max-width: 100vw;
+    height: auto;
+    min-height: 400px;
+    overflow: visible;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.card-stack-scene {
+    width: 100%;
+    max-width: 90vw;
+    height: 400px;
+    position: relative;
+    perspective: 1000px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+/* Mobile: Show only center card, hide side cards */
+.stack-card {
+    position: absolute;
+    width: 90%;
+    max-width: 350px;
+    height: 380px;
+    border-radius: 24px;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+.stack-card:not(.center) {
+    opacity: 0 !important;
+    pointer-events: none;
+}
+
+.stack-card.center {
+    opacity: 1 !important;
+    z-index: 50 !important;
+}
+
+.card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.card-inner {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 16px;
+}
+
+.card-image-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.card-image-wrapper img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    object-fit: contain;
+}
+
+.card-text-content {
+    flex-shrink: 0;
+}
+
+.card-text-content h4 {
+    font-size: 20px;
+    line-height: 1.2;
+    margin: 0 0 8px 0;
+    color: white;
+    font-weight: 600;
+}
+
+.card-text-content p {
+    font-size: 13px;
+    line-height: 1.4;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Carousel Dots - Mobile Friendly */
+.carousel-dots {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px 0;
+}
+
+.carousel-dots .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d1d5db;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.carousel-dots .dot.active {
+    width: 24px;
+    border-radius: 12px;
+    background: #6D28D9;
+}
+
+/* ================================================
+   PHASE 4: Hero Section Mobile Fixes
+   ================================================ */
+@media (max-width: 768px) {
+    .landing-page {
+        padding: 16px !important;
+    }
+
+    /* Orange CSN */
+    .orange-cns-container {
+        position: static !important;
+        margin: 20px 0 10px 0 !important;
+        left: auto !important;
+        top: auto !important;
+    }
+
+    .orange-cns-text {
+        font-size: 36px !important;
+    }
+
+    /* Main Heading */
+    .main-heading {
+        font-size: 32px !important;
+        line-height: 1.2 !important;
+        margin-top: 0 !important;
+        position: static !important;
+        height: auto !important;
+        min-height: auto !important;
+        width: 100% !important;
+    }
+
+    /* Subheading */
+    .subheading {
+        font-size: 16px !important;
+        line-height: 1.6 !important;
+        position: static !important;
+        margin-top: 16px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Get Started Button */
+    .get-started-button {
+        position: static !important;
+        margin-top: 24px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 16px !important;
+        text-align: center !important;
+        justify-content: center !important;
+        font-size: 18px !important;
+    }
+
+    /* Hero Animation */
+    .hero-animation-container {
+        position: static !important;
+        width: 100% !important;
+        max-height: 300px !important;
+        margin-top: 40px !important;
+        right: auto !important;
+        top: auto !important;
+    }
+
+    .hero-animation-container>div {
+        max-width: 100% !important;
+    }
+}
+
+/* ================================================
+   PHASE 5: Container System for All Sections
+   ================================================ */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        padding-left: 48px;
+        padding-right: 48px;
+    }
+}
+
+/* ================================================
+   PHASE 6: Typography Mobile Scaling
+   ================================================ */
+@media (max-width: 768px) {
+
+    /* Section Titles */
+    .features-title,
+    .about-title,
+    .mission-subtitle {
+        font-size: 28px !important;
+        line-height: 1.2 !important;
+    }
+
+    /* Headlines */
+    .why-cns-headline,
+    .platform-headline {
+        font-size: 32px !important;
+        line-height: 1.2 !important;
+    }
+
+    /* Body Text */
+    .why-cns-content p,
+    .platform-content p,
+    .about-description {
+        font-size: 16px !important;
+        line-height: 1.6 !important;
+    }
+
+    .mission-text p {
+        font-size: 18px !important;
+        line-height: 1.5 !important;
+    }
+}
+
+/* ================================================
+   PHASE 7: Desktop Responsive (768px+)
+   ================================================ */
+@media (min-width: 768px) {
+    .features-title {
+        font-size: 48px !important;
+    }
+
+    .features-headline {
+        font-size: 20px !important;
+    }
+
+    /* Show side cards in carousel */
+    .stack-card:not(.center) {
+        opacity: 0.6 !important;
+        pointer-events: auto;
+    }
+
+    .card-stack-scene {
+        max-width: 1200px;
+        height: 500px;
+    }
+
+    .stack-card {
+        width: 400px;
+        max-width: 400px;
+        height: 450px;
+    }
+
+    .card-image-wrapper img {
+        max-width: 280px;
+    }
+
+    .card-text-content h4 {
+        font-size: 24px;
+    }
+
+    .card-text-content p {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .features-title {
+        font-size: 64px !important;
+    }
+
+    .features-headline {
+        font-size: 24px !important;
+    }
+
+    .main-heading {
+        font-size: 56px !important;
+    }
+
+    .subheading {
+        font-size: 22px !important;
+    }
+}
+
+/* ================================================
+   PHASE 8: Prevent Fixed Widths/Heights
+   ================================================ */
+@media (max-width: 768px) {
+
+    /* Remove all fixed widths and absolute positioning */
+    .navigation,
+    .main-content,
+    .main-image-container,
+    .image-grid {
+        position: static !important;
+        width: 100% !important;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+    }
+
+    /* Flex Sections */
+    .why-cns-dark-container,
+    .platform-dark-container {
+        flex-direction: column !important;
+        padding: 32px 20px !important;
+        gap: 24px !important;
+    }
+
+    .why-cns-left,
+    .why-cns-right,
+    .platform-left,
+    .platform-right {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    .mission-content {
+        flex-direction: column !important;
+        gap: 24px !important;
+    }
+
+    .mission-illustration {
+        width: 200px !important;
+        margin: 0 auto !important;
+    }
+
+    .mission-illustration img {
+        width: 100% !important;
+        height: auto !important;
+    }
+}
+
+/* ================================================
+   PHASE 9: Button & Card Mobile Refinements
+   ================================================ */
+@media (max-width: 768px) {
+
+    /* Buttons stretch on mobile */
+    .login-button,
+    .get-started-button,
+    .footer-cta-button {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Cards full width */
+    .feature-text-box,
+    .why-cns-image,
+    .platform-image {
+        width: 100% !important;
+        border-radius: 20px !important;
+    }
+}
+
+/* ================================================
+   PHASE 10: Navbar Mobile Fix
+   ================================================ */
+@media (max-width: 768px) {
+    .navigation {
+        padding: 12px 0 !important;
+        justify-content: center !important;
+        gap: 12px !important;
+    }
+
+    .nav-link {
+        position: static !important;
+        font-size: 14px !important;
+        padding: 8px 16px !important;
+    }
+
+    .login-button-container {
+        position: static !important;
+        width: auto !important;
+        height: auto !important;
+    }
+
+    .login-button {
+        position: static !important;
+        left: auto !important;
+        top: auto !important;
+        font-size: 14px !important;
+        width: auto !important;
+        padding: 8px 24px !important;
+        height: auto !important;
+    }
+}

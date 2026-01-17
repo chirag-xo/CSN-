@@ -4,6 +4,8 @@ interface SidebarProps {
     collapsed: boolean;
     onToggle: () => void;
     onContactClick?: () => void;
+    mobileOpen?: boolean;
+    onMobileClose?: () => void;
 }
 
 interface MenuItem {
@@ -13,7 +15,7 @@ interface MenuItem {
     subItems?: Array<{ path: string; label: string }>;
 }
 
-export default function Sidebar({ collapsed, onToggle, onContactClick }: SidebarProps) {
+export default function Sidebar({ collapsed, onToggle, onContactClick, mobileOpen, onMobileClose }: SidebarProps) {
     const location = useLocation();
 
     const menuItems: MenuItem[] = [
@@ -27,13 +29,14 @@ export default function Sidebar({ collapsed, onToggle, onContactClick }: Sidebar
     ];
 
     return (
-        <aside className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
+        <aside className={`sidebar ${collapsed ? 'collapsed' : ''} ${mobileOpen ? 'mobile-open' : ''}`}>
             <nav className="sidebar-nav">
                 {menuItems.map((item) => (
                     <div key={item.path}>
                         <Link
                             to={item.path}
                             className={`nav-item ${location.pathname === item.path ? 'active' : ''}`}
+                            onClick={onMobileClose}
                         >
                             <span className="nav-icon">
                                 {item.icon.endsWith('.svg') ? (
@@ -58,6 +61,7 @@ export default function Sidebar({ collapsed, onToggle, onContactClick }: Sidebar
                                         key={subItem.path}
                                         to={subItem.path}
                                         className={`sub-item ${location.pathname === subItem.path ? 'active' : ''}`}
+                                        onClick={onMobileClose}
                                     >
                                         {subItem.label}
                                     </Link>

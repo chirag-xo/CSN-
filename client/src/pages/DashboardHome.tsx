@@ -11,6 +11,7 @@ import type { DashboardSummary } from '../services/dashboardService';
 
 export default function DashboardHome() {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [dashboardData, setDashboardData] = useState<DashboardSummary | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -56,12 +57,22 @@ export default function DashboardHome() {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            <TopBar />
+            <TopBar onMenuClick={() => setMobileMenuOpen(!mobileMenuOpen)} />
+
+            {/* Mobile backdrop overlay */}
+            {mobileMenuOpen && (
+                <div
+                    className="sidebar-backdrop"
+                    onClick={() => setMobileMenuOpen(false)}
+                />
+            )}
 
             <div className="flex">
                 <Sidebar
                     collapsed={sidebarCollapsed}
                     onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+                    mobileOpen={mobileMenuOpen}
+                    onMobileClose={() => setMobileMenuOpen(false)}
                 />
 
                 <main className="flex-1 p-6 max-w-7xl mx-auto w-full">

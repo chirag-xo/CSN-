@@ -1,7 +1,9 @@
 .breadcrumb {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
+    margin-top: 16px;
     margin-bottom: 24px;
     font-size: 14px;
 }

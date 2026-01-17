@@ -8,6 +8,7 @@ import './styles/howitworks.css'
 import './styles/purpose.css'
 import './styles/mission.css'
 import './styles/cta.css'
+import './styles/mobile-responsive.css'
 import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(

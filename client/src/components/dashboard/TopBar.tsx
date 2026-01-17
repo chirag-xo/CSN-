@@ -6,7 +6,11 @@ import searchService, { type SearchResult } from '../../services/searchService';
 import UserResultCard from '../search/UserResultCard';
 import { useDebounce } from '../../hooks/useDebounce';
 
-export default function TopBar() {
+interface TopBarProps {
+    onMenuClick?: () => void;
+}
+
+export default function TopBar({ onMenuClick }: TopBarProps) {
     const navigate = useNavigate();
     const { logout } = useAuth();
     const [profile, setProfile] = useState<Profile | null>(null);
@@ -17,8 +21,19 @@ export default function TopBar() {
     const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
     const [isSearching, setIsSearching] = useState(false);
     const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const debouncedSearch = useDebounce(searchQuery, 300);
     const searchRef = useRef<HTMLDivElement>(null);
+
+    // Detect mobile screen size
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     useEffect(() => {
         fetchProfile();
@@ -101,6 +116,13 @@ export default function TopBar() {
     return (
         <div className="top-bar">
             <div className="top-bar-content">
+                {/* Mobile Menu Button */}
+                <button className="mobile-menu-btn" onClick={onMenuClick} aria-label="Toggle menu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                </button>
+
                 {/* Logo Section */}
                 <div className="top-bar-logo">
                     <img src="/logo1.png" alt="CSN" className="top-bar-logo-img" />
@@ -116,7 +138,7 @@ export default function TopBar() {
                         </svg>
                         <input
                             type="text"
-                            placeholder="Search people, events, businesses..."
+                            placeholder={isMobile ? "Search" : "Search people, events, businesses..."}
                             className="search-input"
                             value={searchQuery}
                             onChange={handleSearchChange}
