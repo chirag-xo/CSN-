@@ -1459,3 +1459,12 @@ body {
         font-size: 18px !important;
     }
 }
+
+/* Desktop zoom for landing page - apply 0.8x zoom on desktop screens only */
+
+/* Landing page zoom - desktop only */
+@media (min-width: 1024px) {
+    .landing-page-zoom {
+        zoom: 0.8;
+    }
+}
