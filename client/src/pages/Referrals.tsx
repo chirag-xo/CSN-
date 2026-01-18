@@ -113,7 +113,7 @@ export default function Referrals() {
             <div className="stats-container">
                 <div className="stat-card">
                     <div className="stat-icon">
-                        <img src="/totalReferral.png" alt="Total Referrals" style={{ width: '40px', height: '40px' }} />
+                        <img src="/totalreferrals.png" alt="Total Referrals" style={{ width: '40px', height: '40px' }} />
                     </div>
                     <div className="stat-content">
                         <div className="stat-value">{stats.total}</div>
