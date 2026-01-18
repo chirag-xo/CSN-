@@ -100,7 +100,10 @@ export default function Referrals() {
             <Breadcrumb items={breadcrumbItems} />
 
             <div className="page-header">
-                <h1>🔄 Referrals</h1>
+                <h1>
+                    <img src="/repeat (1).png" alt="Referrals" style={{ width: '32px', height: '32px', marginRight: '10px', verticalAlign: 'middle' }} />
+                    Referrals
+                </h1>
                 <button className="btn-primary" onClick={() => setShowModal(true)}>
                     ➕ Send Referral
                 </button>
@@ -109,21 +112,27 @@ export default function Referrals() {
             {/* Stats Cards */}
             <div className="stats-container">
                 <div className="stat-card">
-                    <div className="stat-icon">📊</div>
+                    <div className="stat-icon">
+                        <img src="/totalReferral.png" alt="Total Referrals" style={{ width: '40px', height: '40px' }} />
+                    </div>
                     <div className="stat-content">
                         <div className="stat-value">{stats.total}</div>
                         <div className="stat-label">Total Referrals</div>
                     </div>
                 </div>
                 <div className="stat-card">
-                    <div className="stat-icon">✅</div>
+                    <div className="stat-icon">
+                        <img src="/check-mark.png" alt="Converted" style={{ width: '40px', height: '40px' }} />
+                    </div>
                     <div className="stat-content">
                         <div className="stat-value">{stats.converted}</div>
                         <div className="stat-label">Converted</div>
                     </div>
                 </div>
                 <div className="stat-card">
-                    <div className="stat-icon">💰</div>
+                    <div className="stat-icon">
+                        <img src="/profit.png" alt="Total Value" style={{ width: '40px', height: '40px' }} />
+                    </div>
                     <div className="stat-content">
                         <div className="stat-value">₹{stats.totalValue.toLocaleString()}</div>
                         <div className="stat-label">Total Value</div>
