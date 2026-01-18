@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { Prisma } from '@prisma/client';
 import prisma from '../shared/database';
 import { AppError, errorCodes } from '../shared/errors';
 import { UserDTO } from '../shared/types';
@@ -51,8 +52,7 @@ export const userService = {
             return [];
         }
 
-        // Use raw query to search across concatenated full name and other fields
-        // SQLite's LIKE is case-insensitive by default for ASCII characters
+        // Use Prisma.sql for proper parameter binding with PostgreSQL
         const searchPattern = `%${query}%`;
 
         const users = await prisma.$queryRaw<Array<{
@@ -63,20 +63,22 @@ export const userService = {
             company: string | null;
             position: string | null;
             city: string | null;
-        }>>`
-            SELECT id, firstName, lastName, profilePhoto, company, position, city
-            FROM User
-            WHERE id != ${currentUserId}
-            AND (
-                (firstName || ' ' || lastName) LIKE ${searchPattern}
-                OR firstName LIKE ${searchPattern}
-                OR lastName LIKE ${searchPattern}
-                OR company LIKE ${searchPattern}
-                OR position LIKE ${searchPattern}
-                OR city LIKE ${searchPattern}
-            )
-            LIMIT 10
-        `;
+        }>>(
+            Prisma.sql`
+                SELECT id, "firstName", "lastName", "profilePhoto", company, position, city
+                FROM "User"
+                WHERE id != ${currentUserId}
+                AND (
+                    ("firstName" || ' ' || "lastName") ILIKE ${searchPattern}
+                    OR "firstName" ILIKE ${searchPattern}
+                    OR "lastName" ILIKE ${searchPattern}
+                    OR company ILIKE ${searchPattern}
+                    OR position ILIKE ${searchPattern}
+                    OR city ILIKE ${searchPattern}
+                )
+                LIMIT 10
+            `
+        );
 
         // Get connection status for each user
         const resultsWithStatus = await Promise.all(
