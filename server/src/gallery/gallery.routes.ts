@@ -19,7 +19,20 @@ router.post('/', uploadGalleryPhoto, async (req: Request, res: Response, next: N
         const { caption } = req.body;
         const file = req.file;
 
-        const photo = await galleryService.uploadPhoto(req.user!.userId, file!, caption);
+        if (!file || !file.buffer) {
+            throw new Error('No file uploaded');
+        }
+
+        // Generate photo ID for folder organization
+        const { v4: uuidv4 } = require('uuid');
+        const photoId = uuidv4();
+
+        const photo = await galleryService.uploadPhoto(
+            req.user!.userId,
+            file.buffer,
+            photoId,
+            caption
+        );
 
         const response: SuccessResponse<typeof photo> = {
             success: true,
@@ -28,15 +41,7 @@ router.post('/', uploadGalleryPhoto, async (req: Request, res: Response, next: N
 
         res.status(201).json(response);
     } catch (error) {
-        // Clean up uploaded file if error occurs
-        if (req.file) {
-            const fs = require('fs');
-            const path = require('path');
-            const filePath = path.join(process.cwd(), 'uploads/gallery', req.file.filename);
-            if (fs.existsSync(filePath)) {
-                fs.unlinkSync(filePath);
-            }
-        }
+        // No filesystem cleanup needed with Cloudinary
         next(error);
     }
 });

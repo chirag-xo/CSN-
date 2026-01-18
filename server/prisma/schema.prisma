@@ -40,7 +40,8 @@ model User {
   phone     String?
   
   // Profile fields
-  profilePhoto String?
+  profilePhoto         String?
+  profilePhotoPublicId String? // Cloudinary public_id for deletion
   tagline      String?
   bio          String?
   
@@ -340,13 +341,14 @@ model Connection {
 // ============================================================================
 
 model GalleryPhoto {
-  id          String   @id @default(uuid())
-  userId      String
-  url         String   // /uploads/gallery/filename.jpg
-  caption     String?
-  isFeatured  Boolean  @default(false)
-  featuredAt  DateTime?
-  uploadedAt  DateTime @default(now())
+  id                 String   @id @default(uuid())
+  userId             String
+  url                String   // Cloudinary secure_url
+  cloudinaryPublicId String   // Cloudinary public_id for deletion
+  caption            String?
+  isFeatured         Boolean  @default(false)
+  featuredAt         DateTime?
+  uploadedAt         DateTime @default(now())
   
   user User @relation("UserGalleryPhotos", fields: [userId], references: [id], onDelete: Cascade)
   

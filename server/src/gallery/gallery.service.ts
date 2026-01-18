@@ -1,19 +1,23 @@
 import prisma from '../shared/database';
 import { AppError, errorCodes } from '../shared/errors';
-import fs from 'fs';
-import path from 'path';
+import { uploadToCloudinary, deleteFromCloudinary } from '../utils/cloudinaryUpload';
 
 export const galleryService = {
     // Upload photo
-    async uploadPhoto(userId: string, file: Express.Multer.File, caption?: string) {
-        if (!file) {
+    async uploadPhoto(userId: string, fileBuffer: Buffer, photoId: string, caption?: string) {
+        if (!fileBuffer) {
             throw new AppError('No file provided', 400, 'NO_FILE');
         }
+
+        // Upload to Cloudinary
+        const folder = `csn/gallery/${userId}/${photoId}`;
+        const { secure_url, public_id } = await uploadToCloudinary(fileBuffer, folder);
 
         const photo = await prisma.galleryPhoto.create({
             data: {
                 userId,
-                url: `/uploads/gallery/${file.filename}`,
+                url: secure_url,
+                cloudinaryPublicId: public_id,
                 caption: caption || null,
             },
         });
@@ -69,10 +73,12 @@ export const galleryService = {
             throw new AppError('Not authorized to delete this photo', 403, errorCodes.UNAUTHORIZED);
         }
 
-        // Delete file from filesystem
-        const filePath = path.join(process.cwd(), photo.url);
-        if (fs.existsSync(filePath)) {
-            fs.unlinkSync(filePath);
+        // Delete from Cloudinary
+        try {
+            await deleteFromCloudinary(photo.cloudinaryPublicId);
+        } catch (error) {
+            console.error('Failed to delete from Cloudinary:', error);
+            // Continue with database deletion even if Cloudinary deletion fails
         }
 
         // Delete from database
