@@ -73,12 +73,14 @@ export const galleryService = {
             throw new AppError('Not authorized to delete this photo', 403, errorCodes.UNAUTHORIZED);
         }
 
-        // Delete from Cloudinary
-        try {
-            await deleteFromCloudinary(photo.cloudinaryPublicId);
-        } catch (error) {
-            console.error('Failed to delete from Cloudinary:', error);
-            // Continue with database deletion even if Cloudinary deletion fails
+        // Delete from Cloudinary (only if photo has cloudinaryPublicId)
+        if (photo.cloudinaryPublicId) {
+            try {
+                await deleteFromCloudinary(photo.cloudinaryPublicId);
+            } catch (error) {
+                console.error('Failed to delete from Cloudinary:', error);
+                // Continue with database deletion even if Cloudinary deletion fails
+            }
         }
 
         // Delete from database

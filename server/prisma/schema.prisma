@@ -344,7 +344,7 @@ model GalleryPhoto {
   id                 String   @id @default(uuid())
   userId             String
   url                String   // Cloudinary secure_url
-  cloudinaryPublicId String   // Cloudinary public_id for deletion
+  cloudinaryPublicId String?  // Cloudinary public_id for deletion (nullable for backwards compatibility)
   caption            String?
   isFeatured         Boolean  @default(false)
   featuredAt         DateTime?
