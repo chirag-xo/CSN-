@@ -12,7 +12,10 @@ export default function PhotoCard({ photo, onDelete, onToggleFeatured }: PhotoCa
     const [showConfirm, setShowConfirm] = useState(false);
 
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
-    const imageUrl = `${API_URL}${photo.url}`;
+
+    // If URL already starts with http/https (Cloudinary URL), use it as-is
+    // Otherwise, prepend API_URL for legacy local storage URLs
+    const imageUrl = photo.url.startsWith('http') ? photo.url : `${API_URL}${photo.url}`;
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
