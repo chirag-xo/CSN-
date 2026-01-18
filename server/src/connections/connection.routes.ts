@@ -12,6 +12,18 @@ router.use(authMiddleware);
 router.post('/request', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { addresseeId, message } = req.body;
+
+        // Validate addresseeId
+        if (!addresseeId) {
+            return res.status(400).json({
+                success: false,
+                error: {
+                    code: 'MISSING_ADDRESSEE_ID',
+                    message: 'addresseeId is required in request body',
+                },
+            });
+        }
+
         const connection = await connectionService.sendRequest(
             req.user!.userId,
             addresseeId,
