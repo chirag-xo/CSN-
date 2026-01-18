@@ -11,7 +11,7 @@ export interface DashboardSummary {
         referralsGiven: number;
         referralsReceived: number;
         meetingsAttended: number;
-        testimonials: number;
+        connections: number;
     };
     upcomingEvents: any[];
     profileCompletion: number;
