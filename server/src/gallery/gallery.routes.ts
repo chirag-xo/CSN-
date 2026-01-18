@@ -1,4 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import { v4 as uuidv4 } from 'uuid';
 import { galleryService } from './gallery.service';
 import { authMiddleware } from '../auth/auth.middleware';
 import { uploadGalleryPhoto } from '../middleware/upload';
@@ -24,7 +25,6 @@ router.post('/', uploadGalleryPhoto, async (req: Request, res: Response, next: N
         }
 
         // Generate photo ID for folder organization
-        const { v4: uuidv4 } = require('uuid');
         const photoId = uuidv4();
 
         const photo = await galleryService.uploadPhoto(
