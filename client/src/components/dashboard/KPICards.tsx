@@ -47,10 +47,10 @@ export default function KPICards({ stats }: KPICardsProps) {
             id: 'connections',
             title: 'Connections',
             value: stats.connections,
-            icon: '🤝',
+            icon: <img src="/add-friend.png" alt="Connections" style={{ width: '24px', height: '24px' }} />,
             action: 'View Network',
             actionLink: '/dashboard/home/connections',
-            color: '#059669',
+            color: '#10B981',
             borderColor: 'border-l-green-600'
         }
     ];
