@@ -47,7 +47,7 @@ export default function KPICards({ stats }: KPICardsProps) {
             id: 'connections',
             title: 'Connections',
             value: stats.connections,
-            icon: <img src="/add-friend.png" alt="Connections" style={{ width: '24px', height: '24px' }} />,
+            icon: <img src="/add-friend.png" alt="Connections" style={{ width: '24px', height: '24px', verticalAlign: 'middle', display: 'block' }} />,
             action: 'View Network',
             actionLink: '/dashboard/home/connections',
             color: '#10B981',

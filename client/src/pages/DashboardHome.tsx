@@ -90,7 +90,7 @@ export default function DashboardHome() {
                     </div>
 
                     {/* KPI Cards */}
-                    <KPICards stats={{ ...dashboardData.stats, connections: 0 }} />
+                    <KPICards stats={dashboardData.stats} />
 
                     {/* Two Column Layout */}
                     <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 mt-6">
