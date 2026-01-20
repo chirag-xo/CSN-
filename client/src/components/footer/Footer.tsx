@@ -7,7 +7,7 @@ export default function Footer() {
                 <div className="footer-top">
                     {/* CSN Logo */}
                     <div className="footer-logo">
-                        <img src="/logo2.png" alt="CSN Logo" className="footer-logo-image" />
+                        <img src="/csn.png" alt="CSN Logo" className="footer-logo-image" />
                     </div>
 
                     {/* Social Media Icons */}

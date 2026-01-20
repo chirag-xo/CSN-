@@ -4,7 +4,7 @@ export default function Navbar() {
     return (
         <>
             <div className="logo">
-                <img src="/logo1.png" alt="CSN Logo" className="logo-image" />
+                <img src="/csn.png" alt="CSN Logo" className="logo-image" />
             </div>
             <nav className="navigation">
                 <a href="#features" className="nav-link">Features</a>

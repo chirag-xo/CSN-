@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import profileService, { type Profile, type UpdateProfileData } from '../../services/profileService';
+import chapterService, { type Chapter } from '../../services/chapterService';
 import ProfilePhotoUpload from './ProfilePhotoUpload';
 
 interface BasicInfoTabProps {
@@ -17,13 +18,32 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
         phone: profile.phone || '',
         tagline: profile.tagline || '',
         bio: profile.bio || '',
+        chapterId: profile.chapter?.id || '',
     });
+    const [chapters, setChapters] = useState<Chapter[]>([]);
+    const [loadingChapters, setLoadingChapters] = useState(false);
     const [isDirty, setIsDirty] = useState(false);
     const [saving, setSaving] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
     const bioMaxLength = 500;
+
+    // Fetch chapters on mount
+    useEffect(() => {
+        const fetchChapters = async () => {
+            try {
+                setLoadingChapters(true);
+                const data = await chapterService.getChapters();
+                setChapters(data);
+            } catch (err) {
+                console.error('Error fetching chapters:', err);
+            } finally {
+                setLoadingChapters(false);
+            }
+        };
+        fetchChapters();
+    }, []);
 
     useEffect(() => {
         // Track if form has changed
@@ -35,13 +55,14 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
             formData.city !== (profile.city || '') ||
             formData.phone !== (profile.phone || '') ||
             formData.tagline !== (profile.tagline || '') ||
-            formData.bio !== (profile.bio || '');
+            formData.bio !== (profile.bio || '') ||
+            formData.chapterId !== (profile.chapter?.id || '');
 
         setIsDirty(hasChanged);
     }, [formData, profile]);
 
     const handleInputChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -204,6 +225,29 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
                             value={formData.phone}
                             onChange={handleInputChange}
                         />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="chapter">Chapter</label>
+                        <select
+                            id="chapter"
+                            name="chapterId"
+                            value={formData.chapterId || ''}
+                            onChange={handleInputChange}
+                            disabled={loadingChapters}
+                        >
+                            <option value="">Select Chapter (Optional)</option>
+                            {chapters.map((chapter) => (
+                                <option key={chapter.id} value={chapter.id}>
+                                    {chapter.name} - {chapter.city}
+                                </option>
+                            ))}
+                        </select>
+                        {profile.chapter && (
+                            <p className="field-hint">
+                                Current: {profile.chapter.name} ({profile.chapter.city})
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>

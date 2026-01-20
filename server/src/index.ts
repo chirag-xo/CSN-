@@ -14,6 +14,7 @@ import connectionRoutes from './connections/connection.routes';
 import eventRoutes from './events/event.routes';
 import galleryRoutes from './gallery/gallery.routes';
 import contactRoutes from './contact/contact.routes';
+import chapterRoutes from './chapters/chapter.routes';
 import { errorHandler } from './shared/errorHandler';
 import path from 'path';
 
@@ -72,6 +73,7 @@ app.use('/api/connections', connectionRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/chapters', chapterRoutes);
 
 // 404 handler
 app.use((req, res) => {
