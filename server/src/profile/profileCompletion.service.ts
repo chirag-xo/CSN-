@@ -53,63 +53,63 @@ export const profileCompletionService = {
                 label: 'Profile Picture',
                 points: 15,
                 completed: !!user.profilePhoto,
-                route: '/dashboard/profile?section=basic',
+                route: '/dashboard/profile',
             },
             {
                 key: 'fullName',
                 label: 'Full Name',
                 points: 10,
                 completed: !!(user.firstName && user.lastName),
-                route: '/dashboard/profile?section=basic',
+                route: '/dashboard/profile',
             },
             {
                 key: 'bio',
                 label: 'Bio',
-                points: 10,
+                points: 15,
                 completed: !!user.bio && user.bio.trim().length > 0,
-                route: '/dashboard/profile?section=about',
+                route: '/dashboard/profile',
+            },
+            {
+                key: 'tagline',
+                label: 'Tagline',
+                points: 10,
+                completed: !!user.tagline && user.tagline.trim().length > 0,
+                route: '/dashboard/profile',
             },
             {
                 key: 'companyPosition',
                 label: 'Company + Position',
                 points: 10,
                 completed: !!(user.company && user.position),
-                route: '/dashboard/profile?section=business',
+                route: '/dashboard/profile',
             },
             {
                 key: 'city',
                 label: 'City',
                 points: 5,
                 completed: !!user.city && user.city.trim().length > 0,
-                route: '/dashboard/profile?section=basic',
+                route: '/dashboard/profile',
             },
             {
-                key: 'phoneVerified',
-                label: 'Phone Verified',
-                points: 10,
-                completed: user.phoneVerified || false,
-                route: '/dashboard/profile?section=privacy',
+                key: 'phone',
+                label: 'Phone Number',
+                points: 5,
+                completed: !!user.phone && user.phone.trim().length > 0,
+                route: '/dashboard/profile',
             },
             {
-                key: 'emailVerified',
-                label: 'Email Verified',
+                key: 'chapter',
+                label: 'Chapter',
                 points: 10,
-                completed: user.emailVerified,
-                route: '/dashboard/profile?section=privacy',
+                completed: !!user.chapterId,
+                route: '/dashboard/profile',
             },
             {
                 key: 'interests',
                 label: 'Interests (min 3)',
                 points: 15,
                 completed: user.interests.length >= 3,
-                route: '/dashboard/profile?section=interests',
-            },
-            {
-                key: 'socialLinks',
-                label: 'Social Links',
-                points: 10,
-                completed: !!user.socialLinks,
-                route: '/dashboard/profile?section=social',
+                route: '/dashboard/profile',
             },
             {
                 key: 'firstConnection',
@@ -148,6 +148,9 @@ export const profileCompletionService = {
         if (missing.find(item => item.key === 'profilePicture')) {
             suggestions.push('Add a profile picture to boost trust');
         }
+        if (missing.find(item => item.key === 'tagline')) {
+            suggestions.push('Add a professional tagline to stand out');
+        }
         if (missing.find(item => item.key === 'interests')) {
             suggestions.push('Add at least 3 interests to improve discovery');
         }
@@ -156,6 +159,9 @@ export const profileCompletionService = {
         }
         if (missing.find(item => item.key === 'companyPosition')) {
             suggestions.push('Complete your company and position details');
+        }
+        if (missing.find(item => item.key === 'chapter')) {
+            suggestions.push('Select your chapter to connect with local members');
         }
         if (missing.find(item => item.key === 'firstConnection')) {
             suggestions.push('Make your first connection to start networking');
