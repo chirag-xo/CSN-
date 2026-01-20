@@ -122,7 +122,8 @@
 .card-image-wrapper img {
     width: 100%;
     max-width: 350px;
-    height: auto;
+    height: 100%;
+    /* Ensure it fills the container height for scaling */
     object-fit: contain;
     filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
 }

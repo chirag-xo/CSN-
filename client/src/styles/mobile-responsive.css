@@ -208,7 +208,8 @@ svg {
     max-width: 350px;
     height: 380px;
     border-radius: 24px;
-    overflow: hidden;
+    overflow: visible;
+    /* Fix clipping */
     transform-style: preserve-3d;
     backface-visibility: hidden;
 }
@@ -245,13 +246,15 @@ svg {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
+    /* Fix clipping */
 }
 
 .card-image-wrapper img {
     width: 100%;
     max-width: 200px;
-    height: auto;
+    height: 100%;
+    /* Fix scaling */
     object-fit: contain;
 }
 
