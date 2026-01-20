@@ -40,6 +40,7 @@ export interface ConnectionRequest {
         profilePhoto: string | null;
         company: string | null;
         position: string | null;
+        city: string | null;
     };
     message?: string | null;
     status?: string;

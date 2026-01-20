@@ -248,6 +248,7 @@ export const connectionService = {
                         profilePhoto: true,
                         company: true,
                         position: true,
+                        city: true,
                     },
                 },
             },
