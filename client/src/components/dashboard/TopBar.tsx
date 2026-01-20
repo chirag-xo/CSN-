@@ -125,8 +125,7 @@ export default function TopBar({ onMenuClick }: TopBarProps) {
 
                 {/* Logo Section */}
                 <div className="top-bar-logo">
-                    <img src="/logo1.png" alt="CSN" className="top-bar-logo-img" />
-                    <span className="top-bar-logo-text">CSN</span>
+                    <img src="/csn.png" alt="CSN" className="top-bar-logo-img" />
                 </div>
 
                 {/* Search */}

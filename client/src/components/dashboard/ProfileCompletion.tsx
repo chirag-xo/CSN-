@@ -189,7 +189,7 @@ export default function ProfileCompletion({ completion: legacyCompletion }: Prof
                                                 {item.label} ({item.points} pts)
                                             </span>
                                             <button
-                                                className="px-3 py-2 border border-purple-600 text-purple-600 rounded-lg text-xs font-medium hover:bg-purple-600 hover:text-white transition-colors whitespace-nowrap"
+                                                className="px-3 py-2 border border-purple-600 text-purple-600 rounded-lg text-xs font-medium hover:bg-purple-50 transition-colors whitespace-nowrap"
                                                 onClick={() => handleFixNow(item.route)}
                                             >
                                                 Fix Now →
@@ -215,7 +215,12 @@ export default function ProfileCompletion({ completion: legacyCompletion }: Prof
 
                 {/* CTA Button */}
                 <button
-                    className="w-full py-3 bg-purple-600 text-white rounded-lg text-sm font-semibold hover:bg-purple-700 transition-colors"
+                    className="w-full py-3 text-white rounded-lg text-sm font-semibold transition-colors"
+                    style={{
+                        backgroundColor: '#6D28D8',
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#5B21B6')}
+                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#6D28D8')}
                     onClick={handleCTA}
                 >
                     {percentage === 100 ? 'View Profile →' : 'Complete Profile →'}
