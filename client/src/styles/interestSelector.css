@@ -1,0 +1,339 @@
+/* Interest Selector Modal - Premium Design */
+
+.interest-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+.interest-modal-container {
+    width: 100%;
+    max-width: 640px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+    overflow: hidden;
+    animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform-origin: center center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Header */
+.interest-modal-header {
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f3f4f6;
+    background: #ffffff;
+}
+
+.interest-modal-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.interest-close-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid #e5e7eb;
+    background: white;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.interest-close-btn:hover {
+    background: #f9fafb;
+    color: #111827;
+    transform: rotate(90deg);
+}
+
+/* Tabs */
+.interest-tabs-container {
+    padding: 0 32px;
+    border-bottom: 1px solid #f3f4f6;
+    background: white;
+}
+
+.interest-tabs-scroll {
+    display: flex;
+    gap: 32px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* Hide scrollbar Firefox */
+    -ms-overflow-style: none;
+    /* Hide scrollbar IE/Edge */
+    padding-bottom: 1px;
+    /* Avoid border overlapping */
+}
+
+.interest-tabs-scroll::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar Chrome/Safari */
+}
+
+.interest-tab-btn {
+    position: relative;
+    padding: 20px 0;
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.interest-tab-btn:hover {
+    color: #374151;
+}
+
+.interest-tab-btn.active {
+    color: #6D28D9;
+}
+
+.interest-tab-indicator {
+    position: absolute;
+    bottom: -1px;
+    /* Align with border-bottom */
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #6D28D9;
+    border-radius: 3px 3px 0 0;
+    transition: all 0.2s ease;
+}
+
+/* Body */
+.interest-modal-body {
+    padding: 32px;
+    overflow-y: auto;
+    background: #ffffff;
+    flex: 1;
+}
+
+.interest-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.interest-section-title span {
+    color: #9ca3af;
+    font-weight: 400;
+}
+
+.interest-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.interest-chip {
+    position: relative;
+    padding: 10px 20px 10px 16px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 99px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+}
+
+.interest-chip:hover:not(:disabled) {
+    border-color: #d1d5db;
+    background: #f9fafb;
+    transform: translateY(-1px);
+}
+
+.interest-chip.selected {
+    background: #F3E8FF;
+    /* Light Purple tint */
+    border-color: #8B5CF6;
+    color: #6D28D9;
+    padding-left: 12px;
+    /* Adjust for checkmark space */
+    box-shadow: 0 4px 12px rgba(109, 40, 217, 0.1);
+}
+
+.interest-chip:disabled {
+    background: #f3f4f6;
+    border-color: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.chip-check-icon {
+    width: 16px;
+    height: 16px;
+    color: #6D28D9;
+    animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.chip-check-icon-disabled {
+    width: 16px;
+    height: 16px;
+    color: #9ca3af;
+}
+
+/* Visibility Dropdown Section */
+.interest-visibility-box {
+    margin-top: 32px;
+    padding: 20px;
+    background: #f9fafb;
+    border-radius: 16px;
+    border: 1px solid #f3f4f6;
+}
+
+.interest-visibility-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+}
+
+.interest-visibility-select {
+    width: 100%;
+    padding: 12px 16px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #111827;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.interest-visibility-select:focus {
+    border-color: #6D28D9;
+    box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.1);
+}
+
+/* Footer */
+.interest-modal-footer {
+    padding: 24px 32px;
+    background: #ffffff;
+    border-top: 1px solid #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+}
+
+.interest-cancel-btn {
+    padding: 12px 24px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.interest-cancel-btn:hover {
+    background: #f9fafb;
+    color: #111827;
+    border-color: #d1d5db;
+}
+
+.interest-save-btn {
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #6D28D9 0%, #7C3AED 100%);
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(109, 40, 217, 0.25);
+    transition: all 0.2s;
+}
+
+.interest-save-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(109, 40, 217, 0.35);
+}
+
+.interest-save-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.interest-save-btn:disabled {
+    background: #e5e7eb;
+    color: #9ca3af;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Home } from 'lucide-react';
 import './Breadcrumb.css';
 
 interface BreadcrumbItem {
@@ -14,7 +15,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
     return (
         <nav className="breadcrumb">
             <Link to="/dashboard/home" className="breadcrumb-home">
-                🏠
+                <Home size={16} strokeWidth={2.5} />
             </Link>
             {items.map((item, index) => (
                 <span key={index} className="breadcrumb-item">

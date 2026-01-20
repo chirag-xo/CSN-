@@ -35,11 +35,20 @@ export default function UserResultCard({ user, onClick }: UserResultCardProps) {
     return (
         <div className="user-result-card" onClick={onClick}>
             <div className="user-avatar">
-                {profilePhotoUrl ? (
-                    <img src={profilePhotoUrl} alt={`${user.firstName} ${user.lastName}`} />
-                ) : (
-                    <div className="avatar-initials">{getInitials()}</div>
-                )}
+                <img
+                    src={
+                        user.profilePhoto
+                            ? user.profilePhoto.startsWith('http')
+                                ? user.profilePhoto
+                                : `${API_URL}${user.profilePhoto}`
+                            : `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&background=6D28D9&color=fff`
+                    }
+                    alt={`${user.firstName} ${user.lastName}`}
+                    onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&background=6D28D9&color=fff`;
+                    }}
+                />
             </div>
             <div className="user-info">
                 <div className="user-name-row">

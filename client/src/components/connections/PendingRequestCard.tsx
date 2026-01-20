@@ -1,4 +1,5 @@
 import type { ConnectionRequest } from '../../services/connectionService';
+import { Check, X, MapPin } from 'lucide-react';
 
 interface PendingRequestCardProps {
     request: ConnectionRequest;
@@ -14,8 +15,8 @@ export default function PendingRequestCard({ request, onAccept, onDecline }: Pen
     const fullName = `${requester.firstName} ${requester.lastName}`;
     const initials = `${requester.firstName[0]}${requester.lastName[0]}`;
 
-    const getFullPhotoUrl = (url: string | null): string | null => {
-        if (!url) return null;
+    const getFullPhotoUrl = (url: string | null): string => {
+        if (!url) return `https://ui-avatars.com/api/?name=${requester.firstName}+${requester.lastName}&background=6D28D9&color=fff`;
         if (url.startsWith('http')) return url;
         return `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}${url}`;
     };
@@ -30,45 +31,57 @@ export default function PendingRequestCard({ request, onAccept, onDecline }: Pen
         if (days === 1) return 'Yesterday';
         if (days < 7) return `${days} days ago`;
         if (days < 30) return `${Math.floor(days / 7)} weeks ago`;
-        return date.toLocaleDateString();
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     };
 
     return (
         <div className="pending-request-card">
-            <div className="request-user">
-                <div className="user-avatar">
-                    {requester.profilePhoto ? (
-                        <img src={getFullPhotoUrl(requester.profilePhoto) || ''} alt={fullName} />
-                    ) : (
-                        <div className="avatar-placeholder">{initials}</div>
+            <div className="user-avatar">
+                <img
+                    src={getFullPhotoUrl(requester.profilePhoto)}
+                    alt={fullName}
+                    onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = `https://ui-avatars.com/api/?name=${requester.firstName}+${requester.lastName}&background=6D28D9&color=fff`;
+                    }}
+                />
+            </div>
+
+            <div className="user-info">
+                <h4>{fullName}</h4>
+                {requester.position && requester.company && (
+                    <p className="connection-role">
+                        {requester.position} @ {requester.company}
+                    </p>
+                )}
+                <div className="connection-meta">
+                    {requester.city && (
+                        <>
+                            <span>
+                                <MapPin size={14} />
+                                {requester.city}
+                            </span>
+                            <span className="meta-separator">·</span>
+                        </>
                     )}
+                    <span>Requested {formatTimeAgo(createdAt)}</span>
                 </div>
 
-                <div className="user-info">
-                    <h4>{fullName}</h4>
-                    {requester.position && requester.company && (
-                        <p className="user-title">
-                            {requester.position} @ {requester.company}
-                        </p>
-                    )}
-                    {requester.city && <p className="user-location">📍 {requester.city}</p>}
-
-                    {message && (
-                        <p className="request-message">
-                            <em>"{message}"</em>
-                        </p>
-                    )}
-
-                    <p className="request-time">{formatTimeAgo(createdAt)}</p>
-                </div>
+                {message && (
+                    <p className="request-message">
+                        "{message}"
+                    </p>
+                )}
             </div>
 
             <div className="request-actions">
-                <button onClick={onAccept} className="accept-btn">
-                    ✓ Accept
+                <button onClick={onAccept} className="action-btn primary">
+                    <Check size={16} />
+                    Accept
                 </button>
-                <button onClick={onDecline} className="decline-btn">
-                    ✕ Decline
+                <button onClick={onDecline} className="action-btn destructive">
+                    <X size={16} />
+                    Decline
                 </button>
             </div>
         </div>

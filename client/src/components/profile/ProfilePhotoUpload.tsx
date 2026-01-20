@@ -69,28 +69,24 @@ export default function ProfilePhotoUpload({
             const formData = new FormData();
             formData.append('photo', file);
 
-            console.log('Uploading photo...');
             const response = await api.post('/profile/photo', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
 
-            console.log('Upload response:', response.data);
             const photoUrl = response.data.data.profilePhoto;
-            console.log('Photo URL from backend:', photoUrl);
 
             // Construct full URL if it's a relative path
             const fullPhotoUrl = photoUrl.startsWith('http')
                 ? photoUrl
                 : `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}${photoUrl}`;
 
-            console.log('Full photo URL:', fullPhotoUrl);
             onPhotoUpdate(fullPhotoUrl);
         } catch (err: any) {
             console.error('Upload error:', err);
             setError(err.response?.data?.error?.message || 'Failed to upload photo');
-            setPreview(currentPhoto);
+            setPreview(getFullPhotoUrl(currentPhoto));
         } finally {
             setUploading(false);
         }
@@ -145,7 +141,7 @@ export default function ProfilePhotoUpload({
     };
 
     return (
-        <div className="profile-photo-upload">
+        <div className="profile-photo-section">
             <div
                 className={`photo-dropzone ${dragActive ? 'drag-active' : ''} ${uploading ? 'uploading' : ''
                     }`}
@@ -156,7 +152,15 @@ export default function ProfilePhotoUpload({
                 onClick={handleClick}
             >
                 {preview ? (
-                    <img src={preview} alt="Profile" className="photo-preview-img" />
+                    <img
+                        src={preview}
+                        alt="Profile"
+                        className="photo-preview-img"
+                        onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = `https://ui-avatars.com/api/?name=${userInitials}&background=6D28D9&color=fff`;
+                        }}
+                    />
                 ) : (
                     <div className="photo-placeholder-large">{userInitials}</div>
                 )}
@@ -169,8 +173,7 @@ export default function ProfilePhotoUpload({
 
                 {!uploading && (
                     <div className="upload-hint">
-                        <span className="upload-icon">📷</span>
-                        <span>Click or drag to upload</span>
+                        <span>Click to upload</span>
                     </div>
                 )}
             </div>
@@ -183,29 +186,34 @@ export default function ProfilePhotoUpload({
                 style={{ display: 'none' }}
             />
 
-            <div className="photo-actions-btns">
-                <button
-                    type="button"
-                    onClick={handleClick}
-                    disabled={uploading}
-                    className="upload-action-btn primary"
-                >
-                    {uploading ? 'Uploading...' : 'Upload Photo'}
-                </button>
-                {preview && (
+            <div className="photo-info">
+                <div className="photo-actions-btns">
                     <button
                         type="button"
-                        onClick={handleDelete}
+                        onClick={handleClick}
                         disabled={uploading}
-                        className="upload-action-btn danger"
+                        className="upload-action-btn primary"
                     >
-                        Remove
+                        {uploading ? 'Uploading...' : 'Upload'}
                     </button>
+                    {preview && (
+                        <button
+                            type="button"
+                            onClick={handleDelete}
+                            disabled={uploading}
+                            className="upload-action-btn secondary"
+                        >
+                            Remove
+                        </button>
+                    )}
+                </div>
+
+                {error ? (
+                    <p className="upload-error">{error}</p>
+                ) : (
+                    <p className="upload-info">JPG, PNG or WebP. Max 5MB</p>
                 )}
             </div>
-
-            {error && <p className="upload-error">{error}</p>}
-            <p className="upload-info">JPG, PNG or WebP. Max size 5MB</p>
         </div>
     );
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import interestsService, { type UserInterest } from '../../services/interestsService';
 import InterestSelectorModal from './InterestSelectorModal';
+import VisibilitySelector from '../common/VisibilitySelector';
 import type { Profile } from '../../services/profileService';
 
 interface InterestsTabProps {
@@ -108,22 +109,14 @@ export default function InterestsTab({ profile, onUpdate }: InterestsTabProps) {
                     {userInterests.map((ui) => (
                         <div key={ui.id} className="interest-item">
                             <div className="interest-info">
-                                <span className="interest-category">
-                                    {ui.interest.category.name}
-                                </span>
                                 <span className="interest-name">{ui.interest.name}</span>
                             </div>
                             <div className="interest-actions">
-                                <select
-                                    className="visibility-select"
+                                <VisibilitySelector
                                     value={ui.visibility}
-                                    onChange={(e) => handleVisibilityChange(ui.id, e.target.value)}
+                                    onChange={(val) => handleVisibilityChange(ui.id, val)}
                                     disabled={loading}
-                                >
-                                    <option value="PUBLIC">Public</option>
-                                    <option value="CONNECTIONS">Connections</option>
-                                    <option value="PRIVATE">Private</option>
-                                </select>
+                                />
                                 <button
                                     type="button"
                                     className="remove-btn"

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Calendar, Clock, MapPin, Video, Plus, ArrowRight, X } from 'lucide-react';
 import '../../styles/upcomingEvents.css';
 
 interface Event {
@@ -21,127 +22,118 @@ interface UpcomingEventsProps {
 
 export default function UpcomingEvents({ events }: UpcomingEventsProps) {
     const navigate = useNavigate();
-    const [showCreateModal, setShowCreateModal] = useState(false);
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
-        const today = new Date();
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-
-        const isToday = date.toDateString() === today.toDateString();
-        const isTomorrow = date.toDateString() === tomorrow.toDateString();
-
-        const timeStr = date.toLocaleTimeString('en-IN', {
-            hour: '2-digit',
-            minute: '2-digit',
-        });
-
-        if (isToday) return `Today at ${timeStr}`;
-        if (isTomorrow) return `Tomorrow at ${timeStr}`;
-
         return date.toLocaleDateString('en-IN', {
             month: 'short',
             day: 'numeric',
+            year: 'numeric'
+        });
+    };
+
+    const formatTime = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toLocaleTimeString('en-IN', {
             hour: '2-digit',
             minute: '2-digit',
         });
     };
 
-    const getStatusBadge = (status: string) => {
-        const badges = {
-            GOING: { label: 'Going', color: '#059669', icon: '✓' },
-            MAYBE: { label: 'Maybe', color: '#F59E0B', icon: '?' },
-            INVITED: { label: 'Invited', color: '#6D28D9', icon: '✉' },
-            NOT_GOING: { label: 'Not Going', color: '#DC2626', icon: '✕' },
+    const getStatusStyle = (status: string) => {
+        const styles = {
+            GOING: { label: 'Going', bg: '#DCFCE7', color: '#166534' },
+            MAYBE: { label: 'Maybe', bg: '#FEF3C7', color: '#B45309' },
+            INVITED: { label: 'Invited', bg: '#F3E8FF', color: '#6B21A8' },
+            NOT_GOING: { label: 'Not Going', bg: '#FEE2E2', color: '#991B1B' },
         };
-        return badges[status as keyof typeof badges] || badges.INVITED;
+        return styles[status as keyof typeof styles] || styles.INVITED;
     };
 
-    const getTypeIcon = (type: string) => {
-        const icons: Record<string, string> = {
-            NETWORKING: '🤝',
-            WORKSHOP: '🎓',
-            SOCIAL: '🎉',
-            EDUCATIONAL: '📚',
-            COMMUNITY: '🏘️',
-            ONE_TO_ONE: '👥',
-        };
-        return icons[type] || '📅';
-    };
+    // Limit to 3 items for desktop row
+    const displayEvents = events.slice(0, 3);
 
     return (
         <div className="upcoming-events-section">
-            <div className="events-header">
-                <h3 className="section-title">Upcoming Meetings & Events</h3>
-                <div className="events-actions">
+            {/* Header */}
+            <div className="ue-header">
+                <h3 className="ue-title">Upcoming Meetings & Events</h3>
+                <div className="ue-actions">
                     <button
-                        className="create-event-btn"
+                        className="ue-btn-primary"
                         onClick={() => navigate('/dashboard/home/events')}
                     >
-                        + Create Event
+                        <Plus size={16} /> Create Event
                     </button>
                     <button
-                        className="view-all-btn"
+                        className="ue-btn-secondary"
                         onClick={() => navigate('/dashboard/home/events')}
                     >
-                        View All →
+                        View All <ArrowRight size={14} />
                     </button>
                 </div>
             </div>
 
+            {/* Content */}
             {events.length === 0 ? (
-                <div className="empty-events-state">
-                    <div className="empty-icon">📅</div>
-                    <p className="empty-message">No upcoming events scheduled</p>
+                <div className="ue-empty-state">
+                    <Calendar className="ue-empty-icon" />
+                    <p className="ue-empty-text">No upcoming events scheduled</p>
                     <button
-                        className="browse-events-btn"
+                        className="ue-btn-primary"
                         onClick={() => navigate('/dashboard/home/events')}
                     >
-                        Browse Events
+                        Create your first event
                     </button>
                 </div>
             ) : (
-                <div className="events-grid">
-                    {events.map((event) => {
-                        const statusBadge = getStatusBadge(event.rsvpStatus);
+                <div className="ue-grid">
+                    {displayEvents.map((event) => {
+                        const status = getStatusStyle(event.rsvpStatus);
                         return (
-                            <div key={event.id} className="event-card-compact">
-                                <div className="event-card-header">
-                                    <div className="event-type-badge">
-                                        <span className="event-type-icon">{getTypeIcon(event.type)}</span>
-                                        <span className="event-type-label">{event.type}</span>
-                                    </div>
-                                    <div
-                                        className="rsvp-badge"
-                                        style={{ backgroundColor: `${statusBadge.color}15`, color: statusBadge.color }}
+                            <div
+                                key={event.id}
+                                className="ue-card"
+                                onClick={() => navigate(`/event/${event.id}`)}
+                            >
+                                <div className="ue-card-top">
+                                    <span
+                                        className="ue-status-badge"
+                                        style={{ backgroundColor: status.bg, color: status.color }}
                                     >
-                                        <span className="rsvp-icon">{statusBadge.icon}</span>
-                                        {statusBadge.label}
+                                        {status.label}
+                                    </span>
+                                    <span className="ue-date-pill">
+                                        {formatDate(event.date)}
+                                    </span>
+                                </div>
+
+                                <div className="ue-card-content">
+                                    <h4 className="ue-card-title">{event.title}</h4>
+
+                                    <div className="ue-meta-group">
+                                        <div className="ue-meta-row">
+                                            <Clock className="ue-meta-icon" />
+                                            <span>{formatTime(event.date)}</span>
+                                        </div>
+                                        <div className="ue-meta-row">
+                                            {event.isVirtual ? (
+                                                <Video className="ue-meta-icon" />
+                                            ) : (
+                                                <MapPin className="ue-meta-icon" />
+                                            )}
+                                            <span className="truncate">
+                                                {event.isVirtual ? 'Virtual Event' : (event.location || 'TBD')}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <h4 className="event-card-title">{event.title}</h4>
-
-                                <div className="event-card-details">
-                                    <div className="event-detail-row">
-                                        <span className="detail-icon">📅</span>
-                                        <span className="detail-text">{formatDate(event.date)}</span>
-                                    </div>
-                                    <div className="event-detail-row">
-                                        <span className="detail-icon">{event.isVirtual ? '💻' : '📍'}</span>
-                                        <span className="detail-text">
-                                            {event.isVirtual ? 'Virtual Event' : (event.location || 'TBD')}
-                                        </span>
-                                    </div>
+                                <div className="ue-card-footer">
+                                    <button className="ue-details-btn">
+                                        View Details <ArrowRight size={14} />
+                                    </button>
                                 </div>
-
-                                <button
-                                    className="view-details-btn"
-                                    onClick={() => navigate(`/event/${event.id}`)}
-                                >
-                                    View Details →
-                                </button>
                             </div>
                         );
                     })}

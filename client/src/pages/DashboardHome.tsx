@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import '../styles/dashboardHome.css';
+import '../styles/dashboardHeader.css';
 import TopBar from '../components/dashboard/TopBar';
 import Sidebar from '../components/dashboard/Sidebar';
 import KPICards from '../components/dashboard/KPICards';
-import QuickActions from '../components/dashboard/QuickActions';
 import UpcomingEvents from '../components/dashboard/UpcomingEvents';
 import ProfileCompletion from '../components/dashboard/ProfileCompletion';
 import dashboardService from '../services/dashboardService';
@@ -76,14 +76,18 @@ export default function DashboardHome() {
                 />
 
                 <main className="flex-1 p-6 max-w-7xl mx-auto w-full">
-                    {/* Greeting Section */}
-                    <div className="mb-6">
-                        <h1 className="text-3xl font-bold text-gray-900 mb-2">Hello, {dashboardData.user.name}</h1>
-                        <div className="flex gap-3">
-                            <span className="px-4 py-1.5 bg-purple-100 text-purple-700 text-sm font-medium rounded-lg">
+                    {/* Greeting Section (Premium Redesign) */}
+                    <div className="dashboard-header">
+                        <h1 className="header-greeting">
+                            <span className="greeting-highlight">Hello</span> {dashboardData.user.name}
+                        </h1>
+                        <div className="header-badges">
+                            <span className="header-badge">
+                                <span className="badge-label">Chapter:</span>
                                 {dashboardData.user.chapter}
                             </span>
-                            <span className="px-4 py-1.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg">
+                            <span className="header-badge">
+                                <span className="badge-label">City:</span>
                                 {dashboardData.user.city}
                             </span>
                         </div>
@@ -95,7 +99,6 @@ export default function DashboardHome() {
                     {/* Two Column Layout */}
                     <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 mt-6">
                         <div className="space-y-6">
-                            <QuickActions />
                             <ProfileCompletion completion={dashboardData.profileCompletion} />
                         </div>
 
@@ -105,7 +108,6 @@ export default function DashboardHome() {
                     </div>
                 </main>
             </div>
-
         </div>
     );
 }

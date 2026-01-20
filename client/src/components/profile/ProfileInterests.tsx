@@ -1,3 +1,5 @@
+import { Globe, Users, Lock } from 'lucide-react';
+
 interface Interest {
     id: string;
     name: string;
@@ -32,13 +34,13 @@ export default function ProfileInterests({ interests }: ProfileInterestsProps) {
     const getVisibilityIcon = (visibility: string) => {
         switch (visibility) {
             case 'PUBLIC':
-                return '🌐';
+                return <Globe size={14} className="text-blue-600" />;
             case 'CONNECTIONS':
-                return '👥';
+                return <Users size={14} className="text-purple-600" />;
             case 'PRIVATE':
-                return '🔒';
+                return <Lock size={14} className="text-gray-600" />;
             default:
-                return '';
+                return null;
         }
     };
 
@@ -64,3 +66,4 @@ export default function ProfileInterests({ interests }: ProfileInterestsProps) {
         </div>
     );
 }
+

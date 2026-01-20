@@ -106,15 +106,21 @@ export default function DashboardNav() {
                         className="nav-profile"
                         onClick={() => setShowDropdown(!showDropdown)}
                     >
-                        {profile?.profilePhoto ? (
-                            <img
-                                src={getFullPhotoUrl(profile.profilePhoto) || ''}
-                                alt="Profile"
-                                className="profile-avatar"
-                            />
-                        ) : (
-                            <div className="profile-avatar-placeholder">{userInitials}</div>
-                        )}
+                        <img
+                            src={
+                                profile?.profilePhoto
+                                    ? profile.profilePhoto.startsWith('http')
+                                        ? profile.profilePhoto
+                                        : `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}${profile.profilePhoto}`
+                                    : `https://ui-avatars.com/api/?name=${profile?.firstName}+${profile?.lastName}&background=6D28D9&color=fff`
+                            }
+                            alt="Profile"
+                            className="profile-avatar"
+                            onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = `https://ui-avatars.com/api/?name=${profile?.firstName}+${profile?.lastName}&background=6D28D9&color=fff`;
+                            }}
+                        />
                         <span className="profile-name">
                             {profile ? `${profile.firstName} ${profile.lastName}` : 'Loading...'}
                         </span>

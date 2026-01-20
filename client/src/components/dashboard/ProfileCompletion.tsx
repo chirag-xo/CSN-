@@ -109,7 +109,7 @@ export default function ProfileCompletion({ completion: legacyCompletion }: Prof
     return (
         <div className="profile-completion-section">
             {/* Matching KPI section styling */}
-            <h3 className="section-title" style={{ fontSize: '18px', fontWeight: 600, color: '#374151', marginBottom: '16px' }}>
+            <h3 className="section-title">
                 Profile Optimization
             </h3>
 

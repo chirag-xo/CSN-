@@ -1,0 +1,197 @@
+/* Premium Sidebar Styles - BNI Connect Style */
+
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background: #ffffff;
+    border-right: 1px solid #E5E7EB;
+    padding: 16px;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease-in-out;
+    z-index: 60;
+    /* Above TopBar (50) and Backdrop */
+    overflow-y: auto;
+}
+
+.sidebar.collapsed {
+    width: 80px;
+}
+
+/* Navigation Container */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+/* Nav Item (Link) - Wrapper */
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    color: #4B5563;
+    /* Gray-600 */
+    text-decoration: none !important;
+    /* Force remove default underlines */
+    border-bottom: none !important;
+    /* Force remove unwanted borders */
+    outline: none;
+    background-image: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+    position: relative;
+    /* Essential for tooltip positioning */
+}
+
+/* Premium Hover & Active States */
+.nav-item:hover {
+    background-color: rgba(109, 40, 217, 0.05);
+    /* Very light purple tint */
+    color: #111827;
+}
+
+/* Icon Styles */
+.nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    color: #9CA3AF;
+    /* Gray-400 */
+    transition: all 0.2s;
+}
+
+.nav-item:hover .nav-icon {
+    color: #6D28D9;
+    /* Brand purple on hover */
+    transform: scale(1.05);
+}
+
+/* Active State */
+.nav-item.active {
+    background: linear-gradient(135deg, #040008 0%, #270f4a 30%, #260c52 60%, #000000 100%);
+    color: #ffffff !important;
+    font-weight: 600;
+    border-left-color: transparent;
+    /* Remove colored border since we have full bg */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.nav-item.active::after {
+    content: none !important;
+    display: none !important;
+}
+
+.nav-item.active .nav-icon {
+    color: #ffffff !important;
+}
+
+.nav-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Tooltip Styles (Pure CSS) */
+.nav-tooltip {
+    position: absolute;
+    left: 100%;
+    /* Position to the right of the item */
+    top: 50%;
+    transform: translateY(-50%) translateX(10px);
+    background-color: #2b2b2b;
+    color: #ffffff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    z-index: 70;
+}
+
+/* Tooltip Arrow */
+.nav-tooltip::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 8px;
+    height: 8px;
+    background-color: #2b2b2b;
+}
+
+/* Show tooltip on hover (when collapsed logic handled here or via class) */
+/* The user requested: "Tooltip appears on hover of the icon container" */
+/* We'll show it generally, or scoped to .sidebar.collapsed if preferred. */
+/* Given "Sidebar can be in collapsed mode... tooltip shows labels", implies mainly for collapsed. */
+/* But "works for all sidebar items"... I'll enable it for .collapsed specifically to avoid clutter when expanded. */
+
+.sidebar.collapsed .nav-item:hover .nav-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) translateX(12px);
+}
+
+/* Submenu Styles */
+.sub-menu {
+    border-left: 1px solid #E5E7EB;
+    margin-left: 22px;
+    padding-left: 12px;
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sub-item {
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #6B7280;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.sub-item:hover {
+    color: #111827;
+    background-color: #F3F4F6;
+}
+
+.sub-item.active {
+    color: #ffffff;
+    font-weight: 500;
+    background: linear-gradient(135deg, #040008 0%, #270f4a 30%, #260c52 60%, #000000 100%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 64px;
+        /* Below TopBar */
+        height: calc(100vh - 64px);
+        transform: translateX(-100%);
+        box-shadow: 4px 0 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+}

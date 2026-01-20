@@ -1,5 +1,21 @@
 import { Link } from 'react-router-dom';
 import { type Event } from '../../services/eventService';
+import {
+    Calendar,
+    Clock,
+    MapPin,
+    Users as UsersIcon,
+    Check,
+    HelpCircle,
+    Shield,
+    Layout,
+    Users,
+    Zap,
+    PartyPopper,
+    BookOpen,
+    Coffee,
+    MoreHorizontal
+} from 'lucide-react';
 
 interface EventCardProps {
     event: Event;
@@ -10,47 +26,40 @@ export default function EventCard({ event, onRsvp }: EventCardProps) {
     const eventDate = new Date(event.date);
     const attendeeCount = event._count?.attendees || 0;
 
-    // Event type colors
-    const getTypeColor = (type: string) => {
-        const colors: Record<string, string> = {
-            NETWORKING: '#059669',
-            WORKSHOP: '#DC2626',
-            SOCIAL: '#EA580C',
-            EDUCATIONAL: '#2563EB',
-            COMMUNITY: '#6D28D9',
-            ONE_TO_ONE: '#7C3AED',
+    // Event type configuration
+    const getTypeConfig = (type: string) => {
+        const configs: Record<string, { color: string; icon: any; label: string }> = {
+            NETWORKING: { color: '#059669', icon: UsersIcon, label: 'Networking' },
+            WORKSHOP: { color: '#DC2626', icon: Zap, label: 'Workshop' },
+            SOCIAL: { color: '#EA580C', icon: PartyPopper, label: 'Social' },
+            EDUCATIONAL: { color: '#2563EB', icon: BookOpen, label: 'Educational' },
+            COMMUNITY: { color: '#6D28D9', icon: Layout, label: 'Community' },
+            ONE_TO_ONE: { color: '#7C3AED', icon: Coffee, label: '1-to-1' },
         };
-        return colors[type] || '#6B7280';
+        return configs[type] || { color: '#6B7280', icon: Calendar, label: type.replace('_', ' ') };
     };
 
-    const getTypeIcon = (type: string) => {
-        const icons: Record<string, string> = {
-            NETWORKING: '🤝',
-            WORKSHOP: '🛠️',
-            SOCIAL: '🎉',
-            EDUCATIONAL: '📚',
-            COMMUNITY: '🏘️',
-            ONE_TO_ONE: '☕',
-        };
-        return icons[type] || '📅';
-    };
+    const config = getTypeConfig(event.type);
+    const IconComponent = config.icon;
 
     const getRsvpButton = () => {
         if (!onRsvp) return null;
 
         if (event.userRsvpStatus === 'GOING') {
             return (
-                <button className="rsvp-btn going" disabled>
-                    ✓ Going
-                </button>
+                <div className="rsvp-status-badge going">
+                    <Check size={14} />
+                    <span>Going</span>
+                </div>
             );
         }
 
         if (event.userRsvpStatus === 'MAYBE') {
             return (
-                <button className="rsvp-btn maybe" disabled>
-                    ? Maybe
-                </button>
+                <div className="rsvp-status-badge maybe">
+                    <HelpCircle size={14} />
+                    <span>Maybe</span>
+                </div>
             );
         }
 
@@ -80,32 +89,35 @@ export default function EventCard({ event, onRsvp }: EventCardProps) {
 
     return (
         <Link to={`/dashboard/home/events/${event.id}`} className="event-card">
-            <div
-                className="event-type-badge"
-                style={{ backgroundColor: getTypeColor(event.type) }}
-            >
-                {getTypeIcon(event.type)} {event.type.replace('_', ' ')}
-            </div>
+            <div className="event-card-top">
+                <div
+                    className="event-type-badge-premium"
+                    style={{ '--badge-color': config.color } as any}
+                >
+                    <IconComponent size={12} />
+                    <span>{config.label}</span>
+                </div>
 
-            <div className="event-date-box">
-                <div className="day">{eventDate.getDate()}</div>
-                <div className="month">
-                    {eventDate.toLocaleDateString('en-US', { month: 'short' })}
+                <div className="event-date-box-premium">
+                    <span className="day">{eventDate.getDate()}</span>
+                    <span className="month">
+                        {eventDate.toLocaleDateString('en-US', { month: 'short' })}
+                    </span>
                 </div>
             </div>
 
-            <div className="event-content">
+            <div className="event-content-premium">
                 <h3 className="event-title">{event.title}</h3>
 
                 <p className="event-description">
-                    {event.description.length > 100
-                        ? `${event.description.substring(0, 100)}...`
+                    {event.description.length > 90
+                        ? `${event.description.substring(0, 90)}...`
                         : event.description}
                 </p>
 
-                <div className="event-meta">
+                <div className="event-meta-premium">
                     <div className="meta-item">
-                        <span className="icon">⏰</span>
+                        <Clock size={14} />
                         <span>
                             {eventDate.toLocaleTimeString('en-US', {
                                 hour: 'numeric',
@@ -116,46 +128,60 @@ export default function EventCard({ event, onRsvp }: EventCardProps) {
 
                     {event.isVirtual ? (
                         <div className="meta-item">
-                            <span className="icon">💻</span>
+                            <Shield size={14} />
                             <span>Virtual Event</span>
                         </div>
                     ) : event.location ? (
                         <div className="meta-item">
-                            <span className="icon">📍</span>
-                            <span>{event.location}</span>
+                            <MapPin size={14} />
+                            <span className="truncate">{event.location}</span>
                         </div>
                     ) : null}
 
                     <div className="meta-item">
-                        <span className="icon">👥</span>
+                        <Users size={14} />
                         <span>{attendeeCount} attending</span>
                     </div>
                 </div>
 
                 {event.chapter && (
-                    <div className="event-chapter">
-                        {event.chapter.name}
+                    <div className="event-chapter-chip">
+                        <div className="chapter-dot" />
+                        <span>{event.chapter.name}</span>
                     </div>
                 )}
+            </div>
 
-                <div className="event-organizer">
+            <div className="event-footer-premium">
+                <div className="event-organizer-premium">
                     <img
                         src={
                             event.creator.profilePhoto
-                                ? `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}${event.creator.profilePhoto
-                                }`
+                                ? event.creator.profilePhoto.startsWith('http')
+                                    ? event.creator.profilePhoto
+                                    : `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}${event.creator.profilePhoto}`
                                 : `https://ui-avatars.com/api/?name=${event.creator.firstName}+${event.creator.lastName}&background=6D28D9&color=fff`
                         }
+                        onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = `https://ui-avatars.com/api/?name=${event.creator.firstName}+${event.creator.lastName}&background=6D28D9&color=fff`;
+                        }}
                         alt={`${event.creator.firstName} ${event.creator.lastName}`}
-                        className="organizer-avatar"
+                        className="organizer-avatar-mini"
                     />
-                    <span className="organizer-name">
-                        by {event.creator.firstName} {event.creator.lastName}
-                    </span>
+                    <div className="organizer-info-mini">
+                        <span className="by-label">by</span>
+                        <span className="organizer-name-mini">
+                            {event.creator.firstName} {event.creator.lastName}
+                        </span>
+                    </div>
+                </div>
+
+                <div className="event-actions-area">
+                    {getRsvpButton()}
                 </div>
             </div>
-
-            {getRsvpButton()}
         </Link>
     );
 }
+

@@ -155,9 +155,15 @@ export default function EventDetails() {
                         <img
                             src={
                                 event.creator.profilePhoto
-                                    ? `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}${event.creator.profilePhoto}`
+                                    ? event.creator.profilePhoto.startsWith('http')
+                                        ? event.creator.profilePhoto
+                                        : `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}${event.creator.profilePhoto}`
                                     : `https://ui-avatars.com/api/?name=${event.creator.firstName}+${event.creator.lastName}&background=6D28D9&color=fff`
                             }
+                            onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = `https://ui-avatars.com/api/?name=${event.creator.firstName}+${event.creator.lastName}&background=6D28D9&color=fff`;
+                            }}
                             alt={`${event.creator.firstName} ${event.creator.lastName}`}
                             className="organizer-avatar"
                         />
@@ -222,9 +228,15 @@ export default function EventDetails() {
                                         <img
                                             src={
                                                 attendee.user.profilePhoto
-                                                    ? `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}${attendee.user.profilePhoto}`
+                                                    ? attendee.user.profilePhoto.startsWith('http')
+                                                        ? attendee.user.profilePhoto
+                                                        : `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}${attendee.user.profilePhoto}`
                                                     : `https://ui-avatars.com/api/?name=${attendee.user.firstName}+${attendee.user.lastName}&background=6D28D9&color=fff`
                                             }
+                                            onError={(e) => {
+                                                const target = e.target as HTMLImageElement;
+                                                target.src = `https://ui-avatars.com/api/?name=${attendee.user.firstName}+${attendee.user.lastName}&background=6D28D9&color=fff`;
+                                            }}
                                             alt={`${attendee.user.firstName} ${attendee.user.lastName}`}
                                             className="attendee-avatar"
                                         />
@@ -259,7 +271,7 @@ export default function EventDetails() {
                         <div className="rsvp-buttons">
                             <button
                                 className={`rsvp-btn ${event.userRsvpStatus === 'GOING' ? 'active' :
-                                        selectedRsvp === 'GOING' ? 'selected' : ''
+                                    selectedRsvp === 'GOING' ? 'selected' : ''
                                     }`}
                                 onClick={() => handleRsvpSelect('GOING')}
                                 disabled={rsvping || event.userRsvpStatus === 'GOING'}
@@ -268,7 +280,7 @@ export default function EventDetails() {
                             </button>
                             <button
                                 className={`rsvp-btn ${event.userRsvpStatus === 'MAYBE' ? 'active' :
-                                        selectedRsvp === 'MAYBE' ? 'selected' : ''
+                                    selectedRsvp === 'MAYBE' ? 'selected' : ''
                                     }`}
                                 onClick={() => handleRsvpSelect('MAYBE')}
                                 disabled={rsvping || event.userRsvpStatus === 'MAYBE'}
@@ -277,7 +289,7 @@ export default function EventDetails() {
                             </button>
                             <button
                                 className={`rsvp-btn decline ${event.userRsvpStatus === 'DECLINED' ? 'active' :
-                                        selectedRsvp === 'DECLINED' ? 'selected' : ''
+                                    selectedRsvp === 'DECLINED' ? 'selected' : ''
                                     }`}
                                 onClick={() => handleRsvpSelect('DECLINED')}
                                 disabled={rsvping || event.userRsvpStatus === 'DECLINED'}

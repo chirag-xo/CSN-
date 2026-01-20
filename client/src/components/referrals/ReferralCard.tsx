@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { type Referral } from '../../services/referralService';
+import { ChevronDown, ChevronUp, Check, X } from 'lucide-react';
 import '../../styles/referrals.css';
 
 interface ReferralCardProps {
@@ -11,33 +12,35 @@ interface ReferralCardProps {
 export default function ReferralCard({ referral, isReceived, onStatusUpdate }: ReferralCardProps) {
     const [showConfirm, setShowConfirm] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState<'CONVERTED' | 'CLOSED' | null>(null);
+    const [isExpanded, setIsExpanded] = useState(false);
 
     const user = isReceived ? referral.fromUser : referral.toUser;
     const canUpdate = referral.status === 'PENDING' && isReceived;
 
     const getTypeBadge = () => {
-        const icons = {
-            BUSINESS: '💼',
-            INTRO: '🤝',
-            SUPPORT: '🆘',
+        const typeConfig = {
+            BUSINESS: { emoji: '💼', label: 'Business', class: 'business' },
+            INTRO: { emoji: '🤝', label: 'Intro', class: 'intro' },
+            SUPPORT: { emoji: '🆘', label: 'Support', class: 'support' },
         };
+        const config = typeConfig[referral.type];
         return (
-            <span className={`type-badge ${referral.type.toLowerCase()}`}>
-                {icons[referral.type]} {referral.type}
+            <span className={`type-badge ${config.class}`}>
+                {config.emoji} {config.label}
             </span>
         );
     };
 
     const getStatusBadge = () => {
-        const config = {
-            PENDING: { icon: '🟡', class: 'pending', label: 'Pending' },
-            CONVERTED: { icon: '✅', class: 'converted', label: 'Converted' },
-            CLOSED: { icon: '❌', class: 'closed', label: 'Closed' },
+        const statusConfig = {
+            PENDING: { icon: '🟡', label: 'Pending', class: 'pending' },
+            CONVERTED: { icon: '✅', label: 'Converted', class: 'converted' },
+            CLOSED: { icon: '❌', label: 'Closed', class: 'closed' },
         };
-        const { icon, class: className, label } = config[referral.status];
+        const config = statusConfig[referral.status];
         return (
-            <span className={`status-badge ${className}`}>
-                {icon} {label}
+            <span className={`status-badge ${config.class}`}>
+                {config.icon} {config.label}
             </span>
         );
     };
@@ -64,12 +67,13 @@ export default function ReferralCard({ referral, isReceived, onStatusUpdate }: R
         if (diffDays === 0) return 'Today';
         if (diffDays === 1) return 'Yesterday';
         if (diffDays < 7) return `${diffDays} days ago`;
-        return date.toLocaleDateString();
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     };
 
     return (
         <>
             <div className="referral-card">
+                {/* Header - Horizontal Layout */}
                 <div className="card-header">
                     <div className="user-info">
                         <div className="user-avatar">
@@ -77,59 +81,86 @@ export default function ReferralCard({ referral, isReceived, onStatusUpdate }: R
                         </div>
                         <div className="user-details">
                             <h4>{user?.firstName} {user?.lastName}</h4>
-                            {user?.company && <p className="company">{user.company}</p>}
-                            {user?.position && <p className="position">{user.position}</p>}
+                            {(user?.position || user?.company) && (
+                                <p className="company">
+                                    {user?.position}{user?.position && user?.company && ' @ '}{user?.company}
+                                </p>
+                            )}
                         </div>
                     </div>
                     <div className="badges">
                         {getTypeBadge()}
                         {getStatusBadge()}
+                        {referral.businessValue && (
+                            <span className="value-display">
+                                ₹{referral.businessValue.toLocaleString()}
+                            </span>
+                        )}
                     </div>
                 </div>
 
+                {/* Body - Description Preview */}
                 <div className="card-body">
-                    <p className="description">{referral.description}</p>
+                    <p className={`description ${!isExpanded ? 'truncated' : ''}`}>
+                        {referral.description}
+                    </p>
 
-                    {(referral.contactName || referral.contactEmail || referral.contactPhone) && (
-                        <div className="contact-details">
-                            <h5>Contact Information:</h5>
-                            {referral.contactName && <p>👤 {referral.contactName}</p>}
-                            {referral.contactEmail && <p>📧 {referral.contactEmail}</p>}
-                            {referral.contactPhone && <p>📞 {referral.contactPhone}</p>}
-                        </div>
+                    {/* Expanded Details */}
+                    {isExpanded && (
+                        <>
+                            {(referral.contactName || referral.contactEmail || referral.contactPhone) && (
+                                <div className="contact-details">
+                                    <h5>Contact Information:</h5>
+                                    {referral.contactName && <p>👤 {referral.contactName}</p>}
+                                    {referral.contactEmail && <p>📧 {referral.contactEmail}</p>}
+                                    {referral.contactPhone && <p>📞 {referral.contactPhone}</p>}
+                                </div>
+                            )}
+
+                            {referral.notes && (
+                                <div className="notes">
+                                    <strong>Notes:</strong> {referral.notes}
+                                </div>
+                            )}
+                        </>
                     )}
-
-                    {referral.businessValue && (
-                        <div className="business-value">
-                            💰 Est. Value: ₹{referral.businessValue.toLocaleString()}
-                        </div>
-                    )}
-
-                    {referral.notes && (
-                        <div className="notes">
-                            <strong>Notes:</strong> {referral.notes}
-                        </div>
-                    )}
-
-                    <div className="card-footer">
-                        <span className="timestamp">📅 {formatDate(referral.createdAt)}</span>
-                    </div>
                 </div>
 
-                {/* Status Locking: Show actions only for PENDING received referrals */}
+                {/* Footer */}
+                <div className="card-footer">
+                    <span className="timestamp">📅 {formatDate(referral.createdAt)}</span>
+                    <button
+                        className="expand-btn"
+                        onClick={() => setIsExpanded(!isExpanded)}
+                    >
+                        {isExpanded ? (
+                            <>
+                                Less details <ChevronUp size={14} />
+                            </>
+                        ) : (
+                            <>
+                                More details <ChevronDown size={14} />
+                            </>
+                        )}
+                    </button>
+                </div>
+
+                {/* Status Update Actions - Only for PENDING received referrals */}
                 {canUpdate && (
                     <div className="card-actions">
                         <button
                             className="btn-converted"
                             onClick={() => handleUpdateClick('CONVERTED')}
                         >
-                            ✅ Mark Converted
+                            <Check size={16} />
+                            Mark Converted
                         </button>
                         <button
                             className="btn-closed"
                             onClick={() => handleUpdateClick('CLOSED')}
                         >
-                            ❌ Mark Closed
+                            <X size={16} />
+                            Mark Closed
                         </button>
                     </div>
                 )}

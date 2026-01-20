@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import connectionService, { type Connection, type ConnectionRequest, type ConnectionStats } from '../services/connectionService';
 import ConnectionCard from '../components/connections/ConnectionCard';
 import PendingRequestCard from '../components/connections/PendingRequestCard';
+import SentRequestCard from '../components/connections/SentRequestCard';
 import Breadcrumb from '../components/common/Breadcrumb';
+import { Search, UserPlus, ArrowRight } from 'lucide-react';
 import '../styles/network.css';
 
 type TabType = 'connections' | 'pending' | 'sent';
@@ -15,6 +17,7 @@ export default function Network() {
     const [stats, setStats] = useState<ConnectionStats>({ total: 0, pendingReceived: 0, pendingSent: 0 });
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
+    const [sortBy, setSortBy] = useState('newest');
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -65,6 +68,15 @@ export default function Network() {
         }
     };
 
+    const handleCancel = async (id: string) => {
+        try {
+            await connectionService.declineRequest(id);
+            fetchData();
+        } catch (err: any) {
+            alert(err.response?.data?.error?.message || 'Failed to cancel request');
+        }
+    };
+
     const handleRemove = async (id: string) => {
         if (!confirm('Are you sure you want to remove this connection?')) return;
 
@@ -76,8 +88,7 @@ export default function Network() {
         }
     };
 
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSearch = () => {
         if (activeTab === 'connections') {
             fetchData();
         }
@@ -86,60 +97,76 @@ export default function Network() {
     return (
         <div className="network-container">
             {/* Breadcrumb */}
-            <Breadcrumb items={[{ label: 'Connections' }]} />
+            <Breadcrumb items={[{ label: 'My Network' }]} />
 
-            {/* Header */}
+            {/* Header - Premium Layout */}
             <div className="network-header">
-                <h1>My Network</h1>
-                <div className="network-stats">
-                    <span className="stat">
-                        <strong>{stats.total}</strong> connections
-                    </span>
-                    {stats.pendingReceived > 0 && (
-                        <span className="stat badge-pending">
-                            {stats.pendingReceived} pending
-                        </span>
-                    )}
+                <div className="network-header-content">
+                    <h1>My Network</h1>
+                    <p className="network-header-subtitle">
+                        Manage your connections and requests
+                    </p>
+                </div>
+                <div className="network-header-right">
+                    <div className="network-stats-badge">
+                        <span className="stat-number">{stats.total}</span>
+                        <span className="stat-label">connections</span>
+                    </div>
+                    <button className="find-people-btn">
+                        <UserPlus size={18} />
+                        Find People
+                    </button>
                 </div>
             </div>
 
-            {/* Tabs */}
+            {/* Tabs - Modern Segmented Control */}
             <div className="network-tabs">
                 <button
                     className={`tab ${activeTab === 'connections' ? 'active' : ''}`}
                     onClick={() => setActiveTab('connections')}
                 >
-                    Connections ({stats.total})
+                    Connections <span className="tab-count">({stats.total})</span>
                 </button>
                 <button
                     className={`tab ${activeTab === 'pending' ? 'active' : ''}`}
                     onClick={() => setActiveTab('pending')}
                 >
-                    Pending ({stats.pendingReceived})
-                    {stats.pendingReceived > 0 && <span className="tab-badge">{stats.pendingReceived}</span>}
+                    Pending <span className="tab-count">({stats.pendingReceived})</span>
                 </button>
                 <button
                     className={`tab ${activeTab === 'sent' ? 'active' : ''}`}
                     onClick={() => setActiveTab('sent')}
                 >
-                    Sent ({stats.pendingSent})
+                    Sent <span className="tab-count">({stats.pendingSent})</span>
                 </button>
             </div>
 
-            {/* Search */}
+            {/* Search + Filter Row */}
             {activeTab === 'connections' && (
-                <form onSubmit={handleSearch} className="network-search">
-                    <input
-                        type="text"
-                        placeholder="Search connections..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="search-input"
-                    />
-                    <button type="submit" className="search-btn">
-                        🔍 Search
-                    </button>
-                </form>
+                <div className="network-search-row">
+                    <div className="network-search">
+                        <Search size={18} className="search-icon" />
+                        <input
+                            type="text"
+                            placeholder="Search by name, company, role..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                            className="search-input"
+                        />
+                    </div>
+                    <div className="network-filters">
+                        <select
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                            className="filter-select"
+                        >
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="name">Name A-Z</option>
+                        </select>
+                    </div>
+                </div>
             )}
 
             {/* Content */}
@@ -164,80 +191,82 @@ export default function Network() {
                     {/* Connections Tab */}
                     {activeTab === 'connections' && (
                         <>
-                            {(connections?.length ?? 0) === 0 && (
+                            {(connections?.length ?? 0) === 0 ? (
                                 <div className="empty-state">
+                                    <div className="empty-state-icon">
+                                        <UserPlus size={32} />
+                                    </div>
                                     <h3>No connections yet</h3>
-                                    <p>Start connecting with other members!</p>
+                                    <p>Start building your professional network by connecting with other members</p>
+                                    <button className="empty-state-cta">
+                                        Find People <ArrowRight size={16} />
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="connections-list">
+                                    {connections?.map((conn) => (
+                                        <ConnectionCard
+                                            key={conn.id}
+                                            connection={conn}
+                                            onRemove={() => handleRemove(conn.id)}
+                                        />
+                                    ))}
                                 </div>
                             )}
-                            <div className="connections-grid">
-                                {connections?.map((conn) => (
-                                    <ConnectionCard
-                                        key={conn.id}
-                                        connection={conn}
-                                        onRemove={() => handleRemove(conn.id)}
-                                    />
-                                ))}
-                            </div>
                         </>
                     )}
 
                     {/* Pending Requests Tab */}
                     {activeTab === 'pending' && (
                         <>
-                            {pendingRequests.length === 0 && (
+                            {pendingRequests.length === 0 ? (
                                 <div className="empty-state">
+                                    <div className="empty-state-icon">
+                                        <UserPlus size={32} />
+                                    </div>
                                     <h3>No pending requests</h3>
-                                    <p>You have no pending connection requests</p>
+                                    <p>You have no pending connection requests at the moment</p>
+                                </div>
+                            ) : (
+                                <div className="requests-list">
+                                    {pendingRequests.map((req) => (
+                                        <PendingRequestCard
+                                            key={req.id}
+                                            request={req}
+                                            onAccept={() => handleAccept(req.id)}
+                                            onDecline={() => handleDecline(req.id)}
+                                        />
+                                    ))}
                                 </div>
                             )}
-                            <div className="requests-list">
-                                {pendingRequests.map((req) => (
-                                    <PendingRequestCard
-                                        key={req.id}
-                                        request={req}
-                                        onAccept={() => handleAccept(req.id)}
-                                        onDecline={() => handleDecline(req.id)}
-                                    />
-                                ))}
-                            </div>
                         </>
                     )}
 
                     {/* Sent Requests Tab */}
                     {activeTab === 'sent' && (
                         <>
-                            {sentRequests.length === 0 && (
+                            {sentRequests.length === 0 ? (
                                 <div className="empty-state">
+                                    <div className="empty-state-icon">
+                                        <UserPlus size={32} />
+                                    </div>
                                     <h3>No sent requests</h3>
-                                    <p>You haven't sent any connection requests</p>
+                                    <p>You haven't sent any connection requests yet</p>
+                                    <button className="empty-state-cta">
+                                        Find People <ArrowRight size={16} />
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="requests-list">
+                                    {sentRequests.map((req) => (
+                                        <SentRequestCard
+                                            key={req.id}
+                                            request={req}
+                                            onCancel={() => handleCancel(req.id)}
+                                        />
+                                    ))}
                                 </div>
                             )}
-                            <div className="requests-list">
-                                {sentRequests.map((req) => (
-                                    <div key={req.id} className="sent-request-card">
-                                        <div className="request-user">
-                                            <div className="user-avatar">
-                                                {req.addressee?.profilePhoto ? (
-                                                    <img src={req.addressee.profilePhoto} alt="" />
-                                                ) : (
-                                                    <div className="avatar-placeholder">
-                                                        {req.addressee?.firstName[0]}{req.addressee?.lastName[0]}
-                                                    </div>
-                                                )}
-                                            </div>
-                                            <div className="user-info">
-                                                <h4>{req.addressee?.firstName} {req.addressee?.lastName}</h4>
-                                                <p>{req.addressee?.company}</p>
-                                                <span className="request-date">
-                                                    Sent {new Date(req.createdAt).toLocaleDateString()}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <span className="status-badge">Pending</span>
-                                    </div>
-                                ))}
-                            </div>
                         </>
                     )}
                 </div>

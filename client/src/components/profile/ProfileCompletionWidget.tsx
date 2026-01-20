@@ -11,8 +11,16 @@ export default function ProfileCompletionWidget() {
 
     const fetchCompletion = async () => {
         try {
-            const data = await profileService.getCompletion();
-            setCompletion(data.completion);
+            const result = await profileService.getCompletion();
+            // detailed completion endpoint returns data.completionPercentage
+            if (result.data && typeof result.data.completionPercentage === 'number') {
+                setCompletion(result.data.completionPercentage);
+            } else if (result.data && typeof result.data.completion === 'number') {
+                // fallback for legacy structure
+                setCompletion(result.data.completion);
+            } else {
+                setCompletion(0);
+            }
         } catch (err) {
             console.error('Error fetching completion:', err);
         } finally {
@@ -31,29 +39,29 @@ export default function ProfileCompletionWidget() {
     return (
         <div className="completion-widget">
             <div className="completion-circle" style={{ '--completion': completion } as any}>
-                <svg width="80" height="80">
+                <svg width="60" height="60">
                     <circle
-                        cx="40"
-                        cy="40"
-                        r="35"
+                        cx="30"
+                        cy="30"
+                        r="25"
                         fill="none"
                         stroke="var(--gray-200)"
-                        strokeWidth="6"
+                        strokeWidth="5"
                     />
                     <circle
-                        cx="40"
-                        cy="40"
-                        r="35"
+                        cx="30"
+                        cy="30"
+                        r="25"
                         fill="none"
                         stroke={getCompletionColor()}
-                        strokeWidth="6"
-                        strokeDasharray={`${2 * Math.PI * 35 * completion / 100} ${2 * Math.PI * 35}`}
+                        strokeWidth="5"
+                        strokeDasharray={`${2 * Math.PI * 25 * completion / 100} ${2 * Math.PI * 25}`}
                         strokeLinecap="round"
-                        transform="rotate(-90 40 40)"
+                        transform="rotate(-90 30 30)"
                     />
                 </svg>
                 <div className="completion-text">
-                    <span className="completion-value">{completion}%</span>
+                    <span className="completion-value" style={{ fontSize: '14px' }}>{completion}%</span>
                 </div>
             </div>
             <div className="completion-info">

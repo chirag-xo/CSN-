@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Connection } from '../../services/connectionService';
+import { User, MessageCircle, MoreVertical, MapPin } from 'lucide-react';
 
 interface ConnectionCardProps {
     connection: Connection;
@@ -11,8 +12,8 @@ export default function ConnectionCard({ connection, onRemove }: ConnectionCardP
     const fullName = `${user.firstName} ${user.lastName}`;
     const initials = `${user.firstName[0]}${user.lastName[0]}`;
 
-    const getFullPhotoUrl = (url: string | null): string | null => {
-        if (!url) return null;
+    const getFullPhotoUrl = (url: string | null): string => {
+        if (!url) return `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&background=6D28D9&color=fff`;
         if (url.startsWith('http')) return url;
         return `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}${url}`;
     };
@@ -24,30 +25,49 @@ export default function ConnectionCard({ connection, onRemove }: ConnectionCardP
 
     return (
         <div className="connection-card">
-            <Link to={`/profile/${user.id}`} className="connection-link">
-                <div className="connection-avatar">
-                    {user.profilePhoto ? (
-                        <img src={getFullPhotoUrl(user.profilePhoto) || ''} alt={fullName} />
-                    ) : (
-                        <div className="avatar-placeholder">{initials}</div>
-                    )}
-                </div>
-
-                <div className="connection-info">
-                    <h4 className="connection-name">{fullName}</h4>
-                    {user.position && <p className="connection-position">{user.position}</p>}
-                    {user.company && <p className="connection-company">{user.company}</p>}
-                    {user.city && <p className="connection-location">📍 {user.city}</p>}
-                    <p className="connection-date">Connected {formatDate(connectedSince)}</p>
-                </div>
+            <Link to={`/profile/${user.id}`} className="connection-avatar">
+                <img
+                    src={getFullPhotoUrl(user.profilePhoto)}
+                    alt={fullName}
+                    onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&background=6D28D9&color=fff`;
+                    }}
+                />
             </Link>
 
+            <div className="connection-info">
+                <Link to={`/profile/${user.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <h4 className="connection-name">{fullName}</h4>
+                </Link>
+                {user.position && user.company && (
+                    <p className="connection-role">
+                        {user.position} @ {user.company}
+                    </p>
+                )}
+                <div className="connection-meta">
+                    {user.city && (
+                        <span>
+                            <MapPin size={14} />
+                            {user.city}
+                        </span>
+                    )}
+                    {user.city && <span className="meta-separator">·</span>}
+                    <span>Connected {formatDate(connectedSince)}</span>
+                </div>
+            </div>
+
             <div className="connection-actions">
-                <button className="action-btn message-btn" title="Message">
-                    💬
+                <Link to={`/profile/${user.id}`} className="action-btn primary">
+                    <User size={16} />
+                    View Profile
+                </Link>
+                <button className="action-btn secondary" title="Message">
+                    <MessageCircle size={16} />
+                    Message
                 </button>
-                <button className="action-btn more-btn" onClick={onRemove} title="Remove">
-                    ⋮
+                <button className="action-btn-icon" onClick={onRemove} title="Remove connection">
+                    <MoreVertical size={18} />
                 </button>
             </div>
         </div>

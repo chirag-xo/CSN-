@@ -5,6 +5,9 @@ import profileService, { type Profile } from '../../services/profileService';
 import searchService, { type SearchResult } from '../../services/searchService';
 import UserResultCard from '../search/UserResultCard';
 import { useDebounce } from '../../hooks/useDebounce';
+import { Search, ChevronDown, Menu, User, Settings, LogOut, X } from 'lucide-react';
+import UserProfileMenu from './UserProfileMenu';
+import '../../styles/topBar.css';
 
 interface TopBarProps {
     onMenuClick?: () => void;
@@ -105,132 +108,89 @@ export default function TopBar({ onMenuClick }: TopBarProps) {
         navigate('/');
     };
 
-    const getFullPhotoUrl = (url: string | null): string | null => {
-        if (!url) return null;
+    const getFullPhotoUrl = (url: string | null): string => {
+        if (!url) return '';
         if (url.startsWith('http')) return url;
         return `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}${url}`;
     };
 
-    const userInitials = profile ? `${profile.firstName[0]}${profile.lastName[0]}` : 'TU';
+    const userInitials = profile ? `${profile.firstName[0]}${profile.lastName[0]}` : 'U';
 
     return (
         <div className="top-bar">
-            <div className="top-bar-content">
-                {/* Mobile Menu Button */}
-                <button className="mobile-menu-btn" onClick={onMenuClick} aria-label="Toggle menu">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                    </svg>
-                </button>
-
-                {/* Logo Section */}
-                <div className="top-bar-logo">
-                    <img src="/csn.png" alt="CSN" className="top-bar-logo-img" />
+            <div className="top-bar-container">
+                {/* --- Left Section: Mobile Menu & Logo --- */}
+                <div className="top-bar-left">
+                    <button className="mobile-menu-btn" onClick={onMenuClick} aria-label="Toggle menu">
+                        <Menu size={24} />
+                    </button>
+                    <div className="top-bar-logo">
+                        <img src="/csn.png" alt="CSN" className="top-bar-logo-img" />
+                    </div>
                 </div>
 
-                {/* Search */}
-                <div className="search-box" ref={searchRef}>
-                    <div className="search-wrapper">
-                        <svg className="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <circle cx="9" cy="9" r="7" stroke="currentColor" strokeWidth="2" />
-                            <path d="M14 14l4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                        </svg>
+                {/* --- Center Section: Search --- */}
+                <div className="top-bar-center">
+                    <div className="search-wrapper" ref={searchRef}>
+                        <div className="search-icon-wrapper">
+                            <Search size={18} />
+                        </div>
                         <input
                             type="text"
-                            placeholder={isMobile ? "Search" : "Search people, events, businesses..."}
+                            placeholder="Search people, events, businesses..."
                             className="search-input"
                             value={searchQuery}
                             onChange={handleSearchChange}
                         />
                         {isSearching && <span className="search-loading">⏳</span>}
                         {searchQuery && (
-                            <button className="search-clear-btn" onClick={clearSearch}>✕</button>
+                            <button className="search-clear-btn" onClick={clearSearch}>
+                                <X size={16} />
+                            </button>
                         )}
-                    </div>
 
-                    {/* Autocomplete Dropdown */}
-                    {showSearchDropdown && (
-                        <div className="search-dropdown">
-                            {searchResults.length > 0 ? (
-                                <>
-                                    {searchResults.map((user) => (
-                                        <UserResultCard
-                                            key={user.id}
-                                            user={user}
-                                            onClick={() => handleResultClick(user.id)}
-                                        />
-                                    ))}
-                                    {searchResults.length >= 10 && (
-                                        <div className="search-footer">
-                                            Showing top 10 results
-                                        </div>
-                                    )}
-                                </>
-                            ) : (
-                                <div className="search-empty">
-                                    No users found matching "{searchQuery}"
-                                </div>
-                            )}
-                        </div>
-                    )}
-                </div>
-
-                {/* Right Section */}
-                <div className="top-bar-actions">
-                    {/* Notifications */}
-                    <button className="icon-button" title="Notifications">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" strokeWidth="2" />
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" strokeWidth="2" />
-                        </svg>
-                        <span className="notification-badge">3</span>
-                    </button>
-
-                    {/* Profile Dropdown */}
-                    <div className="profile-dropdown-container">
-                        <button
-                            className="profile-button"
-                            onClick={() => setShowDropdown(!showDropdown)}
-                        >
-                            {profile?.profilePhoto ? (
-                                <img
-                                    src={getFullPhotoUrl(profile.profilePhoto) || ''}
-                                    alt="Profile"
-                                    className="profile-avatar-small"
-                                />
-                            ) : (
-                                <div className="profile-avatar-placeholder-small">{userInitials}</div>
-                            )}
-                            <span className="profile-name-text">
-                                {profile ? `${profile.firstName} ${profile.lastName}` : 'Loading...'}
-                            </span>
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="2" />
-                            </svg>
-                        </button>
-
-                        {showDropdown && (
-                            <div className="profile-dropdown-menu">
-                                <Link
-                                    to="/dashboard/profile"
-                                    className="dropdown-menu-item"
-                                    onClick={() => setShowDropdown(false)}
-                                >
-                                    👤 My Profile
-                                </Link>
-                                <Link
-                                    to="/dashboard/profile"
-                                    className="dropdown-menu-item"
-                                    onClick={() => setShowDropdown(false)}
-                                >
-                                    ⚙️ Settings
-                                </Link>
-                                <button onClick={handleLogout} className="dropdown-menu-item logout-menu-item">
-                                    🚪 Logout
-                                </button>
+                        {/* Autocomplete Dropdown */}
+                        {showSearchDropdown && (
+                            <div className="search-dropdown">
+                                {searchResults.length > 0 ? (
+                                    <>
+                                        {searchResults.map((user) => (
+                                            <UserResultCard
+                                                key={user.id}
+                                                user={user}
+                                                onClick={() => handleResultClick(user.id)}
+                                            />
+                                        ))}
+                                        {searchResults.length >= 10 && (
+                                            <div className="search-footer">
+                                                Showing top 10 results
+                                            </div>
+                                        )}
+                                    </>
+                                ) : (
+                                    <div className="search-empty">
+                                        No users found matching "{searchQuery}"
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
+                </div>
+
+                {/* --- Right Section: Actions --- */}
+                <div className="top-bar-right">
+
+
+                    {profile && (
+                        <UserProfileMenu
+                            user={{
+                                name: `${profile.firstName} ${profile.lastName}`,
+                                photoUrl: getFullPhotoUrl(profile.profilePhoto),
+                                initials: userInitials
+                            }}
+                            onLogout={handleLogout}
+                        />
+                    )}
                 </div>
             </div>
         </div>

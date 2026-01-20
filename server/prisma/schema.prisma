@@ -59,6 +59,11 @@ model User {
   chapterId String?
   chapter   Chapter? @relation(fields: [chapterId], references: [id])
   
+  // Showcase Fields
+  topProjectTitle       String?
+  topProjectDescription String?
+  topConnectionIds      String[]
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

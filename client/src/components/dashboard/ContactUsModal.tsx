@@ -145,10 +145,24 @@ export default function ContactUsModal({ isOpen, onClose }: ContactUsModalProps)
                             <button
                                 type="submit"
                                 disabled={status === 'SUBMITTING'}
-                                className={`w-full py-4 px-6 rounded-xl text-white font-bold text-lg shadow-lg transform transition-all active:scale-95 ${status === 'SUBMITTING'
-                                        ? 'bg-purple-400 cursor-not-allowed'
-                                        : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 hover:shadow-xl'
-                                    }`}
+                                style={{
+                                    background: status === 'SUBMITTING'
+                                        ? '#9CA3AF'
+                                        : 'linear-gradient(135deg, #040008 0%, #270f4a 30%, #260c52 60%, #000000 100%)',
+                                    boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)',
+                                    transition: 'all 0.3s ease'
+                                }}
+                                className="w-full py-4 px-6 rounded-xl text-white font-bold text-lg transform active:scale-95 hover:shadow-2xl hover:-translate-y-0.5"
+                                onMouseEnter={(e) => {
+                                    if (status !== 'SUBMITTING') {
+                                        e.currentTarget.style.filter = 'brightness(1.2)';
+                                    }
+                                }}
+                                onMouseLeave={(e) => {
+                                    if (status !== 'SUBMITTING') {
+                                        e.currentTarget.style.filter = 'brightness(1)';
+                                    }
+                                }}
                             >
                                 {status === 'SUBMITTING' ? (
                                     <div className="flex items-center justify-center">

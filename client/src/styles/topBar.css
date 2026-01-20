@@ -1,0 +1,340 @@
+/* Premium TopBar Styles - BNI Connect Style (Dark Theme) */
+
+.top-bar {
+    height: 80px;
+    width: 100%;
+    /* Dark gradient background */
+    background: linear-gradient(135deg, #040008 0%, #270f4a 30%, #260c52 60%, #000000 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.top-bar-container {
+    width: 100%;
+    max-width: 1400px;
+    /* Wider for dashboard view */
+    padding: 0 24px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+/* --- Left Section: Logo & Mobile Menu --- */
+.top-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    min-width: 200px;
+}
+
+.mobile-menu-btn {
+    display: none;
+    padding: 8px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.mobile-menu-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.top-bar-logo {
+    display: flex;
+    align-items: center;
+}
+
+.top-bar-logo-img {
+    height: 70px;
+    width: auto;
+    object-fit: contain;
+}
+
+/* --- Center Section: Search --- */
+.top-bar-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    max-width: 600px;
+}
+
+.search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+}
+
+.search-icon-wrapper {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #000000;
+    /* Explicit visible color */
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+    z-index: 10;
+    /* Ensure it floats above input */
+}
+
+.search-input {
+    width: 100%;
+    height: 40px;
+    padding: 0 40px 0 42px;
+    /* Left padding for icon */
+    background: rgba(255, 255, 255, 0.08);
+    /* Semi-transparent white */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    /* Pill shape */
+    font-size: 14px;
+    color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.search-input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #8B5CF6;
+    /* Purple accent */
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+    outline: none;
+}
+
+.search-loading,
+.search-clear-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.search-clear-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    padding: 2px;
+}
+
+.search-clear-btn:hover {
+    color: #ffffff;
+}
+
+/* Search Dropdown */
+.search-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    background: white;
+    /* Keep content light for readability */
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    z-index: 100;
+}
+
+.search-empty,
+.search-footer {
+    padding: 12px 16px;
+    text-align: center;
+    color: #6B7280;
+    font-size: 13px;
+}
+
+/* --- Right Section: Actions --- */
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    min-width: 200px;
+}
+
+.notification-btn {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.notification-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.notification-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 8px;
+    height: 8px;
+    background: #DC2626;
+    border-radius: 50%;
+    border: 2px solid #2D1B4E;
+    /* Match navbar background */
+}
+
+/* Profile Dropdown Button */
+.profile-dropdown-wrapper {
+    position: relative;
+}
+
+.profile-trigger-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 12px 4px 4px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    /* Rounded pill for button */
+    cursor: pointer;
+    transition: all 0.2s;
+    max-width: 200px;
+    /* Constrain width */
+}
+
+.profile-trigger-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.profile-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.profile-avatar-placeholder {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6D28D9, #8B5CF6);
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+    /* Hide overflow text */
+}
+
+.profile-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile-chevron {
+    color: rgba(255, 255, 255, 0.6);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+}
+
+.profile-trigger-btn:hover .profile-name {
+    color: #ffffff;
+    /* Keep white on hover */
+}
+
+.profile-trigger-btn:hover .profile-chevron {
+    color: #ffffff;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+    .top-bar-container {
+        padding: 0 16px;
+    }
+
+    .search-input {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .top-bar {
+        height: 56px;
+        /* Smaller height on mobile */
+    }
+
+    .mobile-menu-btn {
+        display: flex;
+    }
+
+    .top-bar-left {
+        min-width: auto;
+        gap: 12px;
+    }
+
+    .profile-name,
+    .profile-chevron {
+        display: none;
+    }
+
+    .profile-trigger-btn {
+        padding: 0;
+        border: none;
+        background: transparent;
+    }
+
+    .profile-trigger-btn:hover {
+        background: transparent;
+        opacity: 0.9;
+    }
+
+    .top-bar-right {
+        min-width: auto;
+        gap: 12px;
+    }
+
+    /* Hide search on mobile if screen too small, or adjust layout if needed. 
+       For now, following typical pattern of hiding or icons. */
+    .top-bar-center {
+        display: none;
+    }
+}

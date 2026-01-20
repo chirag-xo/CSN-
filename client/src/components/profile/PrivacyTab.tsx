@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import privacyService, { type PrivacySettings, type UpdatePrivacyData } from '../../services/privacyService';
+import VisibilitySelector from '../common/VisibilitySelector';
 
 export default function PrivacyTab() {
     const [settings, setSettings] = useState<PrivacySettings | null>(null);
@@ -49,12 +50,6 @@ export default function PrivacyTab() {
         return <div className="error-message">Failed to load privacy settings</div>;
     }
 
-    const visibilityOptions = [
-        { value: 'PUBLIC', label: 'Everyone', icon: '🌍' },
-        { value: 'CONNECTIONS', label: 'Connections only', icon: '👥' },
-        { value: 'PRIVATE', label: 'Only me', icon: '🔒' },
-    ];
-
     const privacyFields = [
         {
             key: 'emailVisibility' as keyof UpdatePrivacyData,
@@ -100,19 +95,12 @@ export default function PrivacyTab() {
                             <p className="privacy-description">{field.description}</p>
                         </div>
                         <div className="privacy-control">
-                            <select
-                                value={settings[field.key]}
-                                onChange={(e) => handleVisibilityChange(field.key, e.target.value)}
+                            <VisibilitySelector
+                                value={settings[field.key] as string || 'PRIVATE'}
+                                onChange={(val) => handleVisibilityChange(field.key, val)}
                                 disabled={updating === field.key}
-                                className="privacy-select"
-                            >
-                                {visibilityOptions.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.icon} {option.label}
-                                    </option>
-                                ))}
-                            </select>
-                            {updating === field.key && <span className="updating-indicator">•••</span>}
+                            />
+                            {updating === field.key && <span className="updating-indicator">Updating...</span>}
                         </div>
                     </div>
                 ))}

@@ -21,6 +21,10 @@ export interface Profile {
         city: string;
     } | null;
     interests: UserInterest[];
+    skills: string[];
+    topProjectTitle: string | null;
+    topProjectDescription: string | null;
+    topConnectionIds: string[];
     verificationCount: number;
     verifiedBy: Array<{
         id: string;
@@ -55,7 +59,11 @@ export interface UpdateProfileData {
     phone?: string;
     bio?: string;
     tagline?: string;
+    skills?: string[];
     chapterId?: string;
+    topProjectTitle?: string;
+    topProjectDescription?: string;
+    topConnectionIds?: string[];
 }
 
 // Profile service methods

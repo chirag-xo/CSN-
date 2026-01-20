@@ -3,6 +3,7 @@ import eventService, { type Event, type EventFilters } from '../services/eventSe
 import EventCard from '../components/events/EventCard';
 import CreateEventModal from '../components/events/CreateEventModal';
 import Breadcrumb from '../components/common/Breadcrumb';
+import { Search, Plus, Calendar, List } from 'lucide-react';
 import '../styles/events.css';
 
 type ViewMode = 'list' | 'calendar';
@@ -114,58 +115,57 @@ export default function Events() {
             {/* Breadcrumb */}
             <Breadcrumb items={[{ label: 'Events' }]} />
 
-            {/* Header */}
+            {/* Header - Premium Layout */}
             <div className="events-header">
                 <div className="header-row">
                     <div>
-                        <h1>📅 Upcoming Events</h1>
+                        <h1>Upcoming Events</h1>
                         <p className="subtitle">Discover and join community events</p>
                     </div>
                     <button
                         className="create-event-btn"
                         onClick={() => setShowCreateModal(true)}
                     >
-                        + Create Event
+                        <Plus size={18} />
+                        Create Event
                     </button>
                 </div>
             </div>
 
-            {/* Tabs */}
+            {/* Tabs - Compact Segmented Control */}
             <div className="events-tabs">
                 <button
                     className={`tab-button ${activeTab === 'upcoming' ? 'active' : ''}`}
                     onClick={() => setActiveTab('upcoming')}
                 >
-                    📅 Upcoming Events
+                    Upcoming
                 </button>
                 <button
                     className={`tab-button ${activeTab === 'invitations' ? 'active' : ''}`}
                     onClick={() => setActiveTab('invitations')}
                 >
-                    📩 Invitations
+                    Invitations
                     {invitations.length > 0 && (
                         <span className="badge">{invitations.length}</span>
                     )}
                 </button>
             </div>
 
-            {/* Filters & Search */}
-            <div className="events-controls">
-                <div className="search-bar">
+            {/* Unified Toolbar */}
+            <div className="events-toolbar">
+                <div className="search-wrapper">
+                    <Search size={18} className="search-icon" />
                     <input
                         type="text"
                         className="search-input"
-                        placeholder="Search events..."
+                        placeholder="Search events by title, host, city..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                     />
-                    <button className="search-btn" onClick={handleSearch}>
-                        🔍 Search
-                    </button>
                 </div>
 
-                <div className="filters">
+                <div className="toolbar-filters">
                     <select
                         className="filter-select"
                         value={filters.type || ''}
@@ -185,13 +185,15 @@ export default function Events() {
                             className={`view-btn ${viewMode === 'list' ? 'active' : ''}`}
                             onClick={() => setViewMode('list')}
                         >
-                            📋 List
+                            <List size={16} />
+                            List
                         </button>
                         <button
                             className={`view-btn ${viewMode === 'calendar' ? 'active' : ''}`}
                             onClick={() => setViewMode('calendar')}
                         >
-                            📅 Calendar
+                            <Calendar size={16} />
+                            Calendar
                         </button>
                     </div>
                 </div>
@@ -214,16 +216,22 @@ export default function Events() {
                     </div>
                 ) : filteredEvents.length === 0 ? (
                     <div className="empty-state">
-                        <div className="empty-icon">📅</div>
+                        <div className="empty-state-icon">
+                            <Calendar size={32} />
+                        </div>
                         <h3>No Events Found</h3>
                         <p>
                             {searchQuery || filters.type
                                 ? 'Try adjusting your search or filters'
                                 : 'No upcoming events at the moment'}
                         </p>
+                        <button className="empty-state-cta" onClick={() => setShowCreateModal(true)}>
+                            <Plus size={16} />
+                            Create Event
+                        </button>
                     </div>
                 ) : (
-                    <div className={`events-view ${viewMode}`}>
+                    <div className="events-view">
                         {viewMode === 'list' ? (
                             <div className="events-grid">
                                 {filteredEvents.map((event) => (
@@ -231,7 +239,11 @@ export default function Events() {
                                 ))}
                             </div>
                         ) : (
-                            <div className="calendar-view">
+                            <div className="empty-state">
+                                <div className="empty-state-icon">
+                                    <Calendar size={32} />
+                                </div>
+                                <h3>Calendar View</h3>
                                 <p>Calendar view coming soon</p>
                             </div>
                         )}
@@ -253,14 +265,16 @@ export default function Events() {
                     </div>
                 ) : invitations.length === 0 ? (
                     <div className="empty-state">
-                        <div className="empty-icon">📩</div>
+                        <div className="empty-state-icon">
+                            <Calendar size={32} />
+                        </div>
                         <h3>No Pending Invitations</h3>
                         <p>You don't have any event invitations at the moment</p>
                     </div>
                 ) : (
                     <div className="invitations-list">
                         <div className="invitations-header">
-                            <p>📩 You have {invitations.length} pending invitation{invitations.length !== 1 ? 's' : ''}</p>
+                            <p>You have {invitations.length} pending invitation{invitations.length !== 1 ? 's' : ''}</p>
                         </div>
                         <div className="events-grid">
                             {invitations.map((event: any) => (
@@ -276,7 +290,7 @@ export default function Events() {
                                     <p className="event-organizer">
                                         Hosted by <strong>{event.creator.firstName} {event.creator.lastName}</strong>
                                     </p>
-                                    <p className="invited-at">
+                                    <p style={{ fontSize: '13px', color: 'var(--gray-500)', marginTop: '8px' }}>
                                         Invited {new Date(event.invitedAt).toLocaleDateString()}
                                     </p>
                                     {event.suggestedRespondBy && new Date(event.suggestedRespondBy) > new Date() && (

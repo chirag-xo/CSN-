@@ -5,9 +5,11 @@ import BasicInfoTab from '../components/profile/BasicInfoTab';
 import InterestsTab from '../components/profile/InterestsTab';
 import PrivacyTab from '../components/profile/PrivacyTab';
 import ProfileCompletionWidget from '../components/profile/ProfileCompletionWidget';
+import ShowcaseTab from '../components/profile/ShowcaseTab';
 import Breadcrumb from '../components/common/Breadcrumb';
+import { User, Star, Lock, Briefcase } from 'lucide-react';
 
-type TabType = 'basic' | 'interests' | 'privacy';
+type TabType = 'basic' | 'interests' | 'privacy' | 'showcase';
 
 export default function ProfileSettings() {
     const [activeTab, setActiveTab] = useState<TabType>('basic');
@@ -85,22 +87,37 @@ export default function ProfileSettings() {
                         className={`tab-button ${activeTab === 'basic' ? 'active' : ''}`}
                         onClick={() => setActiveTab('basic')}
                     >
-                        <span className="tab-icon">👤</span>
-                        Basic Info
+                        <span className="tab-icon">
+                            <User size={18} />
+                        </span>
+                        <span>Basic Info</span>
                     </button>
                     <button
                         className={`tab-button ${activeTab === 'interests' ? 'active' : ''}`}
                         onClick={() => setActiveTab('interests')}
                     >
-                        <span className="tab-icon">⭐</span>
-                        Interests
+                        <span className="tab-icon">
+                            <Star size={18} />
+                        </span>
+                        <span>Interests</span>
+                    </button>
+                    <button
+                        className={`tab-button ${activeTab === 'showcase' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('showcase')}
+                    >
+                        <span className="tab-icon">
+                            <Briefcase size={18} />
+                        </span>
+                        <span>Showcase</span>
                     </button>
                     <button
                         className={`tab-button ${activeTab === 'privacy' ? 'active' : ''}`}
                         onClick={() => setActiveTab('privacy')}
                     >
-                        <span className="tab-icon">🔒</span>
-                        Privacy
+                        <span className="tab-icon">
+                            <Lock size={18} />
+                        </span>
+                        <span>Privacy</span>
                     </button>
                 </div>
 
@@ -111,6 +128,9 @@ export default function ProfileSettings() {
                     )}
                     {activeTab === 'interests' && (
                         <InterestsTab profile={profile} onUpdate={handleProfileUpdate} />
+                    )}
+                    {activeTab === 'showcase' && (
+                        <ShowcaseTab profile={profile} onUpdate={handleProfileUpdate} />
                     )}
                     {activeTab === 'privacy' && <PrivacyTab />}
                 </div>

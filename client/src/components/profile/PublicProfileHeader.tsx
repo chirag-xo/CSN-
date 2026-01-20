@@ -36,11 +36,20 @@ export default function PublicProfileHeader({
         <div className="profile-header-card">
             {/* Profile Photo */}
             <div className="profile-photo-large">
-                {photoUrl ? (
-                    <img src={getFullPhotoUrl(photoUrl) || ''} alt={fullName} />
-                ) : (
-                    <div className="photo-placeholder-large">{initials}</div>
-                )}
+                <img
+                    src={
+                        photoUrl
+                            ? photoUrl.startsWith('http')
+                                ? photoUrl
+                                : `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}${photoUrl}`
+                            : `https://ui-avatars.com/api/?name=${firstName}+${lastName}&background=6D28D9&color=fff`
+                    }
+                    alt={fullName}
+                    onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = `https://ui-avatars.com/api/?name=${firstName}+${lastName}&background=6D28D9&color=fff`;
+                    }}
+                />
             </div>
 
             {/* Basic Info */}

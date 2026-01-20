@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import profileService, { type Profile, type UpdateProfileData } from '../../services/profileService';
 import chapterService, { type Chapter } from '../../services/chapterService';
 import ProfilePhotoUpload from './ProfilePhotoUpload';
+import SkillsInput from './SkillsInput';
+import { User, Briefcase, MapPin, FileText, MessageSquare, Award } from 'lucide-react';
 
 interface BasicInfoTabProps {
     profile: Profile;
@@ -18,6 +20,7 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
         phone: profile.phone || '',
         tagline: profile.tagline || '',
         bio: profile.bio || '',
+        skills: profile.skills || [],
         chapterId: profile.chapter?.id || '',
     });
     const [chapters, setChapters] = useState<Chapter[]>([]);
@@ -56,7 +59,8 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
             formData.phone !== (profile.phone || '') ||
             formData.tagline !== (profile.tagline || '') ||
             formData.bio !== (profile.bio || '') ||
-            formData.chapterId !== (profile.chapter?.id || '');
+            formData.chapterId !== (profile.chapter?.id || '') ||
+            JSON.stringify(formData.skills) !== JSON.stringify(profile.skills || []);
 
         setIsDirty(hasChanged);
     }, [formData, profile]);
@@ -66,6 +70,12 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
     ) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+        setSuccessMessage('');
+        setErrorMessage('');
+    };
+
+    const handleSkillsChange = (skills: string[]) => {
+        setFormData((prev) => ({ ...prev, skills }));
         setSuccessMessage('');
         setErrorMessage('');
     };
@@ -108,9 +118,21 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
 
     return (
         <form className="basic-info-form" onSubmit={handleSubmit}>
-            {/* Profile Photo Section */}
-            <div className="form-section">
-                <h3 className="section-title">Profile Photo</h3>
+            {/* Messages */}
+            {successMessage && <div className="success-message">{successMessage}</div>}
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
+
+            {/* Profile Photo Card */}
+            <div className="form-card">
+                <div className="card-header">
+                    <div className="card-icon">
+                        <User size={20} />
+                    </div>
+                    <div>
+                        <h3 className="card-title">Profile Photo</h3>
+                        <p className="card-subtitle">Update your profile picture</p>
+                    </div>
+                </div>
                 <ProfilePhotoUpload
                     currentPhoto={profile.profilePhoto}
                     onPhotoUpdate={handlePhotoUpdate}
@@ -118,14 +140,22 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
                 />
             </div>
 
-            {/* Personal Information */}
-            <div className="form-section">
-                <h3 className="section-title">Personal Information</h3>
+            {/* Personal Information Card */}
+            <div className="form-card">
+                <div className="card-header">
+                    <div className="card-icon">
+                        <User size={20} />
+                    </div>
+                    <div>
+                        <h3 className="card-title">Personal Information</h3>
+                        <p className="card-subtitle">Your basic contact details</p>
+                    </div>
+                </div>
 
                 {/* Email (Read-Only) */}
                 <div className="email-verification-section">
                     <div className="form-group">
-                        <label htmlFor="email">Email Address (Login Credential)</label>
+                        <label htmlFor="email">Email Address</label>
                         <div className="email-input-wrapper">
                             <input
                                 type="email"
@@ -154,7 +184,7 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
                     </div>
                 </div>
 
-                <div className="form-grid">
+                <div className="form-grid" style={{ marginTop: '20px' }}>
                     <div className="form-group">
                         <label htmlFor="firstName">
                             First Name <span className="required">*</span>
@@ -182,7 +212,22 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
                             required
                         />
                     </div>
+                </div>
+            </div>
 
+            {/* Professional Details Card */}
+            <div className="form-card">
+                <div className="card-header">
+                    <div className="card-icon">
+                        <Briefcase size={20} />
+                    </div>
+                    <div>
+                        <h3 className="card-title">Professional Details</h3>
+                        <p className="card-subtitle">Your work information</p>
+                    </div>
+                </div>
+
+                <div className="form-grid">
                     <div className="form-group">
                         <label htmlFor="company">Company</label>
                         <input
@@ -191,6 +236,7 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
                             name="company"
                             value={formData.company}
                             onChange={handleInputChange}
+                            placeholder="Your company name"
                         />
                     </div>
 
@@ -202,9 +248,25 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
                             name="position"
                             value={formData.position}
                             onChange={handleInputChange}
+                            placeholder="Your job title"
                         />
                     </div>
+                </div>
+            </div>
 
+            {/* Location Details Card */}
+            <div className="form-card">
+                <div className="card-header">
+                    <div className="card-icon">
+                        <MapPin size={20} />
+                    </div>
+                    <div>
+                        <h3 className="card-title">Location Details</h3>
+                        <p className="card-subtitle">Where you're based</p>
+                    </div>
+                </div>
+
+                <div className="form-grid">
                     <div className="form-group">
                         <label htmlFor="city">City</label>
                         <input
@@ -213,6 +275,7 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
                             name="city"
                             value={formData.city}
                             onChange={handleInputChange}
+                            placeholder="Your city"
                         />
                     </div>
 
@@ -224,6 +287,7 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
                             name="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
+                            placeholder="+1 (555) 000-0000"
                         />
                     </div>
 
@@ -252,11 +316,45 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
                 </div>
             </div>
 
-            {/* Tagline */}
-            <div className="form-section">
-                <h3 className="section-title">Tagline</h3>
+            {/* Skills Card */}
+            <div className="form-card">
+                <div className="card-header">
+                    <div className="card-icon">
+                        <Award size={20} />
+                    </div>
+                    <div>
+                        <h3 className="card-title">Skills & Expertise</h3>
+                        <p className="card-subtitle">Showcase your professional skills</p>
+                    </div>
+                </div>
+
                 <div className="form-group">
-                    <label htmlFor="tagline">Professional tagline</label>
+                    <label htmlFor="skills-input">Your Skills</label>
+                    <SkillsInput
+                        skills={formData.skills || []}
+                        onChange={handleSkillsChange}
+                        maxSkills={20}
+                    />
+                    <p className="field-hint">
+                        Add skills like "Public Speaking", "Sales", "Marketing", or "Leadership". Press Enter or click Add to save.
+                    </p>
+                </div>
+            </div>
+
+            {/* Tagline Card */}
+            <div className="form-card">
+                <div className="card-header">
+                    <div className="card-icon">
+                        <FileText size={20} />
+                    </div>
+                    <div>
+                        <h3 className="card-title">Tagline</h3>
+                        <p className="card-subtitle">A catchy one-liner about you</p>
+                    </div>
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="tagline">Professional Tagline</label>
                     <input
                         type="text"
                         id="tagline"
@@ -270,11 +368,20 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
                 </div>
             </div>
 
-            {/* Bio */}
-            <div className="form-section">
-                <h3 className="section-title">Bio</h3>
+            {/* Bio Card */}
+            <div className="form-card">
+                <div className="card-header">
+                    <div className="card-icon">
+                        <MessageSquare size={20} />
+                    </div>
+                    <div>
+                        <h3 className="card-title">Bio</h3>
+                        <p className="card-subtitle">Tell your story</p>
+                    </div>
+                </div>
+
                 <div className="form-group">
-                    <label htmlFor="bio">About you</label>
+                    <label htmlFor="bio">About You</label>
                     <textarea
                         id="bio"
                         name="bio"
@@ -289,10 +396,6 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
                     </div>
                 </div>
             </div>
-
-            {/* Messages */}
-            {successMessage && <div className="success-message">{successMessage}</div>}
-            {errorMessage && <div className="error-message">{errorMessage}</div>}
 
             {/* Actions */}
             <div className="form-actions">

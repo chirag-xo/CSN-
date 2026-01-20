@@ -1,6 +1,8 @@
 /* BNI-Style Dashboard Home Styles */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cookie&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 :root {
     --primary-purple: #6D28D9;
@@ -218,7 +220,7 @@
     padding: 16px;
     background: #f7f7fb;
     align-items: flex-start;
-    height: calc(100vh - 64px);
+    height: calc(100vh - 80px);
     width: 100%;
 }
 
@@ -410,100 +412,118 @@
 }
 
 /* KPI Section */
-/* KPI Section */
 .kpi-section {
     margin-bottom: var(--gap-xl);
     width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .kpi-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    width: 100%;
+    justify-content: center;
 }
 
 .kpi-card {
     background: #ffffff;
-    border-radius: 16px;
-    padding: 24px;
+    border-radius: 18px;
+    padding: 20px;
     border: 1px solid #E5E7EB;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 180px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    max-width: 260px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    margin: 0 auto;
 }
 
 .kpi-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    border-color: #D1D5DB;
+    transform: translateY(-6px);
+    box-shadow: 0 14px 40px rgba(38, 12, 82, 0.35);
 }
 
 /* Header: Icon + Title */
 .kpi-top {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 24px;
+    gap: 8px;
+    margin-bottom: 16px;
+    text-align: center;
 }
 
 .kpi-icon-wrapper {
-    width: auto;
-    height: auto;
+    width: 56px;
+    height: 56px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: transparent;
+    border-radius: 14px;
     flex-shrink: 0;
-    margin-right: 12px;
+    margin-bottom: 8px;
 }
 
 .kpi-emoji {
-    font-size: 40px;
+    font-size: 30px;
     line-height: 1;
 }
 
 .kpi-img-icon {
-    width: 60px;
-    height: 60px;
+    width: 36px;
+    height: 36px;
     object-fit: contain;
 }
 
 .kpi-referral-given-icon {
-    width: 50px;
-    height: 50px;
+    width: 34px;
+    height: 34px;
 }
 
 .kpi-title {
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 13px;
+    font-weight: 600;
     color: #6B7280;
     /* Muted gray */
     line-height: 1.4;
+    text-align: center;
 }
 
 /* Metric Value */
 .kpi-metric {
-    font-size: 42px;
+    font-size: 40px;
     font-weight: 700;
     color: #111827;
     /* Dark gray/black */
     line-height: 1;
-    margin-bottom: 24px;
+    margin: auto 0;
     letter-spacing: -0.02em;
+    text-align: center;
 }
 
 /* Footer: CTA */
+/* Footer: CTA */
 .kpi-footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #040008 0%, #270f4a 30%, #260c52 60%, #000000 100%);
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
-    margin-top: auto;
 }
 
 .kpi-action-btn {
@@ -517,44 +537,26 @@
     gap: 4px;
     transition: opacity 0.2s;
     padding: 0;
+    color: white !important;
+    /* Force white text on dark gradient */
 }
 
 .kpi-action-btn:hover {
-    opacity: 0.7;
+    opacity: 0.8;
 }
 
-/* Accent Strips (Top color bar to replace thick left border) */
-.kpi-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: transparent;
-    transition: background 0.2s;
-}
 
-.kpi-card.accent-purple::before {
-    background: #6D28D9;
-}
-
-.kpi-card.accent-cyan::before {
-    background: #0891B2;
-}
-
-.kpi-card.accent-red::before {
-    background: #DC2626;
-}
-
-.kpi-card.accent-green::before {
-    background: #10B981;
-}
 
 /* Responsive Grid */
-@media (max-width: 1024px) {
+@media (max-width: 1280px) {
     .kpi-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
@@ -564,7 +566,7 @@
     }
 
     .kpi-metric {
-        font-size: 36px;
+        font-size: 28px;
     }
 }
 
@@ -585,6 +587,17 @@
     flex-direction: column;
     gap: var(--gap-lg);
     flex: 1;
+}
+
+/* Standard Section Title (Used by KPIs, Profile Completion) */
+.section-title {
+    font-size: 20px !important;
+    font-weight: 600;
+    color: #111827;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #E5E7EB;
+    margin-bottom: 20px;
+    width: 100%;
 }
 
 .section-subtitle {
@@ -1456,7 +1469,9 @@
             opacity: 1;
         }
     }
-}/* ================================================
+}
+
+/* ================================================
    PROFILE COMPLETION CARD (BNI STYLE)
    ================================================ */
 
@@ -1561,8 +1576,11 @@
 .pc-percent {
     font-size: 28px;
     font-weight: 700;
-    color: #6D28D9;
-    /* Primary Purple matching progress bar */
+    background: linear-gradient(135deg, #040008 0%, #270f4a 30%, #260c52 60%, #000000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    /* Gradient text */
 }
 
 .pc-label {
@@ -1640,7 +1658,7 @@
 }
 
 .pc-fix-btn:hover {
-    background: #6D28D9;
+    background: linear-gradient(135deg, #040008 0%, #270f4a 30%, #260c52 60%, #000000 100%);
     color: #ffffff;
 }
 
@@ -1653,7 +1671,7 @@
 .pc-cta-btn {
     width: 100%;
     padding: 14px;
-    background: #6D28D9;
+    background: linear-gradient(135deg, #040008 0%, #270f4a 30%, #260c52 60%, #000000 100%);
     color: white;
     font-size: 15px;
     font-weight: 600;
@@ -1665,13 +1683,26 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    box-shadow: 0 4px 6px rgba(109, 40, 217, 0.15);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-backdrop {
+    position: fixed;
+    top: 64px;
+    /* Below TopBar or adjust if needed */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 55;
+    /* Above content (40), below Sidebar (60) */
+    backdrop-filter: blur(2px);
 }
 
 .pc-cta-btn:hover {
-    background: #5B21B6;
+    background: linear-gradient(135deg, #040008 0%, #3e1b73 30%, #3b147d 60%, #000000 100%);
     transform: translateY(-1px);
-    box-shadow: 0 6px 12px rgba(109, 40, 217, 0.2);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
 }
 
 /* Responsive Behavior */

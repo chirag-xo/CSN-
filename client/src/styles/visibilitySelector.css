@@ -1,0 +1,111 @@
+/* Visibility Selector Styles */
+
+.visibility-selector-container {
+    position: relative;
+    display: inline-block;
+    min-width: 140px;
+    z-index: 10;
+}
+
+.visibility-selector-container.is-open {
+    z-index: 100;
+}
+
+.visibility-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.visibility-trigger:hover:not(:disabled) {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
+.visibility-trigger.disabled {
+    background: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+    border-color: #f3f4f6;
+}
+
+.visibility-chevron {
+    margin-left: auto;
+    color: #9ca3af;
+    transition: transform 0.2s;
+}
+
+.visibility-icon {
+    flex-shrink: 0;
+}
+
+/* Dropdown Menu */
+.visibility-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    /* Align to right if needed, or left: 0 */
+    width: 180px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    z-index: 50;
+    overflow: hidden;
+    animation: scaleIn 0.2s ease-out;
+    transform-origin: top center;
+}
+
+.visibility-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    background: white;
+    border: none;
+    text-align: left;
+    font-size: 14px;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.visibility-option:hover {
+    background: #f9fafb;
+}
+
+.visibility-option.selected {
+    background: #f3f4f6;
+    font-weight: 500;
+}
+
+.option-indicator {
+    width: 6px;
+    height: 6px;
+    background: #6D28D9;
+    border-radius: 50%;
+    margin-left: auto;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
