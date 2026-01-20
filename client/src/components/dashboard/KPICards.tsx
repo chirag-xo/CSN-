@@ -17,65 +17,68 @@ export default function KPICards({ stats }: KPICardsProps) {
             id: 'referrals-given',
             title: 'Referrals Given',
             value: stats.referralsGiven,
-            icon: '📤',
+            icon: <img src="/referrals-given.png" alt="Referrals Given" className="kpi-img-icon kpi-referral-given-icon" />,
             action: 'Submit New',
             actionLink: '/dashboard/home/referrals',
-            color: '#6D28D9',
-            borderColor: 'border-l-purple-600'
+            color: '#6D28D9', // Purple
+            accentClass: 'accent-purple'
         },
         {
             id: 'referrals-received',
             title: 'Referrals Received',
             value: stats.referralsReceived,
-            icon: '📥',
+            icon: <img src="/referrals-received.png" alt="Referrals Received" className="kpi-img-icon" />,
             action: 'View All',
             actionLink: '/dashboard/home/referrals',
-            color: '#0891B2',
-            borderColor: 'border-l-cyan-600'
+            color: '#0891B2', // Cyan
+            accentClass: 'accent-cyan'
         },
         {
             id: 'meetings-attended',
             title: 'Meetings Attended',
             value: stats.meetingsAttended,
-            icon: '🎯',
+            icon: <img src="/meetings-attended-icon.png" alt="Meetings Attended" className="kpi-img-icon" />,
             action: 'View History',
             actionLink: '/dashboard/home/events',
-            color: '#DC2626',
-            borderColor: 'border-l-red-600'
+            color: '#DC2626', // Red
+            accentClass: 'accent-red'
         },
         {
             id: 'connections',
             title: 'Connections',
             value: stats.connections,
-            icon: <img src="/add-friend.png" alt="Connections" style={{ width: '24px', height: '24px', verticalAlign: 'middle', display: 'block' }} />,
+            icon: <img src="/connections-icon.png" alt="Connections" className="kpi-img-icon" />,
             action: 'View Network',
             actionLink: '/dashboard/home/connections',
-            color: '#10B981',
-            borderColor: 'border-l-green-600'
+            color: '#10B981', // Green
+            accentClass: 'accent-green'
         }
     ];
 
     return (
-        <div className="mb-6">
-            <h2 className="text-base font-semibold text-gray-900 mb-4">Your Business Metrics</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="kpi-section">
+            <h2 className="section-title">Your Business Metrics</h2>
+            <div className="kpi-grid">
                 {kpis.map(kpi => (
                     <div
                         key={kpi.id}
-                        className={`bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 flex flex-col justify-between min-h-[160px] border-l-4 ${kpi.borderColor}`}
+                        className={`kpi-card ${kpi.accentClass}`}
+                        onClick={() => navigate(kpi.actionLink)}
                     >
-                        <div className="flex items-center gap-3 mb-4">
-                            <span className="text-3xl">{kpi.icon}</span>
-                            <h3 className="text-sm font-medium text-gray-600">{kpi.title}</h3>
+                        <div className="kpi-top">
+                            <div className="kpi-icon-wrapper" style={{ color: kpi.color }}>
+                                {typeof kpi.icon === 'string' ? <span className="kpi-emoji">{kpi.icon}</span> : kpi.icon}
+                            </div>
+                            <h3 className="kpi-title">{kpi.title}</h3>
                         </div>
-                        <div className="text-4xl font-bold text-gray-900 mb-4">{kpi.value}</div>
-                        <button
-                            className="text-sm font-semibold transition-opacity hover:opacity-75"
-                            style={{ color: kpi.color }}
-                            onClick={() => navigate(kpi.actionLink)}
-                        >
-                            {kpi.action} →
-                        </button>
+
+                        <div className="kpi-metric">{kpi.value}</div>
+
+                        <div className="kpi-footer">
+                            <button className="kpi-action-btn" style={{ color: kpi.color }}>
+                                {kpi.action} →
+                            </button>
+                        </div>
                     </div>
                 ))}
             </div>
