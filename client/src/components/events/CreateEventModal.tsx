@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Globe, Lock } from 'lucide-react';
 import eventService, { type CreateEventData } from '../../services/eventService';
 import connectionService from '../../services/connectionService';
 import '../../styles/createEventModal.css';
@@ -349,23 +350,29 @@ export default function CreateEventModal({ onClose, onSuccess }: CreateEventModa
                     <div className="form-group">
                         <label>Event Visibility</label>
                         <div className="visibility-toggle">
-                            <label className="radio-label">
+                            <label className={`radio-label ${formData.isPublic ? 'selected' : ''}`}>
                                 <input
                                     type="radio"
                                     name="isPublic"
                                     checked={formData.isPublic === true}
                                     onChange={() => setFormData(prev => ({ ...prev, isPublic: true, invitedUserIds: [] }))}
                                 />
-                                <span>🌍 Public - Anyone can see and join</span>
+                                <div className="radio-content">
+                                    <Globe size={18} className="radio-icon" />
+                                    <span>Public - Anyone can see and join</span>
+                                </div>
                             </label>
-                            <label className="radio-label">
+                            <label className={`radio-label ${!formData.isPublic ? 'selected' : ''}`}>
                                 <input
                                     type="radio"
                                     name="isPublic"
                                     checked={formData.isPublic === false}
                                     onChange={() => setFormData(prev => ({ ...prev, isPublic: false }))}
                                 />
-                                <span>🔒 Private - Only invited people</span>
+                                <div className="radio-content">
+                                    <Lock size={18} className="radio-icon" />
+                                    <span>Private - Only invited people</span>
+                                </div>
                             </label>
                         </div>
                     </div>
