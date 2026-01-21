@@ -3,7 +3,7 @@ import eventService, { type Event, type EventFilters } from '../services/eventSe
 import EventCard from '../components/events/EventCard';
 import CreateEventModal from '../components/events/CreateEventModal';
 import Breadcrumb from '../components/common/Breadcrumb';
-import { Search, Plus, Calendar, List } from 'lucide-react';
+import { Search, Plus, Calendar, List, Lock, MapPin, Clock, Lightbulb, Check, X } from 'lucide-react';
 import '../styles/events.css';
 
 type ViewMode = 'list' | 'calendar';
@@ -285,13 +285,18 @@ export default function Events() {
                         <div className="events-grid">
                             {invitations.map((event: any) => (
                                 <div key={event.id} className="invitation-card">
-                                    <div className="event-badge private">🔒 Private Event</div>
+                                    <div className="event-badge private">
+                                        <Lock size={12} />
+                                        Private Event
+                                    </div>
                                     <h3>{event.title}</h3>
                                     <p className="event-meta">
-                                        📍 {event.location || 'Virtual'}
+                                        <MapPin size={14} />
+                                        {event.location || 'Virtual'}
                                     </p>
                                     <p className="event-meta">
-                                        🕒 {new Date(event.date).toLocaleDateString()} at {new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        <Clock size={14} />
+                                        {new Date(event.date).toLocaleDateString()} at {new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     </p>
                                     <p className="event-organizer">
                                         Hosted by <strong>{event.creator.firstName} {event.creator.lastName}</strong>
@@ -301,7 +306,8 @@ export default function Events() {
                                     </p>
                                     {event.suggestedRespondBy && new Date(event.suggestedRespondBy) > new Date() && (
                                         <p className="respond-by">
-                                            💡 Respond by {new Date(event.suggestedRespondBy).toLocaleDateString()}
+                                            <Lightbulb size={14} />
+                                            Respond by {new Date(event.suggestedRespondBy).toLocaleDateString()}
                                         </p>
                                     )}
                                     <div className="invitation-actions">
@@ -309,13 +315,15 @@ export default function Events() {
                                             className="btn-accept"
                                             onClick={() => handleInvitationResponse(event.id, 'GOING')}
                                         >
-                                            ✓ Accept
+                                            <Check size={16} />
+                                            Accept
                                         </button>
                                         <button
                                             className="btn-decline"
                                             onClick={() => handleInvitationResponse(event.id, 'DECLINED')}
                                         >
-                                            ✗ Decline
+                                            <X size={16} />
+                                            Decline
                                         </button>
                                     </div>
                                 </div>

@@ -3,6 +3,7 @@ import galleryService, { type GalleryPhoto } from '../services/galleryService';
 import Breadcrumb from '../components/common/Breadcrumb';
 import PhotoUpload from '../components/gallery/PhotoUpload';
 import PhotoCard from '../components/gallery/PhotoCard';
+import { Camera, Plus, AlertTriangle, Image as ImageIcon, Loader2 } from 'lucide-react';
 import '../styles/gallery.css';
 
 export default function Gallery() {
@@ -96,31 +97,23 @@ export default function Gallery() {
             <Breadcrumb items={breadcrumbItems} />
 
             <div className="page-header">
-                <h1>📸 My Gallery</h1>
+                <div className="header-title">
+                    <div className="icon-wrapper">
+                        <Camera size={24} />
+                    </div>
+                    <h1>My Gallery</h1>
+                </div>
                 <button className="btn-primary" onClick={() => setShowUpload(true)}>
-                    ➕ Upload Photo
+                    <Plus size={20} /> Upload Photo
                 </button>
             </div>
-
-            {/* Stats Widget */}
-            {/* {stats.totalPhotos > 0 && (
-                <GalleryStatsWidget stats={stats} onUploadClick={() => setShowUpload(true)} />
-            )} */}
-
-            {/* Stats Cards */}
-            {/* {stats.totalPhotos > 0 && (
-                <StatsCards
-                    totalPhotos={stats.totalPhotos}
-                    photosWithCaptions={stats.photosWithCaptions}
-                    featuredPhotos={stats.featuredPhotos}
-                    completionScore={stats.completionScore}
-                />
-            )} */}
 
             {/* Error State */}
             {error && (
                 <div className="error-state">
-                    <div className="error-icon">⚠️</div>
+                    <div className="error-icon">
+                        <AlertTriangle size={48} />
+                    </div>
                     <p>{error}</p>
                     <button onClick={() => fetchPhotos(true)}>Retry</button>
                 </div>
@@ -129,7 +122,7 @@ export default function Gallery() {
             {/* Loading State */}
             {loading && offset === 0 && (
                 <div className="loading-state">
-                    <div className="spinner"></div>
+                    <Loader2 size={48} className="animate-spin text-purple-600 mx-auto mb-4" />
                     <p>Loading photos...</p>
                 </div>
             )}
@@ -137,11 +130,13 @@ export default function Gallery() {
             {/* Empty State */}
             {!loading && !error && photos.length === 0 && (
                 <div className="empty-state">
-                    <div className="empty-icon">📭</div>
+                    <div className="empty-icon">
+                        <ImageIcon size={64} strokeWidth={1} />
+                    </div>
                     <h3>No photos yet</h3>
                     <p>Upload your first photo to get started!</p>
                     <button className="btn-primary" onClick={() => setShowUpload(true)}>
-                        ➕ Upload Photo
+                        <Plus size={20} /> Upload Photo
                     </button>
                 </div>
             )}

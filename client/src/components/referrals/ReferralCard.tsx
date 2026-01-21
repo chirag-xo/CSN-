@@ -1,6 +1,22 @@
 import { useState } from 'react';
 import { type Referral } from '../../services/referralService';
-import { ChevronDown, ChevronUp, Check, X } from 'lucide-react';
+import {
+    ChevronDown,
+    ChevronUp,
+    Check,
+    X,
+    Briefcase,
+    Handshake,
+    LifeBuoy,
+    Clock,
+    CheckCircle2,
+    XCircle,
+    User,
+    Mail,
+    Phone,
+    Calendar,
+    FileText
+} from 'lucide-react';
 import '../../styles/referrals.css';
 
 interface ReferralCardProps {
@@ -19,28 +35,32 @@ export default function ReferralCard({ referral, isReceived, onStatusUpdate }: R
 
     const getTypeBadge = () => {
         const typeConfig = {
-            BUSINESS: { emoji: '💼', label: 'Business', class: 'business' },
-            INTRO: { emoji: '🤝', label: 'Intro', class: 'intro' },
-            SUPPORT: { emoji: '🆘', label: 'Support', class: 'support' },
+            BUSINESS: { icon: Briefcase, label: 'Business', class: 'business' },
+            INTRO: { icon: Handshake, label: 'Intro', class: 'intro' },
+            SUPPORT: { icon: LifeBuoy, label: 'Support', class: 'support' },
         };
         const config = typeConfig[referral.type];
+        const Icon = config.icon;
+
         return (
             <span className={`type-badge ${config.class}`}>
-                {config.emoji} {config.label}
+                <Icon size={14} className="inline-icon" /> {config.label}
             </span>
         );
     };
 
     const getStatusBadge = () => {
         const statusConfig = {
-            PENDING: { icon: '🟡', label: 'Pending', class: 'pending' },
-            CONVERTED: { icon: '✅', label: 'Converted', class: 'converted' },
-            CLOSED: { icon: '❌', label: 'Closed', class: 'closed' },
+            PENDING: { icon: Clock, label: 'Pending', class: 'pending' },
+            CONVERTED: { icon: CheckCircle2, label: 'Converted', class: 'converted' },
+            CLOSED: { icon: XCircle, label: 'Closed', class: 'closed' },
         };
         const config = statusConfig[referral.status];
+        const Icon = config.icon;
+
         return (
             <span className={`status-badge ${config.class}`}>
-                {config.icon} {config.label}
+                <Icon size={14} className="inline-icon" /> {config.label}
             </span>
         );
     };
@@ -111,15 +131,30 @@ export default function ReferralCard({ referral, isReceived, onStatusUpdate }: R
                             {(referral.contactName || referral.contactEmail || referral.contactPhone) && (
                                 <div className="contact-details">
                                     <h5>Contact Information:</h5>
-                                    {referral.contactName && <p>👤 {referral.contactName}</p>}
-                                    {referral.contactEmail && <p>📧 {referral.contactEmail}</p>}
-                                    {referral.contactPhone && <p>📞 {referral.contactPhone}</p>}
+                                    {referral.contactName && (
+                                        <p className="flex items-center gap-2">
+                                            <User size={14} className="text-gray-500" /> {referral.contactName}
+                                        </p>
+                                    )}
+                                    {referral.contactEmail && (
+                                        <p className="flex items-center gap-2">
+                                            <Mail size={14} className="text-gray-500" /> {referral.contactEmail}
+                                        </p>
+                                    )}
+                                    {referral.contactPhone && (
+                                        <p className="flex items-center gap-2">
+                                            <Phone size={14} className="text-gray-500" /> {referral.contactPhone}
+                                        </p>
+                                    )}
                                 </div>
                             )}
 
                             {referral.notes && (
                                 <div className="notes">
-                                    <strong>Notes:</strong> {referral.notes}
+                                    <strong className="flex items-center gap-2 mb-1">
+                                        <FileText size={14} /> Notes:
+                                    </strong>
+                                    {referral.notes}
                                 </div>
                             )}
                         </>
@@ -128,7 +163,9 @@ export default function ReferralCard({ referral, isReceived, onStatusUpdate }: R
 
                 {/* Footer */}
                 <div className="card-footer">
-                    <span className="timestamp">📅 {formatDate(referral.createdAt)}</span>
+                    <span className="timestamp flex items-center gap-2">
+                        <Calendar size={14} /> {formatDate(referral.createdAt)}
+                    </span>
                     <button
                         className="expand-btn"
                         onClick={() => setIsExpanded(!isExpanded)}
@@ -167,8 +204,18 @@ export default function ReferralCard({ referral, isReceived, onStatusUpdate }: R
 
                 {/* Read-only state for non-pending */}
                 {!canUpdate && referral.status !== 'PENDING' && (
-                    <div className="read-only-badge">
-                        {referral.status === 'CONVERTED' ? '✅ This referral was converted' : '❌ This referral was closed'}
+                    <div className="read-only-badge flex items-center gap-2 justify-center">
+                        {referral.status === 'CONVERTED' ? (
+                            <>
+                                <CheckCircle2 size={16} className="text-green-600" />
+                                <span>This referral was converted</span>
+                            </>
+                        ) : (
+                            <>
+                                <XCircle size={16} className="text-red-500" />
+                                <span>This referral was closed</span>
+                            </>
+                        )}
                     </div>
                 )}
             </div>
@@ -182,8 +229,12 @@ export default function ReferralCard({ referral, isReceived, onStatusUpdate }: R
                             <button className="modal-close" onClick={() => setShowConfirm(false)}>✕</button>
                         </div>
                         <div className="modal-body">
-                            <div className="confirm-icon">
-                                {selectedStatus === 'CONVERTED' ? '✅' : '❌'}
+                            <div className="confirm-icon flex justify-center">
+                                {selectedStatus === 'CONVERTED' ? (
+                                    <CheckCircle2 size={48} className="text-green-600" />
+                                ) : (
+                                    <XCircle size={48} className="text-red-500" />
+                                )}
                             </div>
                             <p>
                                 {selectedStatus === 'CONVERTED'
