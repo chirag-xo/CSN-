@@ -56,7 +56,7 @@ export default function DashboardHome() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="h-screen w-full bg-gray-50 flex flex-col overflow-hidden">
             <TopBar onMenuClick={() => setMobileMenuOpen(!mobileMenuOpen)} />
 
             {/* Mobile backdrop overlay */}
@@ -67,7 +67,7 @@ export default function DashboardHome() {
                 />
             )}
 
-            <div className="flex">
+            <div className="flex flex-1 overflow-hidden relative">
                 <Sidebar
                     collapsed={sidebarCollapsed}
                     onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -75,7 +75,7 @@ export default function DashboardHome() {
                     onMobileClose={() => setMobileMenuOpen(false)}
                 />
 
-                <main className="flex-1 p-6 max-w-7xl mx-auto w-full">
+                <main className="flex-1 overflow-y-auto p-6 w-full">
                     {/* Greeting Section (Premium Redesign) */}
                     <div className="dashboard-header">
                         <h1 className="header-greeting">

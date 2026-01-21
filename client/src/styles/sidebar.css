@@ -2,12 +2,11 @@
 
 .sidebar {
     width: 260px;
-    height: 100vh;
+    height: 100%;
+    /* Fill flex container */
     background: #ffffff;
     border-right: 1px solid #E5E7EB;
     padding: 16px;
-    position: sticky;
-    top: 0;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease-in-out;
@@ -194,4 +193,107 @@
     .sidebar.mobile-open {
         transform: translateX(0);
     }
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+    margin-top: 12px;
+    /* Pushes to variable height */
+    position: relative;
+    /* Context for popover */
+    padding-top: 12px;
+    border-top: 1px solid #F3F4F6;
+}
+
+/* Info Button Specifics */
+.info-button {
+    background: transparent;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    font-family: inherit;
+    /* Inherit font from body */
+}
+
+.info-button:hover {
+    background-color: rgba(109, 40, 217, 0.05);
+    /* Very light purple tint */
+}
+
+.info-button:hover .nav-icon {
+    color: #6D28D9;
+    /* Brand purple */
+}
+
+.info-button.active {
+    background: linear-gradient(135deg, #040008 0%, #270f4a 30%, #260c52 60%, #000000 100%);
+    color: #ffffff !important;
+}
+
+.info-button.active .nav-icon {
+    color: #ffffff !important;
+}
+
+/* Info Popover */
+.info-popover {
+    position: absolute;
+    bottom: 100%;
+    left: 8px;
+    width: 240px;
+    background: linear-gradient(135deg, #040008 0%, #270f4a 30%, #260c52 60%, #000000 100%);
+    /* App Gradient */
+    color: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    margin-bottom: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.info-popover.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.info-menu-item {
+    color: white;
+    text-decoration: underline;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.info-menu-item:hover {
+    opacity: 0.9;
+}
+
+.info-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.3);
+    width: 100%;
+    margin: 4px 0;
+}
+
+.info-copyright {
+    font-size: 12px;
+    opacity: 0.9;
+    line-height: 1.4;
+}
+
+
+
+/* Collapsed State Adjustments */
+.sidebar.collapsed .info-popover {
+    left: 100%;
+    bottom: 0;
+    margin-left: 12px;
+    margin-bottom: 0;
 }

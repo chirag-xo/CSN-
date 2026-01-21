@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, User, Users, Repeat, Calendar, Image, Mail } from 'lucide-react';
+import { LayoutDashboard, User, Users, Repeat, Calendar, Image, Mail, Info } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
 import '../../styles/sidebar.css';
 
 interface SidebarProps {
@@ -33,6 +34,22 @@ export default function Sidebar({ collapsed, onToggle, onContactClick, mobileOpe
 
     // Check if a route is active (simple includes check for sub-routes if needed)
     const isActive = (path: string) => location.pathname === path || (path !== '/dashboard/home' && location.pathname.startsWith(path));
+
+    // Info Menu State
+    const [showInfo, setShowInfo] = useState(false);
+    const infoRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (infoRef.current && !infoRef.current.contains(event.target as Node)) {
+                setShowInfo(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     return (
         <aside className={`sidebar ${collapsed ? 'collapsed' : ''} ${mobileOpen ? 'mobile-open' : ''}`}>
@@ -75,6 +92,28 @@ export default function Sidebar({ collapsed, onToggle, onContactClick, mobileOpe
                     );
                 })}
             </nav>
-        </aside>
+
+
+            {/* Sidebar Footer - Info Icon */}
+            <div className="sidebar-footer" ref={infoRef}>
+                <button
+                    className={`nav-item info-button ${showInfo ? 'active' : ''}`}
+                    onClick={() => setShowInfo(!showInfo)}
+                >
+                    <span className="nav-icon">
+                        <Info size={20} strokeWidth={2} />
+                    </span>
+                    {!collapsed && <span className="nav-label">Legal & Info</span>}
+                </button>
+
+                {/* Info Popover */}
+                <div className={`info-popover ${showInfo ? 'show' : ''}`}>
+                    <Link to="/terms" className="info-menu-item">Terms of Use</Link>
+                    <Link to="/privacy" className="info-menu-item">Privacy Policy</Link>
+                    <div className="info-divider"></div>
+                    <div className="info-copyright">Copyright 2026 CSN. All Rights Reserved.</div>
+                </div>
+            </div>
+        </aside >
     );
 }

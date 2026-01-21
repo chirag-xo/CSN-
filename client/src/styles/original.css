@@ -578,9 +578,17 @@ body {
 
     .logo {
         position: static;
-        margin-bottom: 20px;
+        margin-bottom: 0;
         width: 180px;
         height: 56px;
+    }
+
+    .navbar-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 40px;
     }
 
     /* Hide Features and About navigation links on mobile */
@@ -594,13 +602,19 @@ body {
         align-items: center;
         justify-content: flex-end;
         gap: 0;
-        margin-bottom: 40px;
+        margin-bottom: 0;
+        flex: 1;
+        /* Take up remaining space */
     }
 
     .login-button-container {
         position: static;
         width: auto;
         height: auto;
+        align-items: flex-end;
+        /* Ensure button aligns to right if container grows */
+        margin-left: auto;
+        /* Push to right just in case */
     }
 
     .login-button {

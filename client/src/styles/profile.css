@@ -971,3 +971,31 @@
     margin-top: 4px;
     text-align: right;
 }
+
+/* Mobile Tabs Responsiveness */
+@media (max-width: 480px) {
+    .tab-navigation {
+        overflow-x: auto;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        /* Firefox */
+        gap: 8px;
+        /* Add gap between items */
+    }
+
+    .tab-navigation::-webkit-scrollbar {
+        display: none;
+        /* Chrome/Safari/Webkit */
+    }
+
+    .tab-button {
+        flex: 0 0 auto;
+        /* Don't shrink, take natural width */
+        white-space: nowrap;
+        /* Keep text on one line */
+        padding: 10px 16px;
+        margin-right: 0;
+        /* Gap handles spacing */
+    }
+}
