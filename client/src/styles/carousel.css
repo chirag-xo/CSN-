@@ -44,7 +44,8 @@
 .card-stack-container {
     position: relative;
     width: 100%;
-    height: 700px;
+    height: 800px;
+    /* Increased from 700px */
     margin-top: 60px;
     perspective: 2000px;
 }
@@ -63,7 +64,8 @@
 .stack-card {
     position: absolute;
     width: 500px;
-    height: 600px;
+    height: 720px;
+    /* Increased from 600px */
     border-radius: 32px;
     padding: 50px;
     transform-style: preserve-3d;
@@ -191,13 +193,15 @@
 /* Responsive Design */
 @media (max-width: 1200px) {
     .card-stack-container {
-        height: 600px;
+        height: 700px;
+        /* Increased from 600px */
         perspective: 1500px;
     }
 
     .stack-card {
         width: 400px;
-        height: 500px;
+        height: 600px;
+        /* Increased from 500px */
         padding: 40px;
     }
 
@@ -225,13 +229,15 @@
     }
 
     .card-stack-container {
-        height: 500px;
+        height: 600px;
+        /* Increased from 500px */
         perspective: 1000px;
     }
 
     .stack-card {
         width: 320px;
-        height: 450px;
+        height: 540px;
+        /* Increased from 450px */
         padding: 30px;
     }
 

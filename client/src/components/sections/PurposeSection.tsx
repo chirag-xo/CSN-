@@ -52,12 +52,12 @@ export default function PurposeSection() {
                 <div className="events-section">
                     <h3 className="events-title">Types of Events</h3>
 
-                    <div className="events-grid">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {eventTypes.map((event) => (
-                            <div key={event.number} className="event-card">
-                                <div className="event-number">{event.number}.</div>
-                                <h4 className="event-title">{event.title}</h4>
-                                <p className="event-description">{event.description}</p>
+                            <div key={event.number} className="rounded-2xl bg-white/95 p-6 shadow-lg border border-white/20 hover:shadow-xl transition hover:-translate-y-1 h-full flex flex-col">
+                                <p className="text-sm font-semibold text-violet-600">{event.number.padStart(2, '0')}</p>
+                                <h4 className="mt-2 text-lg font-semibold text-slate-900">{event.title}</h4>
+                                <p className="mt-2 text-sm text-slate-600 leading-relaxed">{event.description}</p>
                             </div>
                         ))}
                     </div>
