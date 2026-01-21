@@ -186,7 +186,8 @@ export default function TopBar({ onMenuClick }: TopBarProps) {
                             user={{
                                 name: `${profile.firstName} ${profile.lastName}`,
                                 photoUrl: getFullPhotoUrl(profile.profilePhoto),
-                                initials: userInitials
+                                initials: userInitials,
+                                userId: profile.id
                             }}
                             onLogout={handleLogout}
                         />

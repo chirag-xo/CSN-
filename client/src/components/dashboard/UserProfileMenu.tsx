@@ -8,6 +8,7 @@ interface UserProfileMenuProps {
         name: string;
         photoUrl?: string | null;
         initials: string;
+        userId: string;
     };
     onLogout: () => void;
 }
@@ -85,7 +86,7 @@ export default function UserProfileMenu({ user, onLogout }: UserProfileMenuProps
                 <div className="bni-user-dropdown">
                     <button
                         className="bni-dropdown-item"
-                        onClick={() => handleNavigation('/profile/me')}
+                        onClick={() => handleNavigation(`/profile/${user.userId}`)}
                     >
                         <User size={18} />
                         <span>My Profile</span>
