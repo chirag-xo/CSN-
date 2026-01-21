@@ -10,6 +10,7 @@ interface ConfirmationModalProps {
     confirmText?: string;
     cancelText?: string;
     isLoading?: boolean;
+    isDestructive?: boolean;
 }
 
 export default function ConfirmationModal({
@@ -21,11 +22,13 @@ export default function ConfirmationModal({
     confirmText = 'Confirm',
     cancelText = 'Cancel',
     isLoading = false,
+    isDestructive = false,
 }: ConfirmationModalProps) {
     if (!isOpen) return null;
 
     // Brand gradient from sidebar.css
     const brandGradient = 'linear-gradient(135deg, #040008 0%, #270f4a 30%, #260c52 60%, #000000 100%)';
+    const destructiveColor = '#DC2626'; // Red-600
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 font-sans">
@@ -48,7 +51,7 @@ export default function ConfirmationModal({
                 <div
                     className="flex items-center justify-between relative"
                     style={{
-                        background: brandGradient,
+                        background: isDestructive ? destructiveColor : brandGradient,
                         padding: '16px 20px',
                     }}
                 >
@@ -137,7 +140,7 @@ export default function ConfirmationModal({
                         style={{
                             height: '44px',
                             borderRadius: '12px',
-                            background: brandGradient,
+                            background: isDestructive ? destructiveColor : brandGradient,
                             border: 'none',
                             color: '#ffffff',
                             fontWeight: 600,
