@@ -730,3 +730,50 @@
         align-items: flex-start;
     }
 }
+
+/* Custom Referral Type Selector */
+.type-selector-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.type-option-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px;
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--gray-600);
+    text-align: center;
+    height: 100%;
+}
+
+.type-option-btn:hover {
+    border-color: var(--primary-purple);
+    background: var(--gray-50);
+    color: var(--primary-purple);
+}
+
+.type-option-btn.selected {
+    border-color: var(--primary-purple);
+    background: rgba(109, 40, 217, 0.08);
+    color: var(--primary-purple);
+    box-shadow: 0 0 0 1px var(--primary-purple) inset;
+    font-weight: 600;
+}
+
+.type-option-label {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.type-option-btn.selected .type-option-label {
+    font-weight: 600;
+}

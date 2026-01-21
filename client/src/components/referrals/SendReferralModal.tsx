@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Briefcase, Handshake, LifeBuoy } from 'lucide-react';
 import connectionService, { type Connection } from '../../services/connectionService';
 import referralService, { type CreateReferralData } from '../../services/referralService';
 import '../../styles/referrals.css';
@@ -134,15 +135,32 @@ export default function SendReferralModal({ isOpen, onClose, onSuccess }: SendRe
                         {/* Referral Type */}
                         <div className="form-group">
                             <label>Referral Type: *</label>
-                            <select
-                                value={formData.type}
-                                onChange={(e) => setFormData({ ...formData, type: e.target.value as 'BUSINESS' | 'INTRO' | 'SUPPORT' })}
-                                required
-                            >
-                                <option value="BUSINESS">💼 Business</option>
-                                <option value="INTRO">🤝 Introduction</option>
-                                <option value="SUPPORT">🆘 Support</option>
-                            </select>
+                            <div className="type-selector-grid">
+                                <button
+                                    type="button"
+                                    className={`type-option-btn ${formData.type === 'BUSINESS' ? 'selected' : ''}`}
+                                    onClick={() => setFormData({ ...formData, type: 'BUSINESS' })}
+                                >
+                                    <Briefcase size={24} />
+                                    <span className="type-option-label">Business</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`type-option-btn ${formData.type === 'INTRO' ? 'selected' : ''}`}
+                                    onClick={() => setFormData({ ...formData, type: 'INTRO' })}
+                                >
+                                    <Handshake size={24} />
+                                    <span className="type-option-label">Introduction</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`type-option-btn ${formData.type === 'SUPPORT' ? 'selected' : ''}`}
+                                    onClick={() => setFormData({ ...formData, type: 'SUPPORT' })}
+                                >
+                                    <LifeBuoy size={24} />
+                                    <span className="type-option-label">Support</span>
+                                </button>
+                            </div>
                         </div>
 
                         {/* Description */}
