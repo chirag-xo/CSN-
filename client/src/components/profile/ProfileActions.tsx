@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import connectionService from '../../services/connectionService';
+import { UserPlus, Share2, MessageCircle, Clock, Star, Check, Loader2 } from 'lucide-react';
 
 interface ViewerContext {
     isOwnProfile: boolean;
@@ -92,11 +93,11 @@ export default function ProfileActions({
             <div className="action-buttons">
                 {viewerContext.isConnected ? (
                     <button onClick={handleMessage} className="action-btn primary">
-                        💬 Message
+                        <MessageCircle size={18} /> Message
                     </button>
                 ) : viewerContext.connectionPending ? (
                     <button disabled className="action-btn pending">
-                        ⏳ Request Sent
+                        <Clock size={18} /> Request Sent
                     </button>
                 ) : (
                     <button
@@ -104,7 +105,15 @@ export default function ProfileActions({
                         disabled={connecting}
                         className="action-btn primary"
                     >
-                        {connecting ? '⏳ Connecting...' : '👋 Connect'}
+                        {connecting ? (
+                            <>
+                                <Loader2 size={18} className="animate-spin" /> Connecting...
+                            </>
+                        ) : (
+                            <>
+                                <UserPlus size={18} /> Connect
+                            </>
+                        )}
                     </button>
                 )}
 
@@ -115,13 +124,31 @@ export default function ProfileActions({
                         disabled={vouching || viewerContext.hasVouched}
                         className={`action-btn ${viewerContext.hasVouched ? 'vouched' : 'secondary'}`}
                     >
-                        {vouching ? '...' : viewerContext.hasVouched ? '⭐ Vouched' : '⭐ Vouch'}
+                        {vouching ? (
+                            '...'
+                        ) : viewerContext.hasVouched ? (
+                            <>
+                                <Star size={18} fill="currentColor" /> Vouched
+                            </>
+                        ) : (
+                            <>
+                                <Star size={18} /> Vouch
+                            </>
+                        )}
                     </button>
                 )}
 
                 {/* Share Button */}
                 <button onClick={handleShare} className="action-btn share">
-                    {shareSuccess ? '✓ Copied!' : '📤 Share'}
+                    {shareSuccess ? (
+                        <>
+                            <Check size={18} /> Copied!
+                        </>
+                    ) : (
+                        <>
+                            <Share2 size={18} /> Share
+                        </>
+                    )}
                 </button>
             </div>
 

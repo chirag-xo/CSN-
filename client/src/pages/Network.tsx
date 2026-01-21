@@ -8,6 +8,7 @@ import PendingRequestCard from '../components/connections/PendingRequestCard';
 import SentRequestCard from '../components/connections/SentRequestCard';
 import UserResultCard from '../components/search/UserResultCard';
 import Breadcrumb from '../components/common/Breadcrumb';
+import ConfirmationModal from '../components/common/ConfirmationModal';
 import { Search, UserPlus, ArrowRight } from 'lucide-react';
 import '../styles/network.css';
 
@@ -22,12 +23,19 @@ export default function Network() {
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const [sortBy, setSortBy] = useState('newest');
-    const [error, setError] = useState(''); // Ensure error state is defined
+    const [error, setError] = useState('');
     const debouncedSearch = useDebounce(search, 500);
 
     // Global Search State
     const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
     const [isSearchingGlobal, setIsSearchingGlobal] = useState(false);
+
+    // Confirmation Modal State
+    const [confirmationModal, setConfirmationModal] = useState({
+        isOpen: false,
+        id: null as string | null,
+    });
+    const [removing, setRemoving] = useState(false);
 
     const navigate = useNavigate();
 
@@ -99,18 +107,24 @@ export default function Network() {
         }
     };
 
-    const handleRemove = async (id: string) => {
-        if (!confirm('Are you sure you want to remove this connection?')) return;
-
-        try {
-            await connectionService.removeConnection(id);
-            fetchData();
-        } catch (err: any) {
-            alert(err.response?.data?.error?.message || 'Failed to remove connection');
-        }
+    const handleRemove = (id: string) => {
+        setConfirmationModal({ isOpen: true, id });
     };
 
-    // Search handled by debounce effect
+    const confirmRemoveConnection = async () => {
+        if (!confirmationModal.id) return;
+
+        try {
+            setRemoving(true);
+            await connectionService.removeConnection(confirmationModal.id);
+            fetchData();
+            setConfirmationModal({ isOpen: false, id: null });
+        } catch (err: any) {
+            alert(err.response?.data?.error?.message || 'Failed to remove connection');
+        } finally {
+            setRemoving(false);
+        }
+    };
 
     return (
         <div className="network-container">
@@ -130,10 +144,6 @@ export default function Network() {
                         <span className="stat-number">{stats.total}</span>
                         <span className="stat-label">connections</span>
                     </div>
-                    <button className="find-people-btn">
-                        <UserPlus size={18} />
-                        Find People
-                    </button>
                 </div>
             </div>
 
@@ -321,6 +331,17 @@ export default function Network() {
                     )}
                 </div>
             )}
+
+            <ConfirmationModal
+                isOpen={confirmationModal.isOpen}
+                onClose={() => setConfirmationModal({ isOpen: false, id: null })}
+                onConfirm={confirmRemoveConnection}
+                title="Remove Connection"
+                message="Are you sure you want to remove this connection? They will be removed from your network immediately."
+                confirmText="Remove"
+                isDestructive={true}
+                isLoading={removing}
+            />
         </div>
     );
 }

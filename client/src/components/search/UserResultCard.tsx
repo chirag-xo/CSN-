@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { type SearchResult } from '../../services/searchService';
 import '../../styles/search.css';
+import { Clock, Check, UserPlus, MapPin } from 'lucide-react';
 
 interface UserResultCardProps {
     user: SearchResult;
@@ -15,13 +16,13 @@ export default function UserResultCard({ user, onClick }: UserResultCardProps) {
     const getStatusBadge = () => {
         switch (user.connectionStatus) {
             case 'CONNECTED':
-                return <span className="status-badge connected">✓ Connected</span>;
+                return <span className="status-badge connected"><Check size={12} /> Connected</span>;
             case 'PENDING_SENT':
-                return <span className="status-badge pending-sent">⏳ Request Sent</span>;
+                return <span className="status-badge pending-sent"><Clock size={12} /> Request Sent</span>;
             case 'PENDING_RECEIVED':
-                return <span className="status-badge pending-received">📨 Request Received</span>;
+                return <span className="status-badge pending-received"><Clock size={12} /> Request Received</span>;
             case 'NONE':
-                return <span className="status-badge none">➕ Connect</span>;
+                return <span className="status-badge none"><UserPlus size={12} /> Connect</span>;
             default:
                 return null;
         }
@@ -61,7 +62,7 @@ export default function UserResultCard({ user, onClick }: UserResultCardProps) {
                     </div>
                 )}
                 {user.city && (
-                    <div className="user-location">📍 {user.city}</div>
+                    <div className="user-location"><MapPin size={12} className="text-gray-400" /> {user.city}</div>
                 )}
             </div>
         </div>

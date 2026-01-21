@@ -1,3 +1,5 @@
+import { MapPin, Building2, Check, Star } from 'lucide-react';
+
 interface ProfileHeaderProps {
     firstName: string;
     lastName: string;
@@ -66,13 +68,13 @@ export default function PublicProfileHeader({
 
                 {location && (
                     <p className="profile-location">
-                        📍 {location}
+                        <MapPin size={16} className="text-gray-500" /> {location}
                     </p>
                 )}
 
                 {chapterName && (
                     <p className="profile-chapter">
-                        🏢 {chapterName}
+                        <Building2 size={16} className="text-gray-500" /> {chapterName}
                     </p>
                 )}
 

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Connection } from '../../services/connectionService';
-import { User, MessageCircle, MoreVertical, MapPin } from 'lucide-react';
+import { User, MessageCircle, UserMinus, MapPin } from 'lucide-react';
 
 interface ConnectionCardProps {
     connection: Connection;
@@ -66,8 +66,8 @@ export default function ConnectionCard({ connection, onRemove }: ConnectionCardP
                     <MessageCircle size={16} />
                     Message
                 </button>
-                <button className="action-btn-icon" onClick={onRemove} title="Remove connection">
-                    <MoreVertical size={18} />
+                <button className="action-btn-icon destructive" onClick={onRemove} title="Remove connection">
+                    <UserMinus size={18} />
                 </button>
             </div>
         </div>

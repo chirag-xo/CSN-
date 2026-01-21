@@ -59,27 +59,72 @@
   gap: 16px;
 }
 
+/* Premium Stats Chip - Compact BNI Style */
 .network-stats-badge {
+  height: 52px;
+  min-width: 220px;
+  width: fit-content;
+  padding: 10px 16px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: white;
-  border: 1px solid var(--gray-200);
-  border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  gap: 12px;
+
+  background: linear-gradient(135deg, #0f0a1e 0%, #1e0b36 100%);
+  /* Subtle purple-black */
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  /* Subtle shadow */
+
+  transition: all 0.3s ease;
+}
+
+.network-stats-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, #140d26 0%, #2b104d 100%);
 }
 
 .network-stats-badge .stat-number {
-  font-size: 18px;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  /* Fixed size */
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
   font-weight: 700;
-  color: var(--primary-purple);
+  color: #FFFFFF;
+  line-height: 1;
+  padding: 0;
+  /* Override previous padding */
+  backdrop-filter: blur(4px);
 }
 
 .network-stats-badge .stat-label {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--gray-600);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgb(255, 255, 255);
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+}
+
+/* Mobile Responsiveness for Chip */
+@media (max-width: 480px) {
+  .network-stats-badge {
+    width: 100%;
+    max-width: 100%;
+    /* Allow wrapping */
+    padding: 8px 14px;
+  }
 }
 
 .find-people-btn {
@@ -138,20 +183,14 @@
 }
 
 .tab.active {
-  background: rgba(109, 40, 217, 0.08);
-  color: var(--primary-purple);
+  background: var(--primary-purple);
+  color: white;
   font-weight: 600;
+  box-shadow: 0 4px 12px rgba(109, 40, 217, 0.2);
 }
 
 .tab.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 12px;
-  right: 12px;
-  height: 2px;
-  background: var(--primary-purple);
-  border-radius: 2px 2px 0 0;
+  content: none;
 }
 
 .tab-count {
@@ -427,6 +466,15 @@
 .action-btn-icon:hover {
   background: var(--gray-50);
   border-color: var(--gray-400);
+}
+
+.action-btn-icon.destructive {
+  color: var(--red);
+}
+
+.action-btn-icon.destructive:hover {
+  background: rgba(220, 38, 38, 0.05);
+  border-color: var(--red);
 }
 
 /* Request Message */
