@@ -108,7 +108,7 @@ export default function Sidebar({ collapsed, onToggle, onContactClick, mobileOpe
 
                 {/* Info Popover */}
                 <div className={`info-popover ${showInfo ? 'show' : ''}`}>
-                    <Link to="/terms" className="info-menu-item">Terms of Use</Link>
+                    <Link to="/terms-of-service" className="info-menu-item">Terms of Use</Link>
                     <Link to="/privacy" className="info-menu-item">Privacy Policy</Link>
                     <div className="info-divider"></div>
                     <div className="info-copyright">Copyright 2026 CSN. All Rights Reserved.</div>
