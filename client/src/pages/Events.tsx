@@ -160,7 +160,13 @@ export default function Events() {
                         className="search-input"
                         placeholder="Search events by title, host, city..."
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            setSearchQuery(value);
+                            if (value.trim() === '') {
+                                fetchEvents();
+                            }
+                        }}
                         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                     />
                 </div>

@@ -164,6 +164,23 @@ class EventService {
             where.OR = [
                 { title: { contains: filters.search, mode: 'insensitive' } },
                 { description: { contains: filters.search, mode: 'insensitive' } },
+                { location: { contains: filters.search, mode: 'insensitive' } },
+                {
+                    creator: {
+                        OR: [
+                            { firstName: { contains: filters.search, mode: 'insensitive' } },
+                            { lastName: { contains: filters.search, mode: 'insensitive' } },
+                        ],
+                    },
+                },
+                {
+                    chapter: {
+                        OR: [
+                            { name: { contains: filters.search, mode: 'insensitive' } },
+                            { city: { contains: filters.search, mode: 'insensitive' } },
+                        ],
+                    },
+                },
             ];
         }
 
