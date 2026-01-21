@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDebounce } from '../hooks/useDebounce';
 import connectionService, { type Connection, type ConnectionRequest, type ConnectionStats } from '../services/connectionService';
+import searchService, { type SearchResult } from '../services/searchService';
 import ConnectionCard from '../components/connections/ConnectionCard';
 import PendingRequestCard from '../components/connections/PendingRequestCard';
 import SentRequestCard from '../components/connections/SentRequestCard';
+import UserResultCard from '../components/search/UserResultCard';
 import Breadcrumb from '../components/common/Breadcrumb';
 import { Search, UserPlus, ArrowRight } from 'lucide-react';
 import '../styles/network.css';
@@ -18,11 +22,18 @@ export default function Network() {
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const [sortBy, setSortBy] = useState('newest');
-    const [error, setError] = useState('');
+    const [error, setError] = useState(''); // Ensure error state is defined
+    const debouncedSearch = useDebounce(search, 500);
+
+    // Global Search State
+    const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+    const [isSearchingGlobal, setIsSearchingGlobal] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchData();
-    }, [activeTab]);
+    }, [activeTab, debouncedSearch]);
 
     const fetchData = async () => {
         try {
@@ -31,6 +42,17 @@ export default function Network() {
 
             const statsData = await connectionService.getStats();
             setStats(statsData);
+
+            // Handle Global Search
+            if (debouncedSearch.length >= 2) {
+                setIsSearchingGlobal(true);
+                const results = await searchService.searchUsers(debouncedSearch);
+                setSearchResults(results);
+                setLoading(false);
+                return;
+            } else {
+                setIsSearchingGlobal(false);
+            }
 
             if (activeTab === 'connections') {
                 const data = await connectionService.getConnections('ACCEPTED', search);
@@ -88,11 +110,7 @@ export default function Network() {
         }
     };
 
-    const handleSearch = () => {
-        if (activeTab === 'connections') {
-            fetchData();
-        }
-    };
+    // Search handled by debounce effect
 
     return (
         <div className="network-container">
@@ -148,10 +166,9 @@ export default function Network() {
                         <Search size={18} className="search-icon" />
                         <input
                             type="text"
-                            placeholder="Search by name, company, role..."
+                            placeholder="Search people, events, businesses..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                             className="search-input"
                         />
                     </div>
@@ -188,84 +205,117 @@ export default function Network() {
 
             {!loading && !error && (
                 <div className="network-content">
-                    {/* Connections Tab */}
-                    {activeTab === 'connections' && (
-                        <>
-                            {(connections?.length ?? 0) === 0 ? (
+                    {/* Global Search Results */}
+                    {isSearchingGlobal ? (
+                        <div className="search-results-container">
+                            {searchResults.length === 0 ? (
                                 <div className="empty-state">
                                     <div className="empty-state-icon">
-                                        <UserPlus size={32} />
+                                        <Search size={32} />
                                     </div>
-                                    <h3>No connections yet</h3>
-                                    <p>Start building your professional network by connecting with other members</p>
-                                    <button className="empty-state-cta">
-                                        Find People <ArrowRight size={16} />
-                                    </button>
+                                    <h3>No results found</h3>
+                                    <p>We couldn't find any users matching "{search}"</p>
                                 </div>
                             ) : (
-                                <div className="connections-list">
-                                    {connections?.map((conn) => (
-                                        <ConnectionCard
-                                            key={conn.id}
-                                            connection={conn}
-                                            onRemove={() => handleRemove(conn.id)}
-                                        />
-                                    ))}
+                                <div className="search-results-list">
+                                    <div className="results-header">
+                                        <h3>Search Results ({searchResults.length})</h3>
+                                    </div>
+                                    <div className="search-grid">
+                                        {searchResults.map((user) => (
+                                            <div key={user.id} className="search-result-wrapper">
+                                                <UserResultCard
+                                                    user={user}
+                                                    onClick={() => navigate(`/profile/${user.id}`)}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             )}
-                        </>
-                    )}
-
-                    {/* Pending Requests Tab */}
-                    {activeTab === 'pending' && (
+                        </div>
+                    ) : (
                         <>
-                            {pendingRequests.length === 0 ? (
-                                <div className="empty-state">
-                                    <div className="empty-state-icon">
-                                        <UserPlus size={32} />
-                                    </div>
-                                    <h3>No pending requests</h3>
-                                    <p>You have no pending connection requests at the moment</p>
-                                </div>
-                            ) : (
-                                <div className="requests-list">
-                                    {pendingRequests.map((req) => (
-                                        <PendingRequestCard
-                                            key={req.id}
-                                            request={req}
-                                            onAccept={() => handleAccept(req.id)}
-                                            onDecline={() => handleDecline(req.id)}
-                                        />
-                                    ))}
-                                </div>
+                            {/* Connections Tab */}
+                            {activeTab === 'connections' && (
+                                <>
+                                    {(connections?.length ?? 0) === 0 ? (
+                                        <div className="empty-state">
+                                            <div className="empty-state-icon">
+                                                <UserPlus size={32} />
+                                            </div>
+                                            <h3>No connections yet</h3>
+                                            <p>Start building your professional network by connecting with other members</p>
+                                            <button className="empty-state-cta">
+                                                Find People <ArrowRight size={16} />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="connections-list">
+                                            {connections?.map((conn) => (
+                                                <ConnectionCard
+                                                    key={conn.id}
+                                                    connection={conn}
+                                                    onRemove={() => handleRemove(conn.id)}
+                                                />
+                                            ))}
+                                        </div>
+                                    )}
+                                </>
                             )}
-                        </>
-                    )}
 
-                    {/* Sent Requests Tab */}
-                    {activeTab === 'sent' && (
-                        <>
-                            {sentRequests.length === 0 ? (
-                                <div className="empty-state">
-                                    <div className="empty-state-icon">
-                                        <UserPlus size={32} />
-                                    </div>
-                                    <h3>No sent requests</h3>
-                                    <p>You haven't sent any connection requests yet</p>
-                                    <button className="empty-state-cta">
-                                        Find People <ArrowRight size={16} />
-                                    </button>
-                                </div>
-                            ) : (
-                                <div className="requests-list">
-                                    {sentRequests.map((req) => (
-                                        <SentRequestCard
-                                            key={req.id}
-                                            request={req}
-                                            onCancel={() => handleCancel(req.id)}
-                                        />
-                                    ))}
-                                </div>
+                            {/* Pending Requests Tab */}
+                            {activeTab === 'pending' && (
+                                <>
+                                    {pendingRequests.length === 0 ? (
+                                        <div className="empty-state">
+                                            <div className="empty-state-icon">
+                                                <UserPlus size={32} />
+                                            </div>
+                                            <h3>No pending requests</h3>
+                                            <p>You have no pending connection requests at the moment</p>
+                                        </div>
+                                    ) : (
+                                        <div className="requests-list">
+                                            {pendingRequests.map((req) => (
+                                                <PendingRequestCard
+                                                    key={req.id}
+                                                    request={req}
+                                                    onAccept={() => handleAccept(req.id)}
+                                                    onDecline={() => handleDecline(req.id)}
+                                                />
+                                            ))}
+                                        </div>
+                                    )}
+                                </>
+                            )}
+
+                            {/* Sent Requests Tab */}
+                            {activeTab === 'sent' && (
+                                <>
+                                    {sentRequests.length === 0 ? (
+                                        <div className="empty-state">
+                                            <div className="empty-state-icon">
+                                                <UserPlus size={32} />
+                                            </div>
+                                            <h3>No sent requests</h3>
+                                            <p>You haven't sent any connection requests yet</p>
+                                            <button className="empty-state-cta">
+                                                Find People <ArrowRight size={16} />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="requests-list">
+                                            {sentRequests.map((req) => (
+                                                <SentRequestCard
+                                                    key={req.id}
+                                                    request={req}
+                                                    onCancel={() => handleCancel(req.id)}
+                                                />
+                                            ))}
+                                        </div>
+                                    )}
+                                </>
                             )}
                         </>
                     )}
