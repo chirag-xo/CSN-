@@ -472,6 +472,15 @@ body {
         transform: none;
     }
 
+    .logo {
+        top: 80px;
+        width: 242px;
+        /* Reduced by 8px from 250px */
+        height: 172px;
+        /* Reduced by 8px from 180px */
+        /* Reduced by 20px from 135px */
+    }
+
     .main-heading {
         font-size: 44px;
         width: 100%;
@@ -499,6 +508,66 @@ body {
         width: 100%;
         max-width: 860px;
         height: auto;
+    }
+
+    /* Force stacked layout for Hero on Tablet */
+    .landing-page {
+        padding: 300px 20px 20px 20px;
+        /* Top padding to clear absolute Navbar */
+    }
+
+    .main-content {
+        position: static;
+        margin-bottom: 0px;
+        width: 50%;
+        max-width: 50%;
+        height: auto;
+        min-height: unset;
+        padding-top: 250px;
+        /* Kept top padding for alignment */
+    }
+
+    .orange-cns-container {
+        position: static;
+        margin-bottom: 10px;
+        margin-top: 200px;
+        left: auto;
+        top: auto;
+    }
+
+    .main-heading {
+        font-size: 36px;
+        height: auto;
+        min-height: 150px;
+        /* Reduced by 50px */
+        margin-top: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .subheading {
+        position: static;
+        margin-top: 20px;
+        height: auto;
+        width: 100%;
+    }
+
+    .get-started-button {
+        position: static;
+        margin-top: 30px;
+    }
+
+    .hero-animation-container {
+        position: absolute;
+        right: 20px;
+        top: 250px;
+        width: 45%;
+        max-width: 450px;
+        height: auto;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 
@@ -548,11 +617,14 @@ body {
         margin-bottom: 40px;
         width: 100%;
         max-width: 100%;
+        padding-top: 75px;
+        /* Reduced by 70% from 250px */
     }
 
     .main-heading {
         font-size: 36px;
         height: auto;
+        margin-top: 0;
     }
 
     .subheading {
@@ -590,6 +662,20 @@ body {
 
     .svg-vectors {
         display: none;
+    }
+
+    .orange-cns-container {
+        position: static;
+        margin-bottom: 10px;
+        margin-top: 0;
+        left: auto;
+        top: auto;
+    }
+
+    .main-heading {
+        font-size: 36px;
+        height: auto;
+        margin-top: 0;
     }
 
     .hero-animation-container {
@@ -1270,14 +1356,14 @@ body {
     z-index: 1;
     max-width: 1728px;
     margin: 0 auto;
-    padding: 80px 76px 40px 76px;
+    padding: 40px 76px 20px 76px;
 }
 
 /* Footer CTA Section */
 .footer-cta {
     text-align: center;
     max-width: 900px;
-    margin: 0 auto 60px auto;
+    margin: 0 auto 30px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1347,7 +1433,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 /* Footer Logo */
@@ -1356,7 +1442,7 @@ body {
     gap: 15px;
     align-items: center;
     width: 250px;
-    height: 180px;
+    height: 120px;
 }
 
 .footer-logo-image {
@@ -1431,13 +1517,15 @@ body {
 
 @media (max-width: 768px) {
     .footer-content {
-        padding: 40px 20px 25px 20px;
+        padding: 0 20px 10px 20px;
+        /* Removed top padding to shorten height */
     }
 
     .footer-top {
         flex-direction: column;
-        gap: 40px;
-        margin-bottom: 50px;
+        gap: 30px;
+        margin-bottom: 20px;
+        /* Reduced by 20px from 40px */
         align-items: center;
     }
 
@@ -1446,7 +1534,7 @@ body {
     }
 
     .footer-logo-image {
-        height: 60px;
+        height: 100px;
     }
 
     .social-icon-img {

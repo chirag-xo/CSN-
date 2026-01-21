@@ -49,19 +49,42 @@ export default function PurposeSection() {
                 </div>
 
                 {/* Events Section - Inside Dark Container */}
-                <div className="events-section">
-                    <h3 className="events-title">Types of Events</h3>
+                {/* Events Section - Inside Dark Container */}
+                {/* Events Section - Inside Dark Container */}
+                {/* Events Section - Inside Dark Container */}
+                {/* Events Section - Inside Dark Container */}
+                {/* 
+                <section className="py-16 w-full">
+                    <div className="max-w-6xl mx-auto px-6">
+                        <h2 className="text-center text-white text-4xl font-semibold mb-10">
+                            Types of Events
+                        </h2>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {eventTypes.map((event) => (
-                            <div key={event.number} className="rounded-2xl bg-white/95 p-6 shadow-lg border border-white/20 hover:shadow-xl transition hover:-translate-y-1 h-full flex flex-col">
-                                <p className="text-sm font-semibold text-violet-600">{event.number.padStart(2, '0')}</p>
-                                <h4 className="mt-2 text-lg font-semibold text-slate-900">{event.title}</h4>
-                                <p className="mt-2 text-sm text-slate-600 leading-relaxed">{event.description}</p>
-                            </div>
-                        ))}
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+                            {eventTypes.map((e, i) => (
+                                <div
+                                    key={i}
+                                    className="rounded-2xl bg-white/95 p-6 shadow-lg border border-white/20 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 group flex flex-col"
+                                >
+                                    <div className="text-violet-600 font-semibold text-sm mb-2">
+                                        {String(i + 1).padStart(2, "0")}
+                                    </div>
+
+                                    <h3 className="text-gray-900 font-semibold text-lg mb-2">
+                                        {e.title}
+                                    </h3>
+
+                                    <p className="text-gray-600 text-sm leading-relaxed flex-grow">
+                                        {e.description}
+                                    </p>
+
+                                    <div className="mt-4 h-[3px] w-0 bg-gradient-to-r from-violet-600 to-fuchsia-500 rounded-full transition-all duration-300 group-hover:w-full" />
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                </section>
+                */}
             </div>
         </section>
     );

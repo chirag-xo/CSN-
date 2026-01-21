@@ -18,9 +18,9 @@ export default function Hero() {
             {/* Removed the background image grid */}
 
             {/* Orange CSN */}
-            <div className="orange-cns-container">
+            {/* <div className="orange-cns-container">
                 <div className="orange-cns-text">CSN</div>
-            </div>
+            </div> */}
 
             {/* Main Content - Left Side */}
             <main className="main-content">

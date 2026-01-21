@@ -75,24 +75,6 @@
     display: none;
 }
 
-/* Events Section - Dark Background */
-.events-section {
-    background: transparent;
-    padding: 60px 0;
-    margin-top: 0;
-    position: relative;
-}
-
-.events-title {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    font-size: 53px;
-    line-height: 1.2;
-    letter-spacing: -0.05em;
-    color: #FFFFFF;
-    margin: 0 0 40px 0;
-    text-align: center;
-}
 
 /* Responsive Design */
 @media (max-width: 1200px) {
@@ -109,14 +91,6 @@
         font-size: 18px;
     }
 
-    .events-section {
-        padding: 100px 40px 80px 40px;
-    }
-
-    .events-title {
-        font-size: 40px;
-        margin-bottom: 50px;
-    }
 }
 
 @media (max-width: 768px) {
@@ -141,15 +115,6 @@
         margin-bottom: 16px;
     }
 
-    .events-section {
-        padding: 80px 20px 60px 20px;
-        margin-top: -80px;
-    }
-
-    .events-title {
-        font-size: 32px;
-        margin-bottom: 40px;
-    }
 
     .purpose-image-container {
         margin-top: 30px;
