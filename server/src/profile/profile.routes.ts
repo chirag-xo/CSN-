@@ -1,29 +1,18 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { profileService } from './profile.service';
 import { authMiddleware } from '../auth/auth.middleware';
+import { optionalAuthMiddleware } from '../middleware/optionalAuth';
 import { SuccessResponse } from '../shared/types';
 
 const router = Router();
 
-// All authenticated routes
-router.use(authMiddleware);
+// ============================================================================
+// PRIVATE ROUTES (Require Authentication)
+// ============================================================================
 
-// Get own profile
-router.get('/', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const profile = await profileService.getProfile(req.user!.userId, req.user!.userId);
-        const response: SuccessResponse<typeof profile> = {
-            success: true,
-            data: profile,
-        };
-        res.json(response);
-    } catch (error) {
-        next(error);
-    }
-});
-
-// Get detailed profile completion (new advanced version)
-router.get('/completion', async (req: Request, res: Response, next: NextFunction) => {
+// Get detailed profile completion
+// MUST be defined before /:userId to avoid collision
+router.get('/completion', authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { profileCompletionService } = await import('./profileCompletion.service');
         const completion = await profileCompletionService.calculate(req.user!.userId);
@@ -38,7 +27,7 @@ router.get('/completion', async (req: Request, res: Response, next: NextFunction
 });
 
 // Get profile completion (legacy - just percentage)
-router.get('/completion/percentage', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/completion/percentage', authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const completion = await profileService.getProfileCompletion(req.user!.userId);
         const response: SuccessResponse<{ completion: number }> = {
@@ -51,8 +40,22 @@ router.get('/completion/percentage', async (req: Request, res: Response, next: N
     }
 });
 
+// Get own profile
+router.get('/', authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const profile = await profileService.getProfile(req.user!.userId, req.user!.userId);
+        const response: SuccessResponse<typeof profile> = {
+            success: true,
+            data: profile,
+        };
+        res.json(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
 // Update own profile
-router.put('/', async (req: Request, res: Response, next: NextFunction) => {
+router.put('/', authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const updated = await profileService.updateProfile(req.user!.userId, req.body);
         const response: SuccessResponse<typeof updated> = {
@@ -65,10 +68,15 @@ router.put('/', async (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
+// ============================================================================
+// PUBLIC ROUTES (Optional Authentication)
+// ============================================================================
+
 // Get user profile (public with enhanced structure and viewer context)
-// IMPORTANT: This must be last because /:userId is a catch-all
-router.get('/:userId', async (req: Request, res: Response, next: NextFunction) => {
+// IMPORTANT: This uses optionalAuthMiddleware to allow guests to view public info
+router.get('/:userId', optionalAuthMiddleware, async (req: Request, res: Response, next: NextFunction) => {
     try {
+        // req.user will be defined if token is valid, undefined otherwise
         const viewerId = req.user?.userId;
         const profile = await profileService.getPublicProfile(req.params.userId, viewerId);
         const response: SuccessResponse<typeof profile> = {

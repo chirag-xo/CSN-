@@ -11,11 +11,14 @@ interface ViewerContext {
     canVouch: boolean;
 }
 
+import { useNavigate } from 'react-router-dom';
+
 interface ProfileActionsProps {
     userId: string;
     viewerContext: ViewerContext;
     userName: string;
     onVouch: () => void;
+    isAuthenticated: boolean;
 }
 
 export default function ProfileActions({
@@ -23,7 +26,9 @@ export default function ProfileActions({
     viewerContext,
     userName,
     onVouch,
+    isAuthenticated,
 }: ProfileActionsProps) {
+    const navigate = useNavigate();
     const [vouching, setVouching] = useState(false);
     const [vouchError, setVouchError] = useState('');
     const [shareSuccess, setShareSuccess] = useState(false);
@@ -55,6 +60,10 @@ export default function ProfileActions({
     const handleMessage = () => {
         // TODO: Implement messaging feature
         alert('Messaging feature coming soon!');
+    };
+
+    const handleLoginRedirect = () => {
+        navigate('/login', { state: { from: window.location.pathname } });
     };
 
     const handleVouch = async () => {
@@ -91,7 +100,11 @@ export default function ProfileActions({
         <div className="profile-actions-card">
             {/* Connection Actions */}
             <div className="action-buttons">
-                {viewerContext.isConnected ? (
+                {!isAuthenticated ? (
+                    <button onClick={handleLoginRedirect} className="action-btn primary">
+                        <UserPlus size={18} /> Login to Connect
+                    </button>
+                ) : viewerContext.isConnected ? (
                     <button onClick={handleMessage} className="action-btn primary">
                         <MessageCircle size={18} /> Message
                     </button>

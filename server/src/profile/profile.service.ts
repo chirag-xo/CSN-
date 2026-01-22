@@ -177,7 +177,31 @@ export const profileService = {
         // Public viewer → PUBLIC only
         // Connected viewer → PUBLIC + CONNECTIONS (TODO: check connection status)
         // Owner → ALL
-        const isConnected = false; // TODO: Implement connection check
+        // Check for existing connection status if viewer is logged in
+        let isConnected = false;
+        let connectionPending = false;
+
+        if (viewerId && !isOwnProfile) {
+            const connection = await prisma.connection.findFirst({
+                where: {
+                    OR: [
+                        { requesterId: viewerId, addresseeId: userId },
+                        { requesterId: userId, addresseeId: viewerId },
+                    ],
+                },
+            });
+
+            if (connection) {
+                if (connection.status === 'ACCEPTED') {
+                    isConnected = true;
+                } else if (connection.status === 'PENDING') {
+                    // Only show pending if viewer sent the request? 
+                    // Or generically? ProfileActions handles "Request Sent" vs "Accept" usually.
+                    // For now, let's treat any pending link as "pending" for the button state
+                    connectionPending = true;
+                }
+            }
+        }
 
         const filteredInterests = user.interests
             .filter((userInterest) => {
@@ -256,7 +280,7 @@ export const profileService = {
             viewerContext: {
                 isOwnProfile,
                 isConnected,
-                connectionPending: false, // TODO: Implement connection check
+                connectionPending,
                 hasVouched,
                 canVouch,
             },

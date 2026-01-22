@@ -150,6 +150,7 @@ export default function PublicProfile() {
                             viewerContext={profile.viewerContext}
                             userName={fullName}
                             onVouch={fetchProfile}
+                            isAuthenticated={!!localStorage.getItem('token')}
                         />
 
                         <ProfileAbout
