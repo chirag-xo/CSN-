@@ -1,6 +1,17 @@
 import { useState, useEffect } from 'react';
 import eventService from '../../services/eventService';
 import AddInviteesModal from './AddInviteesModal';
+import {
+    BarChart2,
+    Download,
+    UserPlus,
+    CheckCircle,
+    HelpCircle,
+    Clock,
+    XCircle,
+    AlertTriangle,
+    User
+} from 'lucide-react';
 import '../../styles/invitationStats.css';
 
 interface InvitationStatsProps {
@@ -100,7 +111,7 @@ export default function InvitationStats({ eventId }: InvitationStatsProps) {
     if (error) {
         return (
             <div className="stats-error">
-                <p>⚠️ {error}</p>
+                <p><AlertTriangle size={18} className="error-icon" /> {error}</p>
             </div>
         );
     }
@@ -109,7 +120,7 @@ export default function InvitationStats({ eventId }: InvitationStatsProps) {
 
     return (
         <div className="invitation-stats">
-            <h3 className="stats-title">📊 Invitation Insights</h3>
+            <h3 className="stats-title"><BarChart2 className="title-icon" /> Invitation Insights</h3>
 
             {/* Summary Cards */}
             <div className="stats-summary">
@@ -158,14 +169,14 @@ export default function InvitationStats({ eventId }: InvitationStatsProps) {
                     className="btn-invite"
                     onClick={() => setShowInviteModal(true)}
                 >
-                    + Invite More People
+                    <UserPlus size={18} /> Invite More People
                 </button>
                 <button
                     className="btn-export"
                     onClick={handleExportAttendees}
                     disabled={exporting}
                 >
-                    {exporting ? 'Exporting...' : '📥 Export Attendees'}
+                    <Download size={18} /> {exporting ? 'Exporting...' : 'Export Attendees'}
                 </button>
             </div>
 
@@ -174,7 +185,7 @@ export default function InvitationStats({ eventId }: InvitationStatsProps) {
                 {/* Going */}
                 {stats.byStatus.going.length > 0 && (
                     <div className="attendee-section">
-                        <h4 className="section-title success">✅ GOING ({stats.byStatus.going.length})</h4>
+                        <h4 className="section-title success"><CheckCircle size={16} /> GOING ({stats.byStatus.going.length})</h4>
                         <div className="attendee-list">
                             {stats.byStatus.going.map((attendee: any) => (
                                 <div key={attendee.id} className="attendee-item">
@@ -210,7 +221,7 @@ export default function InvitationStats({ eventId }: InvitationStatsProps) {
                 {/* Maybe */}
                 {stats.byStatus.maybe.length > 0 && (
                     <div className="attendee-section">
-                        <h4 className="section-title warning">❔ MAYBE ({stats.byStatus.maybe.length})</h4>
+                        <h4 className="section-title warning"><HelpCircle size={16} /> MAYBE ({stats.byStatus.maybe.length})</h4>
                         <div className="attendee-list">
                             {stats.byStatus.maybe.map((attendee: any) => (
                                 <div key={attendee.id} className="attendee-item">
@@ -243,7 +254,7 @@ export default function InvitationStats({ eventId }: InvitationStatsProps) {
                 {/* Pending */}
                 {stats.byStatus.invited.length > 0 && (
                     <div className="attendee-section">
-                        <h4 className="section-title pending">⏳ PENDING ({stats.byStatus.invited.length})</h4>
+                        <h4 className="section-title pending"><Clock size={16} /> PENDING ({stats.byStatus.invited.length})</h4>
                         <div className="attendee-list">
                             {stats.byStatus.invited.map((attendee: any) => (
                                 <div key={attendee.id} className="attendee-item">
@@ -274,7 +285,7 @@ export default function InvitationStats({ eventId }: InvitationStatsProps) {
                 {/* Declined */}
                 {stats.byStatus.declined.length > 0 && (
                     <div className="attendee-section">
-                        <h4 className="section-title declined">❌ DECLINED ({stats.byStatus.declined.length})</h4>
+                        <h4 className="section-title declined"><XCircle size={16} /> DECLINED ({stats.byStatus.declined.length})</h4>
                         <div className="attendee-list">
                             {stats.byStatus.declined.map((attendee: any) => (
                                 <div key={attendee.id} className="attendee-item">

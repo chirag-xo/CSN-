@@ -13,6 +13,67 @@
     font-weight: 700;
     color: var(--gray-900, #111827);
     margin: 0 0 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.title-icon {
+    color: var(--primary-purple, #6D28D9);
+}
+
+/* ... existing summary card styles ... */
+
+/* Attendee Lists */
+.attendee-lists {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.attendee-section {
+    border: 1px solid var(--gray-200, #E5E7EB);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.section-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0;
+    padding: 12px 16px;
+    background: var(--gray-50, #F9FAFB);
+    border-bottom: 1px solid var(--gray-200, #E5E7EB);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ... existing sections ... */
+
+/* Action Buttons */
+.stats-actions {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--gray-200, #E5E7EB);
+}
+
+.btn-invite,
+.btn-export {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 /* Summary Cards */
@@ -292,6 +353,7 @@
         gap: 8px;
     }
 }
+
 /* Action Buttons */
 .stats-actions {
     display: flex;
