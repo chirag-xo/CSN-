@@ -35,7 +35,7 @@ router.post('/', authMiddleware, async (req: Request, res: Response): Promise<vo
  * @desc    Get events with filters
  * @access  Public (shows user RSVP if authenticated)
  */
-router.get('/', async (req: Request, res: Response): Promise<void> => {
+router.get('/', optionalAuthMiddleware, async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.user?.userId; // Optional, from authMiddleware if present
         const filters = {
@@ -68,7 +68,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
  * @desc    Get upcoming events
  * @access  Public
  */
-router.get('/upcoming', async (req: Request, res: Response): Promise<void> => {
+router.get('/upcoming', optionalAuthMiddleware, async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.user?.userId;
         const events = await eventService.getUpcomingEvents(userId);
@@ -136,6 +136,31 @@ router.get('/invitations', authMiddleware, async (req: Request, res: Response): 
             success: false,
             error: {
                 message: error.message || 'Failed to fetch invitations',
+            },
+        });
+    }
+});
+
+/**
+ * @route   GET /api/events/invitations/count
+ * @desc    Get count of pending invitations
+ * @access  Private
+ */
+router.get('/invitations/count', authMiddleware, async (req: Request, res: Response): Promise<void> => {
+    try {
+        const userId = req.user!.userId;
+        const result = await eventService.getInvitationCount(userId);
+
+        res.json({
+            success: true,
+            data: result,
+        });
+    } catch (error: any) {
+        console.error('Get invitation count error:', error);
+        res.status(500).json({
+            success: false,
+            error: {
+                message: error.message || 'Failed to fetch invitation count',
             },
         });
     }
@@ -313,7 +338,7 @@ router.get('/:id/attendees', async (req: Request, res: Response): Promise<void> 
  * @desc    Get events by chapter
  * @access  Public
  */
-router.get('/chapter/:chapterId', async (req: Request, res: Response): Promise<void> => {
+router.get('/chapter/:chapterId', optionalAuthMiddleware, async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.user?.userId;
         const events = await eventService.getEventsByChapter(req.params.chapterId, userId);

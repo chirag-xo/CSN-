@@ -211,6 +211,16 @@ const eventService = {
     },
 
     /**
+     * Get pending invitation count
+     */
+    async getInvitationCount() {
+        const response = await axios.get(`${API_URL}/api/events/invitations/count`, {
+            headers: getAuthHeader(),
+        });
+        return response.data;
+    },
+
+    /**
      * Get invitation statistics for an event (organizer only)
      */
     async getInvitationStats(eventId: string) {

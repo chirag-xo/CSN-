@@ -21,15 +21,26 @@ export default function Events() {
     // Invitations tab state
     const [activeTab, setActiveTab] = useState<TabType>('upcoming');
     const [invitations, setInvitations] = useState<any[]>([]);
+    const [invitationCount, setInvitationCount] = useState(0);
     const [invitationsLoading, setInvitationsLoading] = useState(false);
 
     useEffect(() => {
+        fetchInvitationCount();
         if (activeTab === 'upcoming') {
             fetchEvents();
         } else {
             fetchInvitations();
         }
     }, [filters, activeTab]);
+
+    const fetchInvitationCount = async () => {
+        try {
+            const response = await eventService.getInvitationCount();
+            setInvitationCount(response.data.count);
+        } catch (err) {
+            console.error('Failed to fetch invitation count:', err);
+        }
+    };
 
     const fetchEvents = async () => {
         try {
@@ -51,6 +62,10 @@ export default function Events() {
             setError('');
             const response = await eventService.getInvitations();
             setInvitations(response.data.invitations || []);
+            // Update count when fetching full list
+            if (response.data.invitations) {
+                setInvitationCount(response.data.invitations.length);
+            }
         } catch (err: any) {
             console.error('Failed to fetch invitations:', err);
             setError(err.response?.data?.error?.message || 'Failed to load invitations');
@@ -102,8 +117,9 @@ export default function Events() {
     const handleInvitationResponse = async (eventId: string, status: 'GOING' | 'DECLINED') => {
         try {
             await eventService.rsvpToEvent(eventId, status);
-            // Refresh invitations list
+            // Refresh invitations list and count
             fetchInvitations();
+            fetchInvitationCount();
         } catch (err: any) {
             console.error('Failed to respond to invitation:', err);
             setError(err.response?.data?.error?.message || 'Failed to respond to invitation');
@@ -145,8 +161,8 @@ export default function Events() {
                     onClick={() => setActiveTab('invitations')}
                 >
                     Invitations
-                    {invitations.length > 0 && (
-                        <span className="badge">{invitations.length}</span>
+                    {invitationCount > 0 && (
+                        <span className="badge">{invitationCount}</span>
                     )}
                 </button>
             </div>

@@ -613,20 +613,31 @@ class EventService {
 
         return {
             invitations: invitations.map((inv) => ({
-                ...inv.event,
+                id: inv.event.id,
+                title: inv.event.title,
+                date: inv.event.date,
+                location: inv.event.location,
+                isVirtual: inv.event.isVirtual,
+                virtualLink: inv.event.virtualLink,
+                creator: inv.event.creator,
+                chapter: inv.event.chapter,
                 invitedAt: inv.createdAt,
-                // Optional: Add "respond by" suggestion (24h before event)
-                suggestedRespondBy: new Date(
-                    new Date(inv.event.date).getTime() - 24 * 60 * 60 * 1000
-                ),
             })),
-            pagination: {
-                total,
-                limit,
-                offset,
-                hasMore: offset + limit < total,
-            },
+            total,
         };
+    }
+
+    /**
+     * Get pending invitation count for a user
+     */
+    async getInvitationCount(userId: string) {
+        const count = await prisma.eventAttendee.count({
+            where: {
+                userId,
+                status: 'INVITED',
+            },
+        });
+        return { count };
     }
 
     /**
