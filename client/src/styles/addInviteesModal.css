@@ -90,3 +90,64 @@
     padding: 40px 20px;
     color: var(--gray-500, #6B7280);
 }
+
+/* Modal Header */
+.modal-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-icon {
+    color: var(--primary-purple, #6D28D9);
+}
+
+.modal-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.modal-close:hover {
+    background: var(--gray-100, #F3F4F6);
+}
+
+/* Footer & Buttons */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--gray-200, #E5E7EB);
+    margin-top: 20px;
+}
+
+.btn-send-invites {
+    background: linear-gradient(135deg, var(--primary-purple, #6D28D9), #8B5CF6);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    box-shadow: 0 4px 6px rgba(109, 40, 217, 0.2);
+    transition: all 0.2s;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-send-invites:hover:not(:disabled) {
+    background: linear-gradient(135deg, #5B21B6, var(--primary-purple, #6D28D9));
+    transform: translateY(-1px);
+    box-shadow: 0 6px 12px rgba(109, 40, 217, 0.3);
+}
+
+.btn-send-invites:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}

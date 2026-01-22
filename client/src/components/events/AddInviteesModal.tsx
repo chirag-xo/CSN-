@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import connectionService, { type Connection } from '../../services/connectionService';
 import eventService from '../../services/eventService';
+import { Lock, X, Send } from 'lucide-react';
 import '../../styles/addInviteesModal.css';
 
 interface AddInviteesModalProps {
@@ -68,8 +69,8 @@ export default function AddInviteesModal({ eventId, existingInvitees, onClose, o
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-content add-invitees-modal" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-header">
-                    <h2>🔒 Invite More People</h2>
-                    <button className="modal-close" onClick={onClose}>✕</button>
+                    <h2><Lock className="header-icon" size={24} /> Invite More People</h2>
+                    <button className="modal-close" onClick={onClose}><X size={20} /></button>
                 </div>
 
                 <div className="modal-body">
@@ -122,11 +123,15 @@ export default function AddInviteesModal({ eventId, existingInvitees, onClose, o
                         Cancel
                     </button>
                     <button
-                        className="btn-primary"
+                        className="btn-primary btn-send-invites"
                         onClick={handleSubmit}
                         disabled={submitting || loading || selectedIds.length === 0}
                     >
-                        {submitting ? 'Sending...' : `Send Invites (${selectedIds.length})`}
+                        {submitting ? 'Sending...' : (
+                            <>
+                                <Send size={18} /> Send Invites ({selectedIds.length})
+                            </>
+                        )}
                     </button>
                 </div>
             </div>
