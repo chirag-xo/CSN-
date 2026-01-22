@@ -250,7 +250,7 @@ export default function TermsOfService() {
                             <h3>12. Contact Information</h3>
                             <p>
                                 If you have questions about these Terms of Service, contact us at:<br />
-                                <strong>Email:</strong> support@csnworld.com / legal@csnworld.com<br />
+                                <strong>Email:</strong> royalsservices1@gmail.com<br />
                                 <strong>Website:</strong> csnworld.com
                             </p>
 

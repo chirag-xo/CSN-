@@ -290,7 +290,7 @@ export default function PrivacyPolicy() {
                             <h3>16. How to Contact Us</h3>
                             <p>
                                 If you have questions regarding this Privacy Policy, contact us at:<br />
-                                <strong>Email:</strong> privacy@csnworld.com
+                                <strong>Email:</strong> royalsservices1@gmail.com
                             </p>
 
                             <hr />
