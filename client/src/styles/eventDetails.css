@@ -58,8 +58,24 @@
     color: var(--gray-700, #374151);
 }
 
+
+.event-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
 .event-meta-row .icon {
-    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: var(--gray-500, #6B7280);
 }
 
 .organizer-info {
@@ -70,6 +86,7 @@
     background: var(--gray-50, #F9FAFB);
     border-radius: 10px;
 }
+
 
 .organizer-avatar {
     width: 56px;
@@ -348,6 +365,7 @@
         flex-direction: column;
     }
 }
+
 /* Selected RSVP Button State */
 .rsvp-btn.selected {
     border: 2px solid var(--primary-purple, #6D28D9);
@@ -388,6 +406,7 @@
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -400,13 +419,20 @@
 }
 
 .rsvp-confirm-modal .modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     padding: 30px 20px;
 }
 
-.warning-icon,
+.warning-icon {
+    color: #dc2626;
+    margin-bottom: 16px;
+}
+
 .info-icon {
-    font-size: 48px;
+    color: var(--primary-purple, #6D28D9);
     margin-bottom: 16px;
 }
 

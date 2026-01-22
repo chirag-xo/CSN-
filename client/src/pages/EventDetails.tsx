@@ -3,6 +3,25 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import eventService, { type Event } from '../services/eventService';
 import Breadcrumb from '../components/common/Breadcrumb';
 import InvitationStats from '../components/events/InvitationStats';
+import {
+    Calendar,
+    Clock,
+    MapPin,
+    Video,
+    Users,
+    Check,
+    X,
+    HelpCircle,
+    AlertTriangle,
+    Info,
+    Handshake,
+    Wrench,
+    PartyPopper,
+    BookOpen,
+    Coffee,
+    Building,
+    Link as LinkIcon
+} from 'lucide-react';
 import '../styles/eventDetails.css';
 
 export default function EventDetails() {
@@ -64,10 +83,10 @@ export default function EventDetails() {
 
     const getRsvpStatusText = () => {
         if (!event?.userRsvpStatus) return null;
-        const statusMap: Record<string, string> = {
-            GOING: '✓ You\'re going',
-            MAYBE: '? You might go',
-            DECLINED: '✗ You declined',
+        const statusMap: Record<string, JSX.Element> = {
+            GOING: <><Check size={16} /> You're going</>,
+            MAYBE: <><HelpCircle size={16} /> You might go</>,
+            DECLINED: <><X size={16} /> You declined</>,
         };
         return statusMap[event.userRsvpStatus];
     };
@@ -112,7 +131,7 @@ export default function EventDetails() {
                         <div className="event-type-badge" style={{
                             backgroundColor: getTypeColor(event.type)
                         }}>
-                            {getTypeIcon(event.type)} {event.type.replace('_', ' ')}
+                            {getTypeIcon(event.type)} <span>{event.type.replace('_', ' ')}</span>
                         </div>
                         {isPastEvent && <span className="past-event-badge">Past Event</span>}
                     </div>
@@ -121,7 +140,7 @@ export default function EventDetails() {
 
                     <div className="event-meta-row">
                         <div className="meta-item">
-                            <span className="icon">📅</span>
+                            <Calendar className="icon" />
                             <span>{eventDate.toLocaleDateString('en-US', {
                                 weekday: 'long',
                                 year: 'numeric',
@@ -131,7 +150,7 @@ export default function EventDetails() {
                         </div>
 
                         <div className="meta-item">
-                            <span className="icon">⏰</span>
+                            <Clock className="icon" />
                             <span>{eventDate.toLocaleTimeString('en-US', {
                                 hour: 'numeric',
                                 minute: '2-digit'
@@ -140,12 +159,12 @@ export default function EventDetails() {
 
                         {event.isVirtual ? (
                             <div className="meta-item">
-                                <span className="icon">💻</span>
+                                <Video className="icon" />
                                 <span>Virtual Event</span>
                             </div>
                         ) : event.location && (
                             <div className="meta-item">
-                                <span className="icon">📍</span>
+                                <MapPin className="icon" />
                                 <span>{event.location}</span>
                             </div>
                         )}
@@ -184,7 +203,7 @@ export default function EventDetails() {
 
                 {/* Description */}
                 <div className="event-section">
-                    <h2>About  this Event</h2>
+                    <h2>About this Event</h2>
                     <p className="event-description">{event.description}</p>
                 </div>
 
@@ -198,7 +217,7 @@ export default function EventDetails() {
                             rel="noopener noreferrer"
                             className="virtual-link-btn"
                         >
-                            🔗 Join Virtual Event
+                            <LinkIcon size={18} /> Join Virtual Event
                         </a>
                     </div>
                 )}
@@ -276,7 +295,7 @@ export default function EventDetails() {
                                 onClick={() => handleRsvpSelect('GOING')}
                                 disabled={rsvping || event.userRsvpStatus === 'GOING'}
                             >
-                                ✓ Going
+                                <Check size={18} /> Going
                             </button>
                             <button
                                 className={`rsvp-btn ${event.userRsvpStatus === 'MAYBE' ? 'active' :
@@ -285,7 +304,7 @@ export default function EventDetails() {
                                 onClick={() => handleRsvpSelect('MAYBE')}
                                 disabled={rsvping || event.userRsvpStatus === 'MAYBE'}
                             >
-                                ? Maybe
+                                <HelpCircle size={18} /> Maybe
                             </button>
                             <button
                                 className={`rsvp-btn decline ${event.userRsvpStatus === 'DECLINED' ? 'active' :
@@ -294,7 +313,7 @@ export default function EventDetails() {
                                 onClick={() => handleRsvpSelect('DECLINED')}
                                 disabled={rsvping || event.userRsvpStatus === 'DECLINED'}
                             >
-                                ✗ Can't Go
+                                <X size={18} /> Can't Go
                             </button>
                         </div>
 
@@ -315,12 +334,12 @@ export default function EventDetails() {
                                 <div className="modal-content rsvp-confirm-modal" onClick={(e) => e.stopPropagation()}>
                                     <div className="modal-header">
                                         <h3>Confirm Your Response</h3>
-                                        <button className="modal-close" onClick={() => setShowConfirmModal(false)}>✕</button>
+                                        <button className="modal-close" onClick={() => setShowConfirmModal(false)}><X size={20} /></button>
                                     </div>
                                     <div className="modal-body">
                                         {selectedRsvp === 'DECLINED' ? (
                                             <>
-                                                <div className="warning-icon">⚠️</div>
+                                                <AlertTriangle className="warning-icon" size={48} />
                                                 <p className="warning-text">
                                                     You won't be able to change your response after declining.
                                                 </p>
@@ -328,7 +347,7 @@ export default function EventDetails() {
                                             </>
                                         ) : (
                                             <>
-                                                <div className="info-icon">ℹ️</div>
+                                                <Info className="info-icon" size={48} />
                                                 <p>
                                                     {selectedRsvp === 'GOING'
                                                         ? 'Confirm that you will attend this event?'
@@ -372,13 +391,13 @@ function getTypeColor(type: string) {
 }
 
 function getTypeIcon(type: string) {
-    const icons: Record<string, string> = {
-        NETWORKING: '🤝',
-        WORKSHOP: '🛠️',
-        SOCIAL: '🎉',
-        EDUCATIONAL: '📚',
-        COMMUNITY: '🏘️',
-        ONE_TO_ONE: '☕',
+    const icons: Record<string, JSX.Element> = {
+        NETWORKING: <Handshake size={14} />,
+        WORKSHOP: <Wrench size={14} />,
+        SOCIAL: <PartyPopper size={14} />,
+        EDUCATIONAL: <BookOpen size={14} />,
+        COMMUNITY: <Building size={14} />,
+        ONE_TO_ONE: <Coffee size={14} />,
     };
-    return icons[type] || '📅';
+    return icons[type] || <Calendar size={14} />;
 }
