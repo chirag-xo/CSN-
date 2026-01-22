@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import eventService, { type Event } from '../services/eventService';
 import Breadcrumb from '../components/common/Breadcrumb';
@@ -83,7 +83,7 @@ export default function EventDetails() {
 
     const getRsvpStatusText = () => {
         if (!event?.userRsvpStatus) return null;
-        const statusMap: Record<string, JSX.Element> = {
+        const statusMap: Record<string, React.JSX.Element> = {
             GOING: <><Check size={16} /> You're going</>,
             MAYBE: <><HelpCircle size={16} /> You might go</>,
             DECLINED: <><X size={16} /> You declined</>,
@@ -391,7 +391,7 @@ function getTypeColor(type: string) {
 }
 
 function getTypeIcon(type: string) {
-    const icons: Record<string, JSX.Element> = {
+    const icons: Record<string, React.JSX.Element> = {
         NETWORKING: <Handshake size={14} />,
         WORKSHOP: <Wrench size={14} />,
         SOCIAL: <PartyPopper size={14} />,
