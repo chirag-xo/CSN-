@@ -184,6 +184,31 @@ class EventService {
             ];
         }
 
+        // Privacy Logic: Restrict visibility of private events
+        // If public (isPublic: true) -> Visible to everyone
+        // If private (isPublic: false) -> Visible only to Creator OR Invitees/Attendees
+        const privacyFilter = userId
+            ? {
+                OR: [
+                    { isPublic: true }, // Public events
+                    { creatorId: userId }, // Created by user
+                    { attendees: { some: { userId } } }, // User is invited/attending
+                ],
+            }
+            : { isPublic: true }; // Guests only see public events
+
+        // Append to existing AND or create new
+        if (where.AND) {
+            if (Array.isArray(where.AND)) {
+                where.AND.push(privacyFilter);
+            } else {
+                // If AND is already an object (not array), wrap it
+                where.AND = [where.AND, privacyFilter];
+            }
+        } else {
+            where.AND = [privacyFilter];
+        }
+
         const events = await prisma.event.findMany({
             where,
             include: {
