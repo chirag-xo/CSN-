@@ -52,6 +52,11 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Clerk Authentication Middleware (Global)
+import { clerkAuthMiddleware } from './auth/clerk.middleware';
+// @ts-ignore
+app.use(...(clerkAuthMiddleware as any));
+
 // Serve static files from uploads directory with CORS enabled
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 

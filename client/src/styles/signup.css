@@ -28,6 +28,7 @@
     height: 100vh;
     background-color: #000000;
     overflow: hidden;
+    /* Keep container hidden, scroll inside section */
 }
 
 /* Left Column: Image Section */
@@ -48,36 +49,44 @@
 #signup-page .signup-form-section {
     flex: 1;
     background-color: #000000;
-    padding: 60px;
+    padding: 20px;
+    /* Reduced padding */
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow-y: auto;
+    /* Enable scrolling */
 }
 
 #signup-page .signup-form-content {
     width: 100%;
     max-width: 450px;
+    margin: auto 0;
+    /* Center vertically if possible, but allow scroll */
 }
 
 /* Header */
 #signup-page .signup-title {
     font-family: 'DM Sans', sans-serif;
-    font-size: 80px;
+    font-size: 48px;
+    /* Reduced from 80px */
     font-weight: 500;
     color: #FFFFFF;
     text-align: center;
     margin-bottom: 10px;
     line-height: 1.2;
-    letter-spacing: -0.07em;
+    letter-spacing: -0.05em;
 }
 
 #signup-page .signup-subtitle {
-    font-size: 20px;
+    font-size: 16px;
+    /* Reduced from 20px */
     font-family: 'DM Sans', sans-serif;
     color: #fdfdfd;
     font-weight: 400;
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
+    /* Reduced margin */
     opacity: 0.9;
     letter-spacing: 0.0em;
 }
@@ -85,7 +94,8 @@
 /* Google Signup Button */
 #signup-page .google-signup-btn {
     width: 100%;
-    padding: 16px 24px;
+    padding: 12px 20px;
+    /* Reduced padding */
     background-color: transparent;
     border: 2px solid #b8a3d6;
     border-radius: 50px;
@@ -95,13 +105,15 @@
     gap: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    /* Reduced margin */
 }
 
 #signup-page .google-signup-btn span {
     color: #FFFFFF;
     font-family: 'DM Sans', sans-serif;
-    font-size: 20px;
+    font-size: 16px;
+    /* Reduced from 20px */
     font-weight: 500;
 }
 
@@ -113,13 +125,15 @@
 /* Divider */
 #signup-page .divider {
     text-align: center;
-    margin: 30px 0;
+    margin: 20px 0;
+    /* Reduced margin */
 }
 
 #signup-page .divider span {
     color: #FFFFFF;
     font-family: 'DM Sans', sans-serif;
-    font-size: 20px;
+    font-size: 14px;
+    /* Reduced from 20px */
     opacity: 0.6;
 }
 
@@ -127,7 +141,8 @@
 #signup-page .signup-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
+    /* Reduced gap */
 }
 
 /* Input Groups */
@@ -147,12 +162,14 @@
 
 #signup-page .signup-input {
     width: 100%;
-    padding: 16px 20px 16px 55px;
+    padding: 12px 20px 12px 55px;
+    /* Reduced padding */
     background-color: transparent;
     border: 2px solid #FFFFFF;
     border-radius: 50px;
     color: #FFFFFF;
-    font-size: 20px;
+    font-size: 16px;
+    /* Reduced from 20px */
     font-family: 'Work Sans', sans-serif;
     transition: all 0.3s ease;
 }
@@ -170,13 +187,15 @@
 /* Submit Button */
 #signup-page .signup-submit-btn {
     width: 100%;
-    padding: 18px;
+    padding: 14px;
+    /* Reduced padding */
     background: linear-gradient(135deg, #040008 0%, #270f4a 30%, #260c52 60%, #000000 100%);
     border: 2px solid #b8a3d6;
     border-radius: 50px;
     color: #FFFFFF;
     font-family: 'DM Sans', sans-serif;
-    font-size: 28px;
+    font-size: 20px;
+    /* Reduced from 28px */
     font-weight: 700;
     letter-spacing: 1px;
     cursor: pointer;
@@ -193,9 +212,11 @@
 /* Footer */
 #signup-page .signup-footer {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 20px;
+    /* Reduced margin */
     color: #FFFFFF;
-    font-size: 20px;
+    font-size: 16px;
+    /* Reduced from 20px */
     font-family: 'DM Sans', sans-serif;
 }
 
@@ -214,11 +235,11 @@
 /* Responsive Design */
 @media (max-width: 1024px) {
     #signup-page .signup-form-section {
-        padding: 40px;
+        padding: 30px;
     }
 
     #signup-page .signup-title {
-        font-size: 64px;
+        font-size: 40px;
     }
 }
 
@@ -233,7 +254,7 @@
     }
 
     #signup-page .signup-form-section {
-        padding: 40px 20px;
+        padding: 30px 20px;
         min-height: 100vh;
     }
 
@@ -242,37 +263,36 @@
     }
 
     #signup-page .signup-title {
-        font-size: 52px;
+        font-size: 36px;
     }
 
     #signup-page .google-signup-btn {
-        padding: 14px 20px;
+        padding: 12px 20px;
     }
 
     #signup-page .signup-input {
-        padding: 14px 20px 14px 50px;
+        padding: 12px 20px 12px 50px;
     }
 
     #signup-page .signup-submit-btn {
-        padding: 16px;
+        padding: 14px;
     }
 }
 
 @media (max-width: 480px) {
     #signup-page .signup-title {
-        font-size: 44px;
+        font-size: 32px;
     }
 
     #signup-page .signup-subtitle {
-        font-size: 16px;
+        font-size: 14px;
     }
 
     #signup-page .google-signup-btn span {
-        font-size: 16px;
+        font-size: 14px;
     }
 
     #signup-page .divider span {
-        font-size: 16px;
+        font-size: 14px;
     }
 }
-

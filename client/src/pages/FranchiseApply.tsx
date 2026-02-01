@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import './FranchiseApply.css';
 
 const Label = ({ children, required = false }: { children: React.ReactNode, required?: boolean }) => (
@@ -188,7 +190,14 @@ export default function FranchiseApply() {
 
             {/* Premium Dashboard Gradient Header */}
             <div className="w-full bg-dashboard-gradient py-12 lg:py-16 mt-0">
-                <div className="max-w-[1200px] mx-auto px-6 lg:px-8 text-center">
+                <div className="max-w-[1200px] mx-auto px-6 lg:px-8 relative flex items-center justify-center">
+                    <Link
+                        to="/"
+                        className="absolute left-6 lg:left-8 text-white/80 hover:text-white transition-colors"
+                        aria-label="Back to Home"
+                    >
+                        <ArrowLeft className="w-6 h-6 lg:w-8 lg:h-8" />
+                    </Link>
                     <h1 className="text-white text-3xl lg:text-4xl font-normal tracking-wide uppercase">
                         FRANCHISE ENQUIRY
                     </h1>

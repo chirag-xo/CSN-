@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
 
 // Gradient removed for white theme, but constant kept if needed for reference or reverting
 // const DASHBOARD_GRADIENT = "linear-gradient(135deg, #040008 0%, #270f4a 30%, #260c52 60%, #000000 100%)";
@@ -9,7 +11,14 @@ export default function Franchise() {
         <div className="min-h-screen bg-gray-100 font-dm-sans">
 
             {/* 1. HERO BANNER */}
-            <div className="w-full h-40 lg:h-56 flex items-center justify-center bg-white">
+            <div className="w-full h-40 lg:h-56 flex items-center justify-center bg-white relative">
+                <Link
+                    to="/"
+                    className="absolute left-6 lg:left-8 text-gray-400 hover:text-[#270f4a] transition-colors"
+                    aria-label="Back to Home"
+                >
+                    <ArrowLeft className="w-6 h-6 lg:w-8 lg:h-8" />
+                </Link>
                 <h1 className="text-[#270f4a] text-2xl lg:text-4xl font-light tracking-[0.2em] uppercase">
                     FRANCHISE
                 </h1>
@@ -152,10 +161,21 @@ export default function Franchise() {
                     </h2>
                     <Link
                         to="/franchise/apply"
-                        className="inline-flex items-center justify-center px-24 py-8 bg-gradient-to-r from-[#1a0536] to-[#450a6b] text-white font-bold text-2xl rounded-none hover:opacity-90 transition-all shadow-xl transform hover:-translate-y-1"
+                        className="
+    inline-flex items-center justify-center
+    h-14 min-w-[220px]
+    text-lg font-medium text-white no-underline
+    rounded-full
+    bg-[linear-gradient(135deg,#5a0980_0%,#7a0ab8_100%)]
+    hover:bg-[linear-gradient(135deg,#7a0ab8_0%,#9e03fe_100%)]
+    hover:shadow-[0px_6px_16px_rgba(158,3,254,0.35)]
+    hover:-translate-y-[2px]
+    transition-all duration-200
+  "
                     >
-                        Apply For Franchise
+                        Apply for Franchise
                     </Link>
+
                 </div>
             </div>
 

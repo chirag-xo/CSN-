@@ -11,6 +11,11 @@ export const authMiddleware = async (
         // Get token from Authorization header
         const authHeader = req.headers.authorization;
 
+        // Check if user is already authenticated (e.g. by Clerk)
+        if (req.user) {
+            return next();
+        }
+
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
             throw new AppError('No token provided', 401, errorCodes.UNAUTHORIZED);
         }
