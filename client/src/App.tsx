@@ -16,6 +16,8 @@ import Messaging from './pages/Messaging';
 import Notifications from './pages/Notifications';
 import TermsOfService from './pages/TermsOfService';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import Franchise from './pages/Franchise';
+import FranchiseApply from './pages/FranchiseApply';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Redirect component for authenticated users
@@ -119,6 +121,8 @@ function App() {
           <Route path="/profile/:userId" element={<PublicProfile />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/franchise" element={<Franchise />} />
+          <Route path="/franchise/apply" element={<FranchiseApply />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

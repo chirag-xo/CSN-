@@ -75,18 +75,22 @@ body {
     opacity: 0.7;
 }
 
-.nav-link:first-of-type {
-    /* Features - x:1051, width: 131 */
-    right: 546px;
-    /* 1728 - 1051 - 131 = 546 */
-    width: 131px;
+.nav-features {
+    /* Features */
+    right: 740px;
+    width: auto;
 }
 
-.nav-link:last-of-type {
-    /* About - x:1227, width: 92 */
-    right: 409px;
-    /* 1728 - 1227 - 92 = 409 */
-    width: 92px;
+.nav-about {
+    /* About */
+    right: 580px;
+    width: auto;
+}
+
+.franchise-nav-link {
+    right: 420px !important;
+    width: auto !important;
+    z-index: 20;
 }
 
 /* Login Button Container */

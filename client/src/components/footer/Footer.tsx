@@ -12,7 +12,7 @@ export default function Footer() {
 
                     {/* Social Media Icons */}
                     <div className="social-icons">
-                        <a href="https://www.facebook.com/share/1E4JmyymJi/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Facebook">
+                        <a href="https://www.facebook.com/share/1GahkosUV9/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Facebook">
                             <img src="/facebook.png" alt="Facebook" className="social-icon-img" />
                         </a>
                         <a href="https://www.instagram.com/csnworld2026?utm_source=qr" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
@@ -27,6 +27,9 @@ export default function Footer() {
                 {/* Bottom Row: Copyright */}
                 <div className="footer-bottom">
                     <p className="copyright" style={{ fontSize: '24px' }}>© 2026 CSN. All rights reserved.</p>
+                    <p className="powered-by" style={{ fontSize: '16px', marginTop: '8px', color: '#ffffff' }}>
+                        Powered by <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: '#ffffff', textDecoration: 'none', fontWeight: 'bold' }}>Royals Services</a>
+                    </p>
                 </div>
             </div>
         </footer>

@@ -135,7 +135,7 @@ export default function TermsOfService() {
                     <div ref={contentRef} className="terms-content">
                         <div>
 
-                            <h2>CSN (Connect & Share Network) — TERMS OF SERVICE</h2>
+                            <h2>CSN (Corporate Social Network) — TERMS OF SERVICE</h2>
 
                             <p><strong>Effective Date: {new Date().toLocaleDateString()}</strong></p>
 
