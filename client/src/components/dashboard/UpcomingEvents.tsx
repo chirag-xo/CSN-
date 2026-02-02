@@ -94,7 +94,7 @@ export default function UpcomingEvents({ events }: UpcomingEventsProps) {
                             <div
                                 key={event.id}
                                 className="ue-card"
-                                onClick={() => navigate(`/event/${event.id}`)}
+                                onClick={() => navigate(`/dashboard/home/events/${event.id}`)}
                             >
                                 <div className="ue-card-top">
                                     <span
