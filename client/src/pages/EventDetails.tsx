@@ -20,7 +20,10 @@ import {
     BookOpen,
     Coffee,
     Building,
-    Link as LinkIcon
+    Link as LinkIcon,
+    IndianRupee,
+    Ticket,
+    Trash2
 } from 'lucide-react';
 import '../styles/eventDetails.css';
 
@@ -62,6 +65,22 @@ export default function EventDetails() {
     const handleSendResponse = () => {
         // Always show confirmation modal
         setShowConfirmModal(true);
+    };
+
+    const handleDelete = async () => {
+        if (!event || !window.confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
+            return;
+        }
+
+        try {
+            setLoading(true);
+            await eventService.deleteEvent(event.id);
+            navigate('/dashboard/home/events');
+        } catch (err: any) {
+            console.error('Failed to delete event:', err);
+            alert(err.response?.data?.error?.message || 'Failed to delete event');
+            setLoading(false);
+        }
     };
 
     const confirmRsvp = async () => {
@@ -134,6 +153,17 @@ export default function EventDetails() {
                             {getTypeIcon(event.type)} <span>{event.type.replace('_', ' ')}</span>
                         </div>
                         {isPastEvent && <span className="past-event-badge">Past Event</span>}
+
+                        {event.isOrganizer && (
+                            <button
+                                onClick={handleDelete}
+                                className="delete-event-btn"
+                                title="Delete Event"
+                            >
+                                <Trash2 size={16} />
+                                <span>Delete Event</span>
+                            </button>
+                        )}
                     </div>
 
                     <h1 className="event-title">{event.title}</h1>
@@ -168,6 +198,20 @@ export default function EventDetails() {
                                 <span>{event.location}</span>
                             </div>
                         )}
+
+                        <div className="meta-item">
+                            {event.entryFee && event.entryFee > 0 ? (
+                                <>
+                                    <IndianRupee className="icon" />
+                                    <span>{event.entryFee}</span>
+                                </>
+                            ) : (
+                                <>
+                                    <Ticket className="icon" />
+                                    <span>Free</span>
+                                </>
+                            )}
+                        </div>
                     </div>
 
                     <div className="organizer-info">

@@ -1,11 +1,4 @@
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
-
-const getAuthHeader = () => {
-    const token = localStorage.getItem('token');
-    return token ? { Authorization: `Bearer ${token}` } : {};
-};
+import api from './api';
 
 // Types
 export interface Event {
@@ -42,6 +35,7 @@ export interface Event {
     userRsvpStatus?: string | null;
     isPublic: boolean;  // NEW: Public vs Private
     isOrganizer?: boolean;  // NEW: Is current user the organizer
+    entryFee?: number;
     createdAt: string;
     updatedAt: string;
 }
@@ -77,6 +71,7 @@ export interface CreateEventData {
     chapterId?: string;
     isPublic?: boolean;  // NEW: Public vs Private
     invitedUserIds?: string[];  // NEW: For private events
+    entryFee?: number;
 }
 
 export interface EventFilters {
@@ -92,9 +87,7 @@ const eventService = {
      * Create a new event
      */
     async createEvent(data: CreateEventData) {
-        const response = await axios.post(`${API_URL}/api/events`, data, {
-            headers: getAuthHeader(),
-        });
+        const response = await api.post('/events', data);
         return response.data;
     },
 
@@ -109,9 +102,7 @@ const eventService = {
         if (filters?.startDate) params.append('startDate', filters.startDate);
         if (filters?.endDate) params.append('endDate', filters.endDate);
 
-        const response = await axios.get(`${API_URL}/api/events?${params.toString()}`, {
-            headers: getAuthHeader(),
-        });
+        const response = await api.get(`/events?${params.toString()}`);
         return response.data;
     },
 
@@ -119,9 +110,7 @@ const eventService = {
      * Get upcoming events
      */
     async getUpcomingEvents() {
-        const response = await axios.get(`${API_URL}/api/events/upcoming`, {
-            headers: getAuthHeader(),
-        });
+        const response = await api.get('/events/upcoming');
         return response.data;
     },
 
@@ -129,9 +118,7 @@ const eventService = {
      * Get user's events (created + attending)
      */
     async getMyEvents() {
-        const response = await axios.get(`${API_URL}/api/events/my-events`, {
-            headers: getAuthHeader(),
-        });
+        const response = await api.get('/events/my-events');
         return response.data;
     },
 
@@ -139,9 +126,7 @@ const eventService = {
      * Get event by ID
      */
     async getEventById(id: string) {
-        const response = await axios.get(`${API_URL}/api/events/${id}`, {
-            headers: getAuthHeader(),
-        });
+        const response = await api.get(`/events/${id}`);
         return response.data;
     },
 
@@ -149,9 +134,7 @@ const eventService = {
      * Update an event
      */
     async updateEvent(id: string, data: Partial<CreateEventData>) {
-        const response = await axios.patch(`${API_URL}/api/events/${id}`, data, {
-            headers: getAuthHeader(),
-        });
+        const response = await api.patch(`/events/${id}`, data);
         return response.data;
     },
 
@@ -159,9 +142,7 @@ const eventService = {
      * Delete an event
      */
     async deleteEvent(id: string) {
-        const response = await axios.delete(`${API_URL}/api/events/${id}`, {
-            headers: getAuthHeader(),
-        });
+        const response = await api.delete(`/events/${id}`);
         return response.data;
     },
 
@@ -169,13 +150,7 @@ const eventService = {
      * RSVP to an event
      */
     async rsvpToEvent(eventId: string, status: 'GOING' | 'MAYBE' | 'DECLINED') {
-        const response = await axios.post(
-            `${API_URL}/api/events/${eventId}/rsvp`,
-            { status },
-            {
-                headers: getAuthHeader(),
-            }
-        );
+        const response = await api.post(`/events/${eventId}/rsvp`, { status });
         return response.data;
     },
 
@@ -183,9 +158,7 @@ const eventService = {
      * Get attendees for an event
      */
     async getAttendees(eventId: string) {
-        const response = await axios.get(`${API_URL}/api/events/${eventId}/attendees`, {
-            headers: getAuthHeader(),
-        });
+        const response = await api.get(`/events/${eventId}/attendees`);
         return response.data;
     },
 
@@ -193,9 +166,7 @@ const eventService = {
      * Get events by chapter
      */
     async getEventsByChapter(chapterId: string) {
-        const response = await axios.get(`${API_URL}/api/events/chapter/${chapterId}`, {
-            headers: getAuthHeader(),
-        });
+        const response = await api.get(`/events/chapter/${chapterId}`);
         return response.data;
     },
 
@@ -203,9 +174,8 @@ const eventService = {
      * Get user's invited events (paginated)
      */
     async getInvitations(limit = 10, offset = 0) {
-        const response = await axios.get(
-            `${API_URL}/api/events/invitations?limit=${limit}&offset=${offset}`,
-            { headers: getAuthHeader() }
+        const response = await api.get(
+            `/events/invitations?limit=${limit}&offset=${offset}`
         );
         return response.data;
     },
@@ -214,9 +184,7 @@ const eventService = {
      * Get pending invitation count
      */
     async getInvitationCount() {
-        const response = await axios.get(`${API_URL}/api/events/invitations/count`, {
-            headers: getAuthHeader(),
-        });
+        const response = await api.get('/events/invitations/count');
         return response.data;
     },
 
@@ -224,10 +192,7 @@ const eventService = {
      * Get invitation statistics for an event (organizer only)
      */
     async getInvitationStats(eventId: string) {
-        const response = await axios.get(
-            `${API_URL}/api/events/${eventId}/invitation-stats`,
-            { headers: getAuthHeader() }
-        );
+        const response = await api.get(`/events/${eventId}/invitation-stats`);
         return response.data;
     },
 
@@ -235,11 +200,7 @@ const eventService = {
      * Add more invitees to a private event (organizer only)
      */
     async addInvitees(eventId: string, invitedUserIds: string[]) {
-        const response = await axios.post(
-            `${API_URL}/api/events/${eventId}/invite`,
-            { invitedUserIds },
-            { headers: getAuthHeader() }
-        );
+        const response = await api.post(`/events/${eventId}/invite`, { invitedUserIds });
         return response.data;
     },
 
@@ -247,10 +208,9 @@ const eventService = {
      * Export attendee list as CSV (organizer only)
      */
     async exportAttendees(eventId: string) {
-        const response = await axios.get(
-            `${API_URL}/api/events/${eventId}/attendees/export`,
+        const response = await api.get(
+            `/events/${eventId}/attendees/export`,
             {
-                headers: getAuthHeader(),
                 responseType: 'blob', // Important for file download
             }
         );

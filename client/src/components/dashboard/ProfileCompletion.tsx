@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Search, Users, ShieldCheck } from 'lucide-react';
 import profileService from '../../services/profileService';
 
 interface MissingItem {
@@ -132,13 +133,13 @@ export default function ProfileCompletion({ completion: legacyCompletion }: Prof
                         ) : (
                             <ul className="pc-benefits-list">
                                 <li className="pc-benefit-item">
-                                    <span className="pc-benefit-icon">🔍</span> Appear in more searches
+                                    <span className="pc-benefit-icon"><Search size={16} /></span> Appear in more searches
                                 </li>
                                 <li className="pc-benefit-item">
-                                    <span className="pc-benefit-icon">🤝</span> Get quality referrals
+                                    <span className="pc-benefit-icon"><Users size={16} /></span> Get quality referrals
                                 </li>
                                 <li className="pc-benefit-item">
-                                    <span className="pc-benefit-icon">⭐</span> Build immediate trust
+                                    <span className="pc-benefit-icon"><ShieldCheck size={16} /></span> Build immediate trust
                                 </li>
                             </ul>
                         )}

@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+import api from './api';
 
 // TypeScript Interfaces
 export interface Referral {
@@ -43,6 +41,7 @@ export interface CreateReferralData {
     contactEmail?: string;
     contactPhone?: string;
     businessValue?: number;
+    status?: 'PENDING' | 'CONVERTED' | 'CLOSED'; // Added to make it flexible if needed, though mostly used in update
 }
 
 export interface UpdateStatusData {
@@ -54,9 +53,7 @@ export interface UpdateStatusData {
 const referralService = {
     // Get referrals given by user (with pagination)
     async getReferralsGiven(limit: number = 10, offset: number = 0) {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`${API_URL}/api/referrals/given`, {
-            headers: { Authorization: `Bearer ${token}` },
+        const response = await api.get('/referrals/given', {
             params: { limit, offset },
         });
         return response.data;
@@ -64,9 +61,7 @@ const referralService = {
 
     // Get referrals received by user (with pagination)
     async getReferralsReceived(limit: number = 10, offset: number = 0) {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`${API_URL}/api/referrals/received`, {
-            headers: { Authorization: `Bearer ${token}` },
+        const response = await api.get('/referrals/received', {
             params: { limit, offset },
         });
         return response.data;
@@ -74,22 +69,15 @@ const referralService = {
 
     // Create a new referral
     async createReferral(data: CreateReferralData) {
-        const token = localStorage.getItem('token');
-        const response = await axios.post(`${API_URL}/api/referrals`, data, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await api.post('/referrals', data);
         return response.data;
     },
 
     // Update referral status
     async updateStatus(referralId: string, data: UpdateStatusData) {
-        const token = localStorage.getItem('token');
-        const response = await axios.patch(
-            `${API_URL}/api/referrals/${referralId}/status`,
-            data,
-            {
-                headers: { Authorization: `Bearer ${token}` },
-            }
+        const response = await api.patch(
+            `/referrals/${referralId}/status`,
+            data
         );
         return response.data;
     },

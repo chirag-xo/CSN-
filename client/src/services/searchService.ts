@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+import api from './api';
 
 export interface SearchResult {
     id: string;
@@ -16,9 +14,7 @@ export interface SearchResult {
 const searchService = {
     // Search users
     async searchUsers(query: string): Promise<SearchResult[]> {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`${API_URL}/api/users/search`, {
-            headers: { Authorization: `Bearer ${token}` },
+        const response = await api.get('/users/search', {
             params: { q: query },
         });
         return response.data.data.users;

@@ -14,6 +14,7 @@ interface CreateEventDto {
     chapterId?: string;
     isPublic?: boolean;  // NEW: Public vs Private
     invitedUserIds?: string[];  // NEW: For private events
+    entryFee?: number; // Fee for the event
 }
 
 interface UpdateEventDto {
@@ -25,6 +26,7 @@ interface UpdateEventDto {
     virtualLink?: string;
     date?: Date;
     endDate?: Date;
+    entryFee?: number;
 }
 
 interface EventFilters {
@@ -83,6 +85,7 @@ class EventService {
                 chapterId: data.chapterId,
                 creatorId,
                 isPublic,
+                entryFee: data.entryFee,
             },
             include: {
                 creator: {

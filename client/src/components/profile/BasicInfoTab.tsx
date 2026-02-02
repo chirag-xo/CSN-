@@ -97,7 +97,16 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
         try {
             setSaving(true);
             setErrorMessage('');
-            const updated = await profileService.updateProfile(formData);
+
+            // Prepare data for submission
+            const submissionData = { ...formData };
+
+            // Handle optional UUID fields: Zod schema expects string | undefined, NOT null
+            if (!submissionData.chapterId) {
+                delete submissionData.chapterId;
+            }
+
+            const updated = await profileService.updateProfile(submissionData);
             onUpdate(updated);
             setSuccessMessage('Profile updated successfully!');
             setIsDirty(false);

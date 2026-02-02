@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+import api from './api';
 
 export interface ContactFormData {
     name: string;
@@ -10,7 +8,7 @@ export interface ContactFormData {
 
 export const contactService = {
     async submitContactForm(data: ContactFormData) {
-        const response = await axios.post(`${API_URL}/api/contact`, data);
+        const response = await api.post('/contact', data);
         return response.data;
     }
 };

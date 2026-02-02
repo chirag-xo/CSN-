@@ -14,7 +14,9 @@ import {
     PartyPopper,
     BookOpen,
     Coffee,
-    MoreHorizontal
+    MoreHorizontal,
+    IndianRupee,
+    Ticket
 } from 'lucide-react';
 
 interface EventCardProps {
@@ -87,8 +89,13 @@ export default function EventCard({ event, onRsvp }: EventCardProps) {
         );
     };
 
+    const isPastEvent = new Date() > eventDate;
+
     return (
-        <Link to={`/dashboard/home/events/${event.id}`} className="event-card">
+        <Link
+            to={`/dashboard/home/events/${event.id}`}
+            className={`event-card ${isPastEvent ? 'past-event' : ''}`}
+        >
             <div className="event-card-top">
                 <div
                     className="event-type-badge-premium"
@@ -141,6 +148,20 @@ export default function EventCard({ event, onRsvp }: EventCardProps) {
                     <div className="meta-item">
                         <Users size={14} />
                         <span>{attendeeCount} attending</span>
+                    </div>
+
+                    <div className="meta-item">
+                        {event.entryFee && event.entryFee > 0 ? (
+                            <>
+                                <IndianRupee size={14} />
+                                <span>{event.entryFee}</span>
+                            </>
+                        ) : (
+                            <>
+                                <Ticket size={14} />
+                                <span>Free</span>
+                            </>
+                        )}
                     </div>
                 </div>
 

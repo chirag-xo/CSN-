@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { useAuth as useClerkAuth } from '@clerk/clerk-react';
 import type { User, RegisterData } from '../types/user';
 import { authService } from '../services/authService';
+import { setTokenFetcher } from '../services/api';
 
 interface AuthContextType {
     user: User | null;
@@ -52,6 +53,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Sync Clerk Auth
     useEffect(() => {
         if (!isLoaded) return;
+
+        // Connect API to Clerk token refresh
+        setTokenFetcher(getToken);
 
         if (isSignedIn) {
             getToken().then(token => {

@@ -9,8 +9,30 @@ const api = axios.create({
     },
 });
 
+let tokenFetcher: (() => Promise<string | null>) | null = null;
+
+export const setTokenFetcher = (fetcher: () => Promise<string | null>) => {
+    tokenFetcher = fetcher;
+};
+
 // Add token to requests automatically
-api.interceptors.request.use((config) => {
+api.interceptors.request.use(async (config) => {
+    // Try to get fresh token from fetcher first
+    if (tokenFetcher) {
+        try {
+            const token = await tokenFetcher();
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+                // Also update localStorage for backup/legacy
+                localStorage.setItem('token', token);
+                return config;
+            }
+        } catch (error) {
+            console.error('Failed to fetch fresh token:', error);
+        }
+    }
+
+    // Fallback to localStorage
     const token = localStorage.getItem('token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;

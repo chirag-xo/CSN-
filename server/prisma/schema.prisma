@@ -173,6 +173,7 @@ model Event {
   isRecurring    Boolean  @default(false)
   recurrenceType String?  // WEEKLY, MONTHLY
   isPublic       Boolean  @default(true)  // Public vs Private events
+  entryFee       Int?     // Fee for the event (0-9999)
   
   chapterId String?
   chapter   Chapter? @relation(fields: [chapterId], references: [id])

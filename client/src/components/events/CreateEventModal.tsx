@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Globe, Lock } from 'lucide-react';
+import { Globe, Lock, IndianRupee } from 'lucide-react';
 import eventService, { type CreateEventData } from '../../services/eventService';
 import connectionService from '../../services/connectionService';
 import '../../styles/createEventModal.css';
@@ -34,7 +34,11 @@ export default function CreateEventModal({ onClose, onSuccess }: CreateEventModa
         recurrenceType: '',
         isPublic: true,  // NEW: Default to public
         invitedUserIds: [],  // NEW: For private events
+        entryFee: undefined,
     });
+
+    // Local state for the entry fee input to handle the "free text" requirement
+    const [entryFeeInput, setEntryFeeInput] = useState('');
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -80,6 +84,27 @@ export default function CreateEventModal({ onClose, onSuccess }: CreateEventModa
                 ...prev,
                 [name]: value,
             }));
+        }
+    };
+
+    // Special handler for Entry Fee to enforce numerals 0-9999
+    const handleEntryFeeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+
+        // Allow empty string to clear the field
+        if (value === '') {
+            setEntryFeeInput('');
+            setFormData(prev => ({ ...prev, entryFee: undefined }));
+            return;
+        }
+
+        // Validate strictly numerals only
+        if (/^\d*$/.test(value)) {
+            const numValue = parseInt(value, 10);
+            if (!isNaN(numValue) && numValue >= 0 && numValue <= 9999) {
+                setEntryFeeInput(value);
+                setFormData(prev => ({ ...prev, entryFee: numValue }));
+            }
         }
     };
 
@@ -244,6 +269,26 @@ export default function CreateEventModal({ onClose, onSuccess }: CreateEventModa
                             placeholder="Describe your event..."
                             rows={4}
                         />
+                    </div>
+
+                    {/* Entry Fee Field - NEW */}
+                    <div className="form-group">
+                        <label htmlFor="entryFee">
+                            Entry Fee (per person)
+                        </label>
+                        <div className="input-with-icon">
+                            <IndianRupee size={18} className="input-icon" />
+                            <input
+                                type="text"
+                                id="entryFee"
+                                name="entryFee"
+                                value={entryFeeInput}
+                                onChange={handleEntryFeeChange}
+                                placeholder="0 - 9999"
+                                className="pl-10 input-field"
+                            />
+                        </div>
+                        <div className="field-hint">Enter amount between 0 and 9999 (numerals only)</div>
                     </div>
 
                     {/* Date & Time */}

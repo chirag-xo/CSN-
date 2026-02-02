@@ -870,3 +870,15 @@
         font-size: 15px;
     }
 }
+/* Past Events - Greyed Out */
+.event-card.past-event {
+    filter: grayscale(100%);
+    opacity: 0.75;
+    /* pointer-events: none; REMOVED to allow viewing details */
+}
+
+.event-card.past-event:hover {
+    transform: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border-color: #E5E7EB;
+}

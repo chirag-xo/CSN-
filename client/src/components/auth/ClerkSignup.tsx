@@ -103,6 +103,15 @@ export default function ClerkSignup() {
     if (pendingVerification) {
         return (
             <div id="signup-page">
+                {/* Back Button to Signup Form */}
+                <button
+                    className="cancel-button"
+                    onClick={() => setPendingVerification(false)}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                >
+                    <img src="/back.jpg" alt="Back" />
+                </button>
+
                 <div className="signup-container" style={{ justifyContent: 'center' }}>
                     <div className="signup-form-section" style={{ width: '100%', maxWidth: '500px' }}>
                         <div className="signup-form-content">
