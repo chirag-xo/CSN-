@@ -13,6 +13,9 @@ export const updateProfileSchema = z.object({
     bio: z.string().optional(),
     tagline: z.string().optional(),
     chapterId: z.string().uuid().optional(),
+    topProjectTitle: z.string().optional(),
+    topProjectDescription: z.string().optional(),
+    topConnectionIds: z.array(z.string()).optional(),
 });
 
 export const profileService = {
@@ -89,6 +92,10 @@ export const profileService = {
             bio: user.bio,
             emailVerified: user.emailVerified,
             communityVerified: user.communityVerified,
+            // Showcase
+            topProjectTitle: user.topProjectTitle,
+            topProjectDescription: user.topProjectDescription,
+            topConnectionIds: user.topConnectionIds,
             chapter: user.chapter ? {
                 id: user.chapter.id,
                 name: user.chapter.name,
@@ -309,6 +316,10 @@ export const profileService = {
                 chapterId: true,
                 createdAt: true,
                 updatedAt: true,
+                // Showcase
+                topProjectTitle: true,
+                topProjectDescription: true,
+                topConnectionIds: true,
             },
         });
 

@@ -43,7 +43,14 @@ export default function ClerkLogin() {
             }
         } catch (err: any) {
             console.error(err);
-            setError(err.errors?.[0]?.message || 'Failed to login. Please check your credentials.');
+            const errorMessage = err.errors?.[0]?.message || 'Failed to login. Please check your credentials.';
+
+            // Check for "Invalid verification strategy" which usually means account exists but password not set (e.g. Google Auth)
+            if (errorMessage.includes('verification strategy') || JSON.stringify(err).includes('strategy')) {
+                setError("This account likely uses Google Sign-In. Please click 'Sign in with Google' above.");
+            } else {
+                setError(errorMessage);
+            }
         } finally {
             setLoading(false);
         }
