@@ -8,6 +8,9 @@ export interface User {
     city?: string;
     bio?: string;
     interests?: string[];
+    phone?: string;
+    state?: string;
+    profilePhoto?: string;
     createdAt: string;
     updatedAt?: string;
 }

@@ -15,3 +15,12 @@
    |  ^^^^^^^^^^^^^^^^^^^^^^^^^
 72 |  
 73 |  @custom-variant dark (&:is(.dark *));
+6:28:53 PM [vite] (client) hmr update /src/styles/globals.css, /src/index.css
+6:28:53 PM [vite] (client) hmr update /src/styles/globals.css, /src/index.css
+[vite:css][postcss] @import must precede all other statements (besides @charset or empty @layer)
+69 |  
+70 |  @plugin "tailwindcss-animate";
+71 |  @import "tw-animate-css";
+   |  ^^^^^^^^^^^^^^^^^^^^^^^^^
+72 |  
+73 |  @custom-variant dark (&:is(.dark *));
