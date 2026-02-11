@@ -44,10 +44,19 @@ api.interceptors.request.use(async (config) => {
 api.interceptors.response.use(
     (response) => response,
     (error) => {
+        // Handle Network Errors (Backend down)
+        if (error.code === 'ERR_NETWORK' || error.message === 'Network Error') {
+            console.error('Backend unavailable');
+            // Optional: You could dispatch a global event here to show a toast
+            return Promise.reject(new Error('Backend server is unreachable. Please try again later.'));
+        }
+
         if (error.response?.status === 401) {
             // Token expired or invalid
             localStorage.removeItem('token');
-            window.location.href = '/login';
+            if (window.location.pathname !== '/login') {
+                window.location.href = '/login';
+            }
         }
         return Promise.reject(error);
     }

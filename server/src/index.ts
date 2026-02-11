@@ -1,7 +1,7 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import dotenv from 'dotenv';
 import authRoutes from './auth/auth.routes';
 import dashboardRoutes from './dashboard/dashboard.routes';
 import referralRoutes from './referrals/referral.routes';
@@ -15,11 +15,11 @@ import eventRoutes from './events/event.routes';
 import galleryRoutes from './gallery/gallery.routes';
 import contactRoutes from './contact/contact.routes';
 import chapterRoutes from './chapters/chapter.routes';
+import paymentRoutes from './routes/payment.routes';
 import { errorHandler } from './shared/errorHandler';
 import path from 'path';
 
-// Load environment variables
-dotenv.config();
+// Load environment variables (Loaded via import 'dotenv/config')
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -65,6 +65,13 @@ app.get('/health', (req, res) => {
     res.json({ success: true, message: 'Server is running' });
 });
 
+app.get('/api/health', (req, res) => {
+    res.json({ success: true, message: 'Backend is healthy' });
+});
+
+// API Routes
+import publicChapterRoutes from './chapters/public.chapter.routes';
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
@@ -79,6 +86,8 @@ app.use('/api/events', eventRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/chapters', chapterRoutes);
+app.use('/api/public/chapters', publicChapterRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // 404 handler
 app.use((req, res) => {

@@ -33,27 +33,32 @@ export default function DashboardHome() {
         fetchDashboardData();
     }, []);
 
-    if (loading) {
-        return (
-            <div className="dashboard-home">
-                <div className="loading-container">
-                    <div className="loading-spinner"></div>
-                    <p>Loading dashboard...</p>
+    // Skeleton Component
+    const DashboardSkeleton = () => (
+        <div className="animate-pulse space-y-8">
+            {/* Header Skeleton */}
+            <div className="space-y-4">
+                <div className="h-10 w-96 bg-gray-200 rounded"></div>
+                <div className="flex gap-4">
+                    <div className="h-8 w-32 bg-gray-200 rounded-full"></div>
+                    <div className="h-8 w-32 bg-gray-200 rounded-full"></div>
                 </div>
             </div>
-        );
-    }
 
-    if (error || !dashboardData) {
-        return (
-            <div className="dashboard-home">
-                <div className="error-container">
-                    <p className="error-message">{error || 'Failed to load dashboard'}</p>
-                    <button onClick={() => window.location.reload()}>Retry</button>
-                </div>
+            {/* KPI Cards Skeleton */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="h-40 bg-gray-200 rounded-2xl"></div>
+                ))}
             </div>
-        );
-    }
+
+            {/* Content Grid Skeleton */}
+            <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
+                <div className="h-96 bg-gray-200 rounded-2xl"></div>
+                <div className="h-96 bg-gray-200 rounded-2xl"></div>
+            </div>
+        </div>
+    );
 
     return (
         <div className="h-screen w-full bg-gray-50 flex flex-col overflow-hidden">
@@ -76,36 +81,49 @@ export default function DashboardHome() {
                 />
 
                 <main className="flex-1 overflow-y-auto p-6 w-full">
-                    {/* Greeting Section (Premium Redesign) */}
-                    <div className="dashboard-header">
-                        <h1 className="header-greeting">
-                            <span className="greeting-highlight">Hello</span> {dashboardData.user.name}
-                        </h1>
-                        <div className="header-badges">
-                            <span className="header-badge">
-                                <span className="badge-label">Chapter:</span>
-                                {dashboardData.user.chapter}
-                            </span>
-                            <span className="header-badge">
-                                <span className="badge-label">City:</span>
-                                {dashboardData.user.city}
-                            </span>
+                    {loading ? (
+                        <DashboardSkeleton />
+                    ) : error || !dashboardData ? (
+                        <div className="dashboard-home">
+                            <div className="error-container">
+                                <p className="error-message">{error || 'Failed to load dashboard'}</p>
+                                <button onClick={() => window.location.reload()}>Retry</button>
+                            </div>
                         </div>
-                    </div>
+                    ) : (
+                        <>
+                            {/* Greeting Section (Premium Redesign) */}
+                            <div className="dashboard-header">
+                                <h1 className="header-greeting">
+                                    <span className="greeting-highlight">Hello</span> {dashboardData.user.name}
+                                </h1>
+                                <div className="header-badges">
+                                    <span className="header-badge">
+                                        <span className="badge-label">Chapter:</span>
+                                        {dashboardData.user.chapter}
+                                    </span>
+                                    <span className="header-badge">
+                                        <span className="badge-label">City:</span>
+                                        {dashboardData.user.city}
+                                    </span>
+                                </div>
+                            </div>
 
-                    {/* KPI Cards */}
-                    <KPICards stats={dashboardData.stats} />
+                            {/* KPI Cards */}
+                            <KPICards stats={dashboardData.stats} />
 
-                    {/* Two Column Layout */}
-                    <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 mt-6">
-                        <div className="space-y-6">
-                            <ProfileCompletion completion={dashboardData.profileCompletion} />
-                        </div>
+                            {/* Two Column Layout */}
+                            <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 mt-6">
+                                <div className="space-y-6">
+                                    <ProfileCompletion completion={dashboardData.profileCompletion} />
+                                </div>
 
-                        <div>
-                            <UpcomingEvents events={dashboardData.upcomingEvents} />
-                        </div>
-                    </div>
+                                <div>
+                                    <UpcomingEvents events={dashboardData.upcomingEvents} />
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </main>
             </div>
         </div>

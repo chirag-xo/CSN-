@@ -33,8 +33,13 @@ if (!PUBLISHABLE_KEY) {
 function HomeRedirect() {
   const { isAuthenticated, loading } = useAuth();
 
-  if (loading) return <div>Loading...</div>;
-  if (isAuthenticated) return <Navigate to="/dashboard/home" replace />;
+  // Optimization for LCP: Render Home immediately.
+  // Do not block paint with a loading spinner.
+
+  if (!loading && isAuthenticated) {
+    return <Navigate to="/dashboard/home" replace />;
+  }
+
   return <Home />;
 }
 

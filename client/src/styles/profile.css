@@ -999,3 +999,21 @@
         /* Gap handles spacing */
     }
 }
+/* Fix for Desktop Layout (1024px+) to prevent form groups from becoming side-by-side */
+@media (min-width: 1024px) {
+    .form-group {
+        display: flex;
+        flex-direction: column !important;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 20px;
+    }
+    
+     /* Ensure email section spans full width if it's not in a grid */
+    .email-input-wrapper {
+        width: 100%;
+    }
+}

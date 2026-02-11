@@ -4,6 +4,7 @@ import chapterService, { type Chapter } from '../../services/chapterService';
 import ProfilePhotoUpload from './ProfilePhotoUpload';
 import SkillsInput from './SkillsInput';
 import { User, Briefcase, MapPin, FileText, MessageSquare, Award } from 'lucide-react';
+import { indianStates, citiesByState } from '../../data/locations';
 
 interface BasicInfoTabProps {
     profile: Profile;
@@ -17,6 +18,7 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
         company: profile.company || '',
         position: profile.position || '',
         city: profile.city || '',
+        state: profile.state || '',
         phone: profile.phone || '',
         tagline: profile.tagline || '',
         bio: profile.bio || '',
@@ -32,21 +34,28 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
 
     const bioMaxLength = 500;
 
-    // Fetch chapters on mount
+    // Fetch chapters when city or state changes
     useEffect(() => {
-        const fetchChapters = async () => {
+        const timer = setTimeout(async () => {
+            if (!formData.city && !formData.state) {
+                setChapters([]);
+                return;
+            }
+
             try {
                 setLoadingChapters(true);
-                const data = await chapterService.getChapters();
+                // Fetch using both city and state
+                const data = await chapterService.getChapters(formData.city, formData.state);
                 setChapters(data);
             } catch (err) {
                 console.error('Error fetching chapters:', err);
             } finally {
                 setLoadingChapters(false);
             }
-        };
-        fetchChapters();
-    }, []);
+        }, 500); // Debounce for 500ms
+
+        return () => clearTimeout(timer);
+    }, [formData.city, formData.state]);
 
     useEffect(() => {
         // Track if form has changed
@@ -56,6 +65,7 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
             formData.company !== (profile.company || '') ||
             formData.position !== (profile.position || '') ||
             formData.city !== (profile.city || '') ||
+            formData.state !== (profile.state || '') ||
             formData.phone !== (profile.phone || '') ||
             formData.tagline !== (profile.tagline || '') ||
             formData.bio !== (profile.bio || '') ||
@@ -69,7 +79,14 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+
+        // Custom logic for state change: reset city
+        if (name === 'state') {
+            setFormData((prev) => ({ ...prev, [name]: value, city: '' }));
+        } else {
+            setFormData((prev) => ({ ...prev, [name]: value }));
+        }
+
         setSuccessMessage('');
         setErrorMessage('');
     };
@@ -277,15 +294,38 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
 
                 <div className="form-grid">
                     <div className="form-group">
+                        <label htmlFor="state">State</label>
+                        <select
+                            id="state"
+                            name="state"
+                            value={formData.state || ''}
+                            onChange={handleInputChange}
+                        >
+                            <option value="">Select State</option>
+                            {indianStates.map((state) => (
+                                <option key={state} value={state}>
+                                    {state}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="form-group">
                         <label htmlFor="city">City</label>
-                        <input
-                            type="text"
+                        <select
                             id="city"
                             name="city"
-                            value={formData.city}
+                            value={formData.city || ''}
                             onChange={handleInputChange}
-                            placeholder="Your city"
-                        />
+                            disabled={!formData.state}
+                        >
+                            <option value="">Select City</option>
+                            {formData.state && citiesByState[formData.state]?.map((city) => (
+                                <option key={city} value={city}>
+                                    {city}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <div className="form-group">
@@ -307,9 +347,13 @@ export default function BasicInfoTab({ profile, onUpdate }: BasicInfoTabProps) {
                             name="chapterId"
                             value={formData.chapterId || ''}
                             onChange={handleInputChange}
-                            disabled={loadingChapters}
+                            disabled={loadingChapters || (!formData.state && !formData.city)}
                         >
                             <option value="">Select Chapter (Optional)</option>
+                            {loadingChapters && <option disabled>Loading chapters...</option>}
+                            {!loadingChapters && chapters.length === 0 && (formData.state || formData.city) && (
+                                <option disabled>No chapters available in this location</option>
+                            )}
                             {chapters.map((chapter) => (
                                 <option key={chapter.id} value={chapter.id}>
                                     {chapter.name} - {chapter.city}

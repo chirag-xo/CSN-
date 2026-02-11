@@ -42,6 +42,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 setUser(null);
             }
         }
+        // Critical: Always stop loading, even on error
         setLoading(false);
     }, []);
 

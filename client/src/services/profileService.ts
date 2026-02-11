@@ -9,6 +9,7 @@ export interface Profile {
     company: string | null;
     position: string | null;
     city: string | null;
+    state: string | null;
     phone: string | null;
     profilePhoto: string | null;
     tagline: string | null;
@@ -56,6 +57,7 @@ export interface UpdateProfileData {
     company?: string;
     position?: string;
     city?: string;
+    state?: string;
     phone?: string;
     bio?: string;
     tagline?: string;

@@ -1,0 +1,17 @@
+
+> client@0.0.0 dev
+> vite --host
+
+
+  VITE v7.3.0  ready in 193 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://192.168.1.2:5173/
+  ➜  press h + enter to show help
+[vite:css][postcss] @import must precede all other statements (besides @charset or empty @layer)
+69 |  
+70 |  @plugin "tailwindcss-animate";
+71 |  @import "tw-animate-css";
+   |  ^^^^^^^^^^^^^^^^^^^^^^^^^
+72 |  
+73 |  @custom-variant dark (&:is(.dark *));

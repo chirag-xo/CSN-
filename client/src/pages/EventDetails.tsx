@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import eventService, { type Event } from '../services/eventService';
 import Breadcrumb from '../components/common/Breadcrumb';
+import GetPassButton from '../components/payments/GetPassButton';
 import InvitationStats from '../components/events/InvitationStats';
 import {
     Calendar,
@@ -361,15 +362,25 @@ export default function EventDetails() {
                             </button>
                         </div>
 
-                        {/* Send Response Button */}
+                        {/* Get Pass / Send Response Button */}
                         {selectedRsvp && (
-                            <button
-                                className="send-response-btn"
-                                onClick={handleSendResponse}
-                                disabled={rsvping}
-                            >
-                                {rsvping ? 'Sending...' : 'Send Response'}
-                            </button>
+                            selectedRsvp === 'GOING' ? (
+                                <GetPassButton
+                                    eventId={event.id}
+                                    onSuccess={confirmRsvp}
+                                    className="send-response-btn"
+                                >
+                                    {event.entryFee && event.entryFee > 0 ? `Get Pass (₹${event.entryFee})` : 'Get Free Pass'}
+                                </GetPassButton>
+                            ) : (
+                                <button
+                                    className="send-response-btn"
+                                    onClick={handleSendResponse}
+                                    disabled={rsvping}
+                                >
+                                    {rsvping ? 'Sending...' : 'Send Response'}
+                                </button>
+                            )
                         )}
 
                         {/* Confirmation Modal */}
