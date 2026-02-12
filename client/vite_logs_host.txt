@@ -24,3 +24,31 @@
    |  ^^^^^^^^^^^^^^^^^^^^^^^^^
 72 |  
 73 |  @custom-variant dark (&:is(.dark *));
+10:12:12 AM [vite] (client) hmr update /src/styles/globals.css, /src/index.css, /src/contexts/AuthContext.tsx, /src/pages/DashboardHome.tsx, /src/pages/Gallery.tsx, /src/components/gallery/PhotoCard.tsx, /src/components/gallery/PhotoUpload.tsx, /src/pages/ProfileSettings.tsx, /src/components/dashboard/ProfileCompletion.tsx, /src/components/dashboard/TopBar.tsx, /src/components/profile/BasicInfoTab.tsx, /src/components/profile/ShowcaseTab.tsx, /src/components/profile/ProfileCompletionWidget.tsx, /src/components/dashboard/DashboardNav.tsx, /src/pages/Referrals.tsx, /src/components/referrals/SendReferralModal.tsx, /src/components/referrals/ReferralCard.tsx, /src/pages/Events.tsx, /src/pages/EventDetails.tsx, /src/components/events/CreateEventModal.tsx, /src/components/events/EventCard.tsx, /src/components/events/InvitationStats.tsx, /src/components/events/AddInviteesModal.tsx, /src/pages/Network.tsx, /src/components/search/UserResultCard.tsx, /src/components/profile/ProfileActions.tsx, /src/components/payments/GetPassButton.tsx, /src/components/profile/InterestsTab.tsx, /src/components/profile/InterestSelectorModal.tsx, /src/components/profile/PrivacyTab.tsx, /src/components/profile/ProfilePhotoUpload.tsx
+[vite:css][postcss] @import must precede all other statements (besides @charset or empty @layer)
+69 |  
+70 |  @plugin "tailwindcss-animate";
+71 |  @import "tw-animate-css";
+   |  ^^^^^^^^^^^^^^^^^^^^^^^^^
+72 |  
+73 |  @custom-variant dark (&:is(.dark *));
+10:12:13 AM [vite] (client) hmr invalidate /src/contexts/AuthContext.tsx Could not Fast Refresh ("useAuth" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:12:13 AM [vite] (client) hmr update /src/App.tsx, /src/components/ProtectedRoute.tsx, /src/components/dashboard/TopBar.tsx, /src/components/dashboard/DashboardNav.tsx, /src/components/payments/GetPassButton.tsx
+10:18:45 AM [vite] .env changed, restarting server...
+10:18:45 AM [vite] server restarted.
+[vite:css][postcss] @import must precede all other statements (besides @charset or empty @layer)
+69 |  
+70 |  @plugin "tailwindcss-animate";
+71 |  @import "tw-animate-css";
+   |  ^^^^^^^^^^^^^^^^^^^^^^^^^
+72 |  
+73 |  @custom-variant dark (&:is(.dark *));
+10:35:26 AM [vite] .env changed, restarting server...
+10:35:27 AM [vite] server restarted.
+[vite:css][postcss] @import must precede all other statements (besides @charset or empty @layer)
+69 |  
+70 |  @plugin "tailwindcss-animate";
+71 |  @import "tw-animate-css";
+   |  ^^^^^^^^^^^^^^^^^^^^^^^^^
+72 |  
+73 |  @custom-variant dark (&:is(.dark *));
