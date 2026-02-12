@@ -66,6 +66,11 @@ app.use(...(clerkAuthMiddleware as any));
 // Serve static files from uploads directory with CORS enabled
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
+// Root route for deployment check
+app.get('/', (req, res) => {
+    res.send('Backend is running');
+});
+
 // Health check
 app.get('/health', (req, res) => {
     res.json({ success: true, message: 'Server is running' });
