@@ -1,7 +1,16 @@
+
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import path from 'path';
+
+// Middleware
+import { errorHandler } from './shared/errorHandler';
+// New Auth Middleware (Protected Only)
+import { authMiddleware } from './middleware/auth.middleware';
+
+// Routes
 import authRoutes from './auth/auth.routes';
 import dashboardRoutes from './dashboard/dashboard.routes';
 import referralRoutes from './referrals/referral.routes';
@@ -15,14 +24,15 @@ import eventRoutes from './events/event.routes';
 import galleryRoutes from './gallery/gallery.routes';
 import contactRoutes from './contact/contact.routes';
 import chapterRoutes from './chapters/chapter.routes';
+import publicChapterRoutes from './chapters/public.chapter.routes';
 import paymentRoutes from './routes/payment.routes';
-import { errorHandler } from './shared/errorHandler';
-import path from 'path';
 
 // Load environment variables (Loaded via import 'dotenv/config')
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Define allowed origins
 const CORS_ORIGINS = [
     'http://localhost:5173',
     'http://localhost:5174',
@@ -58,20 +68,18 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Clerk Authentication Middleware (Global)
-import { clerkAuthMiddleware } from './auth/clerk.middleware';
-// @ts-ignore
-app.use(...(clerkAuthMiddleware as any));
-
-// Serve static files from uploads directory with CORS enabled
+// Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
-// Root route for deployment check
+// ============================================================================
+// PUBLIC ROUTES (No Auth Required)
+// ============================================================================
+
+// Deployment Health Checks
 app.get('/', (req, res) => {
-    res.send('Backend is running');
+    res.status(200).json({ message: "Backend is running" });
 });
 
-// Health check
 app.get('/health', (req, res) => {
     res.json({ success: true, message: 'Server is running' });
 });
@@ -80,27 +88,39 @@ app.get('/api/health', (req, res) => {
     res.json({ success: true, message: 'Backend is healthy' });
 });
 
-// API Routes
-import publicChapterRoutes from './chapters/public.chapter.routes';
-
-// API Routes
+// Authentication Routes (Login/Register/SSO)
 app.use('/api/auth', authRoutes);
-app.use('/api/dashboard', dashboardRoutes);
-app.use('/api/referrals', referralRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/profile', profileRoutes);
-app.use('/api/profile', uploadRoutes);
-app.use('/api/interests', interestRoutes);
-app.use('/api/privacy', privacyRoutes);
-app.use('/api/connections', connectionRoutes);
-app.use('/api/events', eventRoutes);
-app.use('/api/gallery', galleryRoutes);
-app.use('/api/contact', contactRoutes);
-app.use('/api/chapters', chapterRoutes);
-app.use('/api/public/chapters', publicChapterRoutes);
-app.use('/api/payments', paymentRoutes);
 
-// 404 handler
+// Public API Routes
+app.use('/api/public/chapters', publicChapterRoutes);
+
+// ============================================================================
+// PROTECTED ROUTES (Auth Required)
+// ============================================================================
+
+// Apply Auth Middleware to all routes below
+// This ensures that any request to these endpoints MUST have a valid Clerk token
+// otherwise it returns 401 JSON immediately.
+
+app.use('/api/dashboard', authMiddleware as any, dashboardRoutes);
+app.use('/api/referrals', authMiddleware as any, referralRoutes);
+app.use('/api/users', authMiddleware as any, userRoutes);
+app.use('/api/profile', authMiddleware as any, profileRoutes);
+app.use('/api/profile', authMiddleware as any, uploadRoutes); // Merge path logic
+app.use('/api/interests', authMiddleware as any, interestRoutes);
+app.use('/api/privacy', authMiddleware as any, privacyRoutes);
+app.use('/api/connections', authMiddleware as any, connectionRoutes);
+app.use('/api/events', authMiddleware as any, eventRoutes);
+app.use('/api/gallery', authMiddleware as any, galleryRoutes);
+app.use('/api/contact', authMiddleware as any, contactRoutes);
+app.use('/api/chapters', authMiddleware as any, chapterRoutes); // Internal chapter management
+app.use('/api/payments', authMiddleware as any, paymentRoutes);
+
+// ============================================================================
+// ERROR HANDLING
+// ============================================================================
+
+// 404 Handler
 app.use((req, res) => {
     res.status(404).json({
         success: false,
@@ -111,7 +131,7 @@ app.use((req, res) => {
     });
 });
 
-// Global error handler (must be last)
+// Global Error Handler
 app.use(errorHandler);
 
 // Start server

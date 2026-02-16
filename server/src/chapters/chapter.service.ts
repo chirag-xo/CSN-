@@ -3,16 +3,26 @@ import prisma from '../shared/database';
 export const chapterService = {
     // Get all chapters
     async getAllChapters() {
-        return await prisma.chapter.findMany({
+        const chapters = await prisma.chapter.findMany({
             select: {
                 id: true,
                 name: true,
-                city: true,
+                City: {
+                    select: { name: true }
+                },
             },
             orderBy: {
                 name: 'asc',
             },
         });
+
+        // Map to preserve legacy structure if needed, or just return as is
+        // Assuming frontend expects 'city' field
+        return chapters.map(c => ({
+            ...c,
+            city: c.City?.name || null,
+            City: undefined
+        }));
     },
 
     // Get public chapters with filtering
@@ -27,7 +37,7 @@ export const chapterService = {
             andConditions.push({
                 OR: [
                     { cityId: cityId },
-                    { city: { equals: cityId, mode: 'insensitive' } }
+                    { City: { name: { equals: cityId, mode: 'insensitive' } } }
                 ]
             });
         }
@@ -40,7 +50,7 @@ export const chapterService = {
             andConditions.push({
                 OR: [
                     { stateId: state },
-                    { state: { equals: state, mode: 'insensitive' } }
+                    { State: { name: { equals: state, mode: 'insensitive' } } }
                 ]
             });
         }
@@ -49,16 +59,29 @@ export const chapterService = {
             where.AND = andConditions;
         }
 
-        return await prisma.chapter.findMany({
+        const chapters = await prisma.chapter.findMany({
             where,
             select: {
                 id: true,
                 name: true,
                 cityId: true,
                 stateId: true,
-                city: true,
+                City: {
+                    select: { name: true }
+                },
+                State: {
+                    select: { name: true }
+                }
             },
             orderBy: { name: 'asc' },
         });
+
+        return chapters.map(c => ({
+            ...c,
+            city: c.City?.name || null,
+            state: c.State?.name || null,
+            City: undefined,
+            State: undefined
+        }));
     },
 };

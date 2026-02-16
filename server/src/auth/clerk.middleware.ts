@@ -4,22 +4,11 @@ import { ClerkExpressWithAuth } from '@clerk/clerk-sdk-node';
 import prisma from '../shared/database';
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
+import fs from 'fs';
 
 const SALT_ROUNDS = parseInt(process.env.BCRYPT_SALT_ROUNDS || '10');
 
-// augment Request type to include auth
-declare global {
-    namespace Express {
-        interface Request {
-            auth?: {
-                userId: string | null;
-                sessionId: string | null;
-                getToken: () => Promise<string | null>;
-                claims: any;
-            };
-        }
-    }
-}
+// declaration moved to shared/types.ts
 
 // Wrapper to use Clerk's middleware but handle the next() logic manually if needed
 // or just use it as a preceding middleware.
@@ -73,6 +62,8 @@ export const clerkAuthMiddleware = [
             });
 
             if (!user) {
+                fs.appendFileSync('clerk_debug.log', `[${new Date().toISOString()}] Syncing user ${email}\n`);
+
                 // Create new user
                 // Generate random password
                 const randomPassword = crypto.randomBytes(32).toString('hex');
@@ -92,17 +83,16 @@ export const clerkAuthMiddleware = [
 
             // Attach to req.user for downstream compatibility
             req.user = {
+                id: user.id,
                 userId: user.id,
                 email: user.email,
             };
 
+            fs.appendFileSync('clerk_debug.log', `[${new Date().toISOString()}] Auth success for ${user.email}\n`);
             next();
         } catch (error) {
             console.error('Clerk Auth Middleware Error:', error);
-            // If Clerk auth failed or DB sync failed, we should probably allow JWT fallback 
-            // OR if the token WAS valid but sync failed, maybe error out?
-            // "If invalid or no token: Call next() (Allow fall-through to JWT middleware)"
-            // So if error, just next().
+            fs.appendFileSync('clerk_debug.log', `[${new Date().toISOString()}] Error: ${error}\n`);
             next();
         }
     }

@@ -1,0 +1,63 @@
+[2026-02-12T05:57:10.215Z] Error: PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+/Users/chirag.XO/Desktop/Ecureve Projects/csn website/csn-react-node/server/src/auth/clerk.middleware.ts:72:42
+
+  69 }
+  70 
+  71 // Find user in Prisma
+→ 72 let user = await prisma.user.findUnique(
+The column `User.state` does not exist in the current database.
+[2026-02-12T05:57:11.722Z] Error: PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+/Users/chirag.XO/Desktop/Ecureve Projects/csn website/csn-react-node/server/src/auth/clerk.middleware.ts:72:42
+
+  69 }
+  70 
+  71 // Find user in Prisma
+→ 72 let user = await prisma.user.findUnique(
+The column `User.state` does not exist in the current database.
+[2026-02-12T05:57:12.546Z] Error: PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+/Users/chirag.XO/Desktop/Ecureve Projects/csn website/csn-react-node/server/src/auth/clerk.middleware.ts:72:42
+
+  69 }
+  70 
+  71 // Find user in Prisma
+→ 72 let user = await prisma.user.findUnique(
+The column `User.state` does not exist in the current database.
+[2026-02-12T05:57:14.550Z] Error: PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+/Users/chirag.XO/Desktop/Ecureve Projects/csn website/csn-react-node/server/src/auth/clerk.middleware.ts:72:42
+
+  69 }
+  70 
+  71 // Find user in Prisma
+→ 72 let user = await prisma.user.findUnique(
+The column `User.state` does not exist in the current database.
+[2026-02-12T05:57:14.659Z] Error: PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+/Users/chirag.XO/Desktop/Ecureve Projects/csn website/csn-react-node/server/src/auth/clerk.middleware.ts:72:42
+
+  69 }
+  70 
+  71 // Find user in Prisma
+→ 72 let user = await prisma.user.findUnique(
+The column `User.state` does not exist in the current database.
+[2026-02-12T05:57:15.826Z] Error: PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+/Users/chirag.XO/Desktop/Ecureve Projects/csn website/csn-react-node/server/src/auth/clerk.middleware.ts:72:42
+
+  69 }
+  70 
+  71 // Find user in Prisma
+→ 72 let user = await prisma.user.findUnique(
+The column `User.state` does not exist in the current database.
+[2026-02-12T05:57:15.910Z] Error: PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+/Users/chirag.XO/Desktop/Ecureve Projects/csn website/csn-react-node/server/src/auth/clerk.middleware.ts:72:42
+
+  69 }
+  70 
+  71 // Find user in Prisma
+→ 72 let user = await prisma.user.findUnique(
+The column `User.state` does not exist in the current database.

@@ -56,16 +56,16 @@ export const dashboardService = {
                 date: {
                     gte: now,
                 },
-                attendees: {
+                event_attendees: {
                     some: {
-                        userId: userId,
+                        user_id: userId,
                     },
                 },
             },
             include: {
-                attendees: {
+                event_attendees: {
                     where: {
-                        userId: userId,
+                        user_id: userId,
                     },
                     select: {
                         status: true,
@@ -95,9 +95,9 @@ export const dashboardService = {
         });
 
         // Count events attended (where user is an attendee with GOING status)
-        const eventsAttended = await prisma.eventAttendee.count({
+        const eventsAttended = await prisma.event_attendees.count({
             where: {
-                userId: userId,
+                user_id: userId,
                 status: 'GOING',
             },
         });
@@ -123,7 +123,7 @@ export const dashboardService = {
                 location: event.location || undefined,
                 virtualLink: event.virtualLink || undefined,
                 isVirtual: event.isVirtual,
-                rsvpStatus: event.attendees[0]?.status || 'INVITED',
+                rsvpStatus: event.event_attendees[0]?.status || 'INVITED',
                 creatorName: `${event.creator.firstName} ${event.creator.lastName}`,
             })),
             profileCompletion,

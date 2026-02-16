@@ -27,6 +27,7 @@ export const authMiddleware = async (
 
         // Attach user info to request
         req.user = {
+            id: decoded.userId,
             userId: decoded.userId,
             email: decoded.email,
         };

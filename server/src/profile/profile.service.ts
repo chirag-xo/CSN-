@@ -24,7 +24,9 @@ export const profileService = {
         const user = await prisma.user.findUnique({
             where: { id: targetUserId },
             include: {
-                chapter: true,
+                chapter: {
+                    include: { City: true },
+                },
                 interests: {
                     include: {
                         interest: {
@@ -99,7 +101,7 @@ export const profileService = {
             chapter: user.chapter ? {
                 id: user.chapter.id,
                 name: user.chapter.name,
-                city: user.chapter.city,
+                city: user.chapter.City?.name || 'Unknown',
             } : null,
             interests: canViewInterests ? user.interests.map(ui => ({
                 id: ui.id,
@@ -129,7 +131,9 @@ export const profileService = {
                         },
                     },
                 },
-                chapter: true,
+                chapter: {
+                    include: { City: true },
+                },
                 privacy: true,
                 verifications: {
                     include: {
@@ -273,7 +277,7 @@ export const profileService = {
             chapter: user.chapter
                 ? {
                     name: user.chapter.name,
-                    city: user.chapter.city,
+                    city: user.chapter.City?.name || 'Unknown',
                 }
                 : null,
             contact: {

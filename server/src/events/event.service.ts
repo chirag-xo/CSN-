@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import prisma from '../shared/database';
 
 interface CreateEventDto {
@@ -102,22 +103,25 @@ class EventService {
                     select: {
                         id: true,
                         name: true,
-                        city: true,
+                        City: {
+                            select: { name: true },
+                        },
                     },
                 },
                 _count: {
                     select: {
-                        attendees: true,
+                        event_attendees: true,
                     },
                 },
             },
         });
 
         // Auto-add organizer as ORGANIZER with GOING status
-        await prisma.eventAttendee.create({
+        await prisma.event_attendees.create({
             data: {
-                eventId: event.id,
-                userId: creatorId,
+                id: uuidv4(),
+                event_id: event.id,
+                user_id: creatorId,
                 status: 'GOING',
                 role: 'ORGANIZER',
             },
@@ -125,12 +129,13 @@ class EventService {
 
         // If private event, send invitations
         if (!isPublic && data.invitedUserIds && data.invitedUserIds.length > 0) {
-            await prisma.eventAttendee.createMany({
+            await prisma.event_attendees.createMany({
                 data: data.invitedUserIds
                     .filter(userId => userId !== creatorId) // Don't invite organizer
                     .map(userId => ({
-                        eventId: event.id,
-                        userId,
+                        id: uuidv4(),
+                        event_id: event.id,
+                        user_id: userId,
                         status: 'INVITED',
                         role: 'ATTENDEE',
                     })),
@@ -180,7 +185,7 @@ class EventService {
                     chapter: {
                         OR: [
                             { name: { contains: filters.search, mode: 'insensitive' } },
-                            { city: { contains: filters.search, mode: 'insensitive' } },
+                            { City: { name: { contains: filters.search, mode: 'insensitive' } } },
                         ],
                     },
                 },
@@ -195,7 +200,7 @@ class EventService {
                 OR: [
                     { isPublic: true }, // Public events
                     { creatorId: userId }, // Created by user
-                    { attendees: { some: { userId } } }, // User is invited/attending
+                    { event_attendees: { some: { user_id: userId } } }, // User is invited/attending
                 ],
             }
             : { isPublic: true }; // Guests only see public events
@@ -221,23 +226,28 @@ class EventService {
                         firstName: true,
                         lastName: true,
                         profilePhoto: true,
+                        company: true,
+                        position: true,
                     },
                 },
                 chapter: {
                     select: {
                         id: true,
                         name: true,
+                        City: {
+                            select: { name: true },
+                        },
                     },
                 },
-                attendees: userId
+                event_attendees: userId
                     ? {
-                        where: { userId },
+                        where: { user_id: userId },
                         select: { status: true },
                     }
                     : false,
                 _count: {
                     select: {
-                        attendees: true,
+                        event_attendees: true,
                     },
                 },
             },
@@ -249,8 +259,9 @@ class EventService {
         // Add user RSVP status to each event
         const eventsWithRsvp = events.map((event) => ({
             ...event,
-            userRsvpStatus: event.attendees?.[0]?.status || null,
-            attendees: undefined, // Remove attendees array, only keep count
+            userRsvpStatus: event.event_attendees?.[0]?.status || null,
+            event_attendees: undefined, // Remove attendees array, only keep count
+            chapter: event.chapter ? { ...event.chapter, city: event.chapter.City?.name } : null,
         }));
 
         return eventsWithRsvp;
@@ -289,12 +300,14 @@ class EventService {
                     select: {
                         id: true,
                         name: true,
-                        city: true,
+                        City: {
+                            select: { name: true },
+                        },
                     },
                 },
-                attendees: {
+                event_attendees: {
                     include: {
-                        user: {
+                        User: {
                             select: {
                                 id: true,
                                 firstName: true,
@@ -305,12 +318,12 @@ class EventService {
                         },
                     },
                     orderBy: {
-                        createdAt: 'asc',
+                        created_at: 'asc',
                     },
                 },
                 _count: {
                     select: {
-                        attendees: true,
+                        event_attendees: true,
                     },
                 },
             },
@@ -323,7 +336,7 @@ class EventService {
         // Get user's RSVP status if userId provided
         let userRsvpStatus = null;
         if (userId) {
-            const userAttendee = event.attendees.find((a) => a.userId === userId);
+            const userAttendee = event.event_attendees.find((a) => a.user_id === userId);
             userRsvpStatus = userAttendee?.status || null;
         }
 
@@ -331,6 +344,7 @@ class EventService {
             ...event,
             userRsvpStatus,
             isOrganizer: userId ? event.creatorId === userId : false,
+            chapter: event.chapter ? { ...event.chapter, city: event.chapter.City?.name } : null,
         };
     }
 
@@ -371,12 +385,22 @@ class EventService {
                         firstName: true,
                         lastName: true,
                         profilePhoto: true,
+                        company: true,
+                        position: true,
                     },
                 },
-                chapter: true,
+                chapter: {
+                    select: {
+                        id: true,
+                        name: true,
+                        City: {
+                            select: { name: true },
+                        },
+                    },
+                },
                 _count: {
                     select: {
-                        attendees: true,
+                        event_attendees: true,
                     },
                 },
             },
@@ -430,11 +454,11 @@ class EventService {
         }
 
         // Check if user already RSVP'd
-        const existingRsvp = await prisma.eventAttendee.findUnique({
+        const existingRsvp = await prisma.event_attendees.findUnique({
             where: {
-                eventId_userId: {
-                    eventId,
-                    userId,
+                event_id_user_id: {
+                    event_id: eventId,
+                    user_id: userId,
                 },
             },
         });
@@ -452,11 +476,11 @@ class EventService {
             }
 
             // Update existing RSVP
-            const updated = await prisma.eventAttendee.update({
+            const updated = await prisma.event_attendees.update({
                 where: {
-                    eventId_userId: {
-                        eventId,
-                        userId,
+                    event_id_user_id: {
+                        event_id: eventId,
+                        user_id: userId,
                     },
                 },
                 data: { status },
@@ -464,10 +488,11 @@ class EventService {
             return updated;
         } else {
             // Create new RSVP
-            const rsvp = await prisma.eventAttendee.create({
+            const rsvp = await prisma.event_attendees.create({
                 data: {
-                    eventId,
-                    userId,
+                    id: uuidv4(),
+                    event_id: eventId,
+                    user_id: userId,
                     status,
                 },
             });
@@ -479,10 +504,10 @@ class EventService {
      * Get attendees for an event
      */
     async getAttendees(eventId: string) {
-        const attendees = await prisma.eventAttendee.findMany({
-            where: { eventId },
+        const attendees = await prisma.event_attendees.findMany({
+            where: { event_id: eventId },
             include: {
-                user: {
+                User: {
                     select: {
                         id: true,
                         firstName: true,
@@ -494,7 +519,7 @@ class EventService {
                 },
             },
             orderBy: {
-                createdAt: 'asc',
+                created_at: 'asc',
             },
         });
 
@@ -515,12 +540,22 @@ class EventService {
                         firstName: true,
                         lastName: true,
                         profilePhoto: true,
+                        company: true,
+                        position: true,
                     },
                 },
-                chapter: true,
+                chapter: {
+                    select: {
+                        id: true,
+                        name: true,
+                        City: {
+                            select: { name: true },
+                        },
+                    },
+                },
                 _count: {
                     select: {
-                        attendees: true,
+                        event_attendees: true,
                     },
                 },
             },
@@ -530,15 +565,15 @@ class EventService {
         });
 
         // Get events user is attending
-        const attendingEvents = await prisma.eventAttendee.findMany({
+        const attendingEvents = await prisma.event_attendees.findMany({
             where: {
-                userId,
+                user_id: userId,
                 status: {
                     in: ['GOING', 'MAYBE'],
                 },
             },
             include: {
-                event: {
+                Event: {
                     include: {
                         creator: {
                             select: {
@@ -546,12 +581,22 @@ class EventService {
                                 firstName: true,
                                 lastName: true,
                                 profilePhoto: true,
+                                company: true,
+                                position: true,
                             },
                         },
-                        chapter: true,
+                        chapter: {
+                            select: {
+                                id: true,
+                                name: true,
+                                City: {
+                                    select: { name: true },
+                                },
+                            },
+                        },
                         _count: {
                             select: {
-                                attendees: true,
+                                event_attendees: true,
                             },
                         },
                     },
@@ -560,10 +605,14 @@ class EventService {
         });
 
         return {
-            created: createdEvents,
+            created: createdEvents.map(e => ({
+                ...e,
+                chapter: e.chapter ? { ...e.chapter, city: e.chapter.City?.name } : null
+            })),
             attending: attendingEvents.map((a) => ({
-                ...a.event,
+                ...a.Event,
                 userRsvpStatus: a.status,
+                chapter: a.Event.chapter ? { ...a.Event.chapter, city: a.Event.chapter.City?.name } : null
             })),
         };
     }
@@ -573,18 +622,18 @@ class EventService {
      */
     async getInvitedEvents(userId: string, limit = 10, offset = 0) {
         // Get total count
-        const total = await prisma.eventAttendee.count({
-            where: { userId, status: 'INVITED' },
+        const total = await prisma.event_attendees.count({
+            where: { user_id: userId, status: 'INVITED' },
         });
 
         // Get paginated invitations
-        const invitations = await prisma.eventAttendee.findMany({
+        const invitations = await prisma.event_attendees.findMany({
             where: {
-                userId,
+                user_id: userId,
                 status: 'INVITED',
             },
             include: {
-                event: {
+                Event: {
                     include: {
                         creator: {
                             select: {
@@ -592,39 +641,43 @@ class EventService {
                                 firstName: true,
                                 lastName: true,
                                 profilePhoto: true,
+                                company: true,
+                                position: true,
                             },
                         },
                         chapter: {
                             select: {
                                 id: true,
                                 name: true,
-                                city: true,
+                                City: {
+                                    select: { name: true },
+                                },
                             },
                         },
                         _count: {
                             select: {
-                                attendees: true,
+                                event_attendees: true,
                             },
                         },
                     },
                 },
             },
-            orderBy: { createdAt: 'desc' },
+            orderBy: { created_at: 'desc' },
             take: limit,
             skip: offset,
         });
 
         return {
             invitations: invitations.map((inv) => ({
-                id: inv.event.id,
-                title: inv.event.title,
-                date: inv.event.date,
-                location: inv.event.location,
-                isVirtual: inv.event.isVirtual,
-                virtualLink: inv.event.virtualLink,
-                creator: inv.event.creator,
-                chapter: inv.event.chapter,
-                invitedAt: inv.createdAt,
+                id: inv.Event.id,
+                title: inv.Event.title,
+                date: inv.Event.date,
+                location: inv.Event.location,
+                isVirtual: inv.Event.isVirtual,
+                virtualLink: inv.Event.virtualLink,
+                creator: inv.Event.creator,
+                chapter: inv.Event.chapter ? { ...inv.Event.chapter, city: inv.Event.chapter.City?.name } : null,
+                invitedAt: inv.created_at,
             })),
             total,
         };
@@ -634,9 +687,9 @@ class EventService {
      * Get pending invitation count for a user
      */
     async getInvitationCount(userId: string) {
-        const count = await prisma.eventAttendee.count({
+        const count = await prisma.event_attendees.count({
             where: {
-                userId,
+                user_id: userId,
                 status: 'INVITED',
             },
         });
@@ -663,20 +716,21 @@ class EventService {
         }
 
         // 3. Fetch attendees
-        const attendees = await prisma.eventAttendee.findMany({
-            where: { eventId },
+        const attendees = await prisma.event_attendees.findMany({
+            where: { event_id: eventId },
             include: {
-                user: {
+                User: {
                     select: {
                         id: true,
                         firstName: true,
                         lastName: true,
                         profilePhoto: true,
                         company: true,
+                        position: true,
                     },
                 },
             },
-            orderBy: { createdAt: 'asc' },
+            orderBy: { created_at: 'asc' },
         });
 
         // 4. PERFORMANCE: Single-pass aggregation using reduce
@@ -688,8 +742,8 @@ class EventService {
                 }
                 acc[status].count++;
                 acc[status].users.push({
-                    ...attendee.user,
-                    respondedAt: attendee.createdAt, // Use createdAt as EventAttendee doesn't track updates
+                    ...attendee.User,
+                    respondedAt: attendee.created_at, // Use created_at as event_attendees doesn't track updates
                     role: attendee.role,
                 });
                 return acc;
@@ -746,12 +800,12 @@ class EventService {
         }
 
         // 2. Filter out users already invited/attending
-        const existing = await prisma.eventAttendee.findMany({
-            where: { eventId },
-            select: { userId: true },
+        const existing = await prisma.event_attendees.findMany({
+            where: { event_id: eventId },
+            select: { user_id: true },
         });
 
-        const existingUserIds = existing.map((a) => a.userId);
+        const existingUserIds = existing.map((a) => a.user_id);
         const newInvitees = invitedUserIds.filter(
             (id) => !existingUserIds.includes(id)
         );
@@ -761,10 +815,11 @@ class EventService {
         }
 
         // 3. Create new attendees with INVITED status
-        await prisma.eventAttendee.createMany({
+        await prisma.event_attendees.createMany({
             data: newInvitees.map((userId) => ({
-                eventId,
-                userId,
+                id: uuidv4(),
+                event_id: eventId,
+                user_id: userId,
                 status: 'INVITED',
                 role: 'ATTENDEE',
             })),
@@ -792,10 +847,10 @@ class EventService {
         }
 
         // 2. Fetch all attendees with user details
-        const attendees = await prisma.eventAttendee.findMany({
-            where: { eventId },
+        const attendees = await prisma.event_attendees.findMany({
+            where: { event_id: eventId },
             include: {
-                user: {
+                User: {
                     select: {
                         firstName: true,
                         lastName: true,
@@ -816,11 +871,11 @@ class EventService {
             // Data rows
             ...attendees.map((a) =>
                 [
-                    `"${a.user.firstName} ${a.user.lastName}"`,
-                    a.user.email,
-                    `"${a.user.company || ''}"`,
-                    `"${a.user.position || ''}"`,
-                    `"${a.user.city || ''}"`,
+                    `"${a.User.firstName} ${a.User.lastName}"`,
+                    a.User.email,
+                    `"${a.User.company || ''}"`,
+                    `"${a.User.position || ''}"`,
+                    `"${a.User.city || ''}"`,
                     a.status,
                     a.role,
                 ].join(',')
